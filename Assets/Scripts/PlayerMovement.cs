@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public LayerMask groundMask;
 
+    private Animator animator;
     private Rigidbody2D rb;
     private CapsuleCollider2D coll;
     private float horizontalInput;
@@ -83,6 +84,9 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
+
+        // setting animator parameters
+        animator.SetFloat("Horizontal Velocity", rb.velocity.x);
 	}
 
     void FixedUpdate()
