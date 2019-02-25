@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1056179041340908426}
   - component: {fileID: 1056179041340908425}
   m_Layer: 10
-  m_Name: WaponCollider
+  m_Name: WeaponCollider
   m_TagString: PlayerWeapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
