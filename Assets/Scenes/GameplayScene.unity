@@ -303,11 +303,13 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462134644}
-  m_Text: '''a'',''d'' - move left, right
+  m_Text: '''left'',''right'' - move left, right
 
     ''q'',''e'' - dash left, right
 
-    ''space'' - jump'
+    ''space'' - jump
+
+    ''w'' - attack'
   m_OffsetZ: 0
   m_CharacterSize: 0.3
   m_LineSpacing: 1
@@ -678,7 +680,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899000068}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 4.39, y: -0.18, z: 0.0050700805}
+  m_LocalPosition: {x: 8.52, y: -0.18, z: 0.0050700805}
   m_LocalScale: {x: 5, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -784,7 +786,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919897877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.17, y: -0.54, z: 0.0050700805}
+  m_LocalPosition: {x: 7.3, y: -0.54, z: 0.0050700805}
   m_LocalScale: {x: 2.14, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1208,7 +1210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714440129}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 2.21, y: -1.69, z: 0.0050700805}
+  m_LocalPosition: {x: 6.34, y: -1.69, z: 0.0050700805}
   m_LocalScale: {x: 2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1934,7 +1936,7 @@ PrefabInstance:
     - target: {fileID: 6223562338534363477, guid: 96cf95b50eb011e4f9fd7e42bbdc84df,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.68
+      value: 3.96
       objectReference: {fileID: 0}
     - target: {fileID: 6223562338534363477, guid: 96cf95b50eb011e4f9fd7e42bbdc84df,
         type: 3}

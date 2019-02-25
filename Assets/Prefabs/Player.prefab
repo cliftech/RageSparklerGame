@@ -131,12 +131,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3e3c0a406b923c141963e850052492ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f6851f3548709414f8266efa9fc67e8f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 1.5625, y: 1.15625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -194,6 +194,8 @@ MonoBehaviour:
   movSpeed: 5
   acceleration: 1
   jumpVel: 10
+  inAirAttackUpwardVel: 2.25
+  downwardAttackUpwardVel: 3
   inAirJumpVelMult: 0.8
   dashDistance: 3
   dashSpeed: 10
@@ -204,7 +206,16 @@ MonoBehaviour:
   maxMidairDashesCount: 1
   groundMask:
     serializedVersion: 2
+    m_Bits: 2560
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 2560
+  wallStickMask:
+    serializedVersion: 2
     m_Bits: 512
+  unDashableMask:
+    serializedVersion: 2
+    m_Bits: 2560
   isGrounded: 0
   isDashing: 0
   isAttacking: 0

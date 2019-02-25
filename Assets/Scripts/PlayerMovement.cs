@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour {
     public float movSpeed = 5;
     public float acceleration = 5;
     public float jumpVel = 5;
+    public float inAirAttackUpwardVel = 1;
+    public float downwardAttackUpwardVel = 1.5f;
     public float inAirJumpVelMult = 0.75f;
     public float dashDistance = 3;
     public float dashSpeed = 20;
@@ -17,19 +19,24 @@ public class PlayerMovement : MonoBehaviour {
     public int maxMidairDashesCount = 1;
 
     public LayerMask groundMask;
+    public LayerMask wallMask;
+    public LayerMask wallStickMask;
+    public LayerMask unDashableMask;
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private Rigidbody2D rb;
     private CapsuleCollider2D coll;
     private float horizontalInput;
+    private float verticalInput;
     [Header("states (for debuging)")]
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool isAttacking;
     [SerializeField] private bool isStuckToWall_L;
     [SerializeField] private bool isStuckToWall_R;
-    private Vector3 dashPos;
+    private bool hasSlowedDownFromSticking;
+    private Vector2 dashPos;
     private float gravityScale;
     private float accel;
     private bool isDirRight;
@@ -66,6 +73,7 @@ public class PlayerMovement : MonoBehaviour {
         isGrounded = newGrounded;
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
         // flip character if going in a differrent direction
         if (!isDashing)
         {
@@ -100,10 +108,20 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
-        if (attackComboCount < 3 && !isDashing && isGrounded)
+        if (attackComboCount < 3 && !isDashing)
         {
-            if (Input.GetButtonDown("Attack"))
-                Attack();
+            if (Input.GetButtonDown("Attack")) {
+                if (isGrounded)
+                    if (verticalInput >= 0)
+                        Attack();
+                    else
+                        DownwardAttack();
+                else
+                    if (verticalInput >= 0)
+                        AirAttack();
+                    else
+                        DownwardAttack();
+            }
         }
 
         // setting animator parameters
@@ -113,20 +131,33 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetBool("Is Wall Sliding", isStuckToWall_L || isStuckToWall_R);
         animator.SetFloat("Wall Sliding Speed", 0.5f + rb.gravityScale / gravityScale);
         animator.SetFloat("Slide Stand Speed", horizontalInput == 0 ? 1 : 10);
+        animator.SetInteger("Attack Combo Count", attackComboCount);
     }
 
     void FixedUpdate()
     {
         if (isDashing)
         {
-            transform.position = Vector2.Lerp(transform.position, dashPos, dashSpeed * Time.fixedDeltaTime);
+            if (isGrounded)
+                transform.position = Vector2.Lerp(transform.position, dashPos, dashSpeed * Time.fixedDeltaTime);
+            else
+                transform.position = Vector2.MoveTowards(transform.position, dashPos, dashSpeed * Time.fixedDeltaTime);
             if (GetHorizontalDistance(transform.position, dashPos) < 0.1f)
                 StopDashing();
             Debug.DrawLine(transform.position, dashPos, Color.white, 0.075f);
         }
         else if (isStuckToWall_L || isStuckToWall_R)
         {
-            rb.gravityScale = Mathf.MoveTowards(rb.gravityScale, gravityScale * stuckToWall_g_mult, Time.fixedDeltaTime);
+            if (!hasSlowedDownFromSticking)
+            {
+                if (rb.velocity.y < 0)
+                {
+                    rb.gravityScale = 0;
+                    rb.velocity = Vector2.zero;
+                    hasSlowedDownFromSticking = true;
+                }
+            }else
+                rb.gravityScale = Mathf.MoveTowards(rb.gravityScale, gravityScale * stuckToWall_g_mult, Time.fixedDeltaTime);
 
             if ((CanSlideLeft() && horizontalInput > 0) || (CanSlideRight() && horizontalInput < 0) || (!CanSlideLeft() && !CanSlideRight()))
                 UnstickFromWall();
@@ -152,12 +183,24 @@ public class PlayerMovement : MonoBehaviour {
         isAttacking = true;
         attackComboCount++;
     }
-
     //called in animator events
     public void EndAttack()
     {
         isAttacking = false;
         attackComboCount = 0;
+    }
+    void AirAttack()
+    {
+        animator.SetTrigger("Attack");
+        isAttacking = true;
+        rb.velocity = new Vector2(rb.velocity.x, inAirAttackUpwardVel);
+        attackComboCount++;
+    }
+    void DownwardAttack()
+    {
+        animator.SetTrigger("Downward Attack");
+        isAttacking = true;
+        rb.velocity = new Vector2(rb.velocity.x, downwardAttackUpwardVel);
     }
 
     void DashLeft()
@@ -172,23 +215,23 @@ public class PlayerMovement : MonoBehaviour {
     }
     void Dash(int direction)
     {
-        Vector2 defaultPos = Vector3.right * direction * dashDistance + transform.position;
-        dashPos = defaultPos;
-
         Vector2 origin = coll.bounds.center;
         int numOfRays = 5;
         float yIncrament = coll.size.y / numOfRays;
         origin.y -= coll.size.y / 2f;
+
+        Vector2 defaultPos = Vector3.right * direction * dashDistance + transform.position;
+        dashPos = defaultPos;
         for (int i = 0; i < numOfRays + 1; i++)
         {
             Debug.DrawRay(origin, Vector2.right * direction * dashDistance, Color.white, 0.15f);
-            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, dashDistance, groundMask);
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, dashDistance, unDashableMask);
             Vector2 hitPos = defaultPos;
             if (hit)
             {
                 hitPos = new Vector2(hit.point.x - (direction * coll.size.x / 2f), transform.position.y);
-                dashPos = Vector2.Distance(transform.position, hitPos) < Vector2.Distance(transform.position, defaultPos) ?
-                    hitPos : defaultPos;
+                dashPos = Vector2.Distance(transform.position, hitPos) < Vector2.Distance(transform.position, dashPos) ?
+                    hitPos : dashPos;
             }
             origin.y += yIncrament;
         }
@@ -244,6 +287,7 @@ public class PlayerMovement : MonoBehaviour {
         StopDashing();
         jumpCounter = 0;
         midairDashCounter = 0;
+        attackComboCount = 0;
     }
 
     void StickToWall(int direction)
@@ -253,12 +297,10 @@ public class PlayerMovement : MonoBehaviour {
 
         Vector2 origin = transform.position;
         Debug.DrawRay(origin, Vector2.right * direction * xRaylength, Color.yellow, 0.075f);
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask);
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, wallStickMask);
         if(hit)
             transform.position = hit.point + (Vector2.right * coll.size.x / 2f * -direction);
 
-        rb.gravityScale = 0;
-        rb.velocity = Vector2.zero;
         jumpCounter = 0;
         midairDashCounter = 0;
     }
@@ -266,6 +308,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         isStuckToWall_L = false;
         isStuckToWall_R = false;
+        hasSlowedDownFromSticking = false;
         rb.gravityScale = gravityScale;
     }
 
@@ -292,51 +335,51 @@ public class PlayerMovement : MonoBehaviour {
 
     bool CanSlideLeft()
     {
-        return RaycastSideways_AND(-1, 2, Color.magenta);
+        return RaycastSideways_AND(-1, 2, Color.magenta, wallStickMask);
     }
     bool CanSlideRight()
     {
-        return RaycastSideways_AND(1, 2, Color.magenta);
+        return RaycastSideways_AND(1, 2, Color.magenta, wallStickMask);
     }
 
     bool CanGoRight()
     {
-        return !RaycastSideways_OR(1, 5, Color.red);
+        return !RaycastSideways_OR(1, 5, Color.red, wallMask);
     }
 
     bool CanGoLeft()
     {
-        return !RaycastSideways_OR(-1, 5, Color.red);
+        return !RaycastSideways_OR(-1, 5, Color.red, wallMask);
     }
 
 
-    bool RaycastSideways_OR(int direction, int perpRayCount, Color debugColor)
+    bool RaycastSideways_OR(int direction, int perpRayCount, Color debugColor, LayerMask mask)
     {
         Vector2 origin = coll.bounds.center;
         if (perpRayCount == 1)
         {
             Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
-            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask);
+            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask);
         }
         float yOffset = coll.size.y / perpRayCount;
         origin.y -= yOffset * perpRayCount / 2;
         for (int i = 0; i < perpRayCount + 1; i++)
         {
             Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
-            if (Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask))
+            if (Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask))
                 return true;
             origin.y += yOffset;
         }
         return false;
     }
 
-    bool RaycastSideways_AND(int direction, int perpRayCount, Color debugColor)
+    bool RaycastSideways_AND(int direction, int perpRayCount, Color debugColor, LayerMask mask)
     {
         Vector2 origin = coll.bounds.center;
         if (perpRayCount == 1)
         {
             Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
-            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask);
+            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask);
         }
 
         float yOffset = coll.size.y / perpRayCount;
@@ -344,7 +387,7 @@ public class PlayerMovement : MonoBehaviour {
         for (int i = 0; i < perpRayCount; i++)
         {
             Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
-            if (!Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask))
+            if (!Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask))
                 return false;
             origin.y += yOffset;
         }

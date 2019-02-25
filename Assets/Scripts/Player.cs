@@ -16,8 +16,9 @@ public class Player : MonoBehaviour
         Initialize();
     }
 
-    void Update()
+    public void Hit(float damage)
     {
+        health -= damage;
         print("PC Health - " + health);
     }
 
