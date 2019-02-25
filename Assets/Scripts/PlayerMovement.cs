@@ -30,16 +30,18 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 dashPos;
     private float gravityScale;
     private float accel;
+    private bool isDirRight;
 
     private float yRaylength;
     private float xRaylength;
 
     private float dashTimer;
     private int jumpCounter;
-    [SerializeField]private int midairDashCounter;
+    private int midairDashCounter;
 
     void Awake ()
     {
+        animator = this.GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<CapsuleCollider2D>();
 	}
@@ -49,6 +51,7 @@ public class PlayerMovement : MonoBehaviour {
         xRaylength = coll.size.x / 2 + 0.1f;
         gravityScale = rb.gravityScale;
         accel = acceleration;
+        isDirRight = true;
     }
 	
 	void Update ()
@@ -59,6 +62,12 @@ public class PlayerMovement : MonoBehaviour {
         isGrounded = newGrounded;
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        // flip character if going in a differrent direction
+        if (horizontalInput > 0 && !isDirRight)
+            SetDir(!isDirRight);
+        else if (horizontalInput < 0 && isDirRight)
+            SetDir(!isDirRight);
+
         if (!isGrounded && (!isStuckToWall_L && !isStuckToWall_R))
         {
             if (IsUpAgainstWallLeft() && horizontalInput < 0)
@@ -86,8 +95,10 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // setting animator parameters
-        animator.SetFloat("Horizontal Velocity", rb.velocity.x);
-	}
+        animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("Vertical Velocity", rb.velocity.y);
+        animator.SetBool("Is Grounded", isGrounded);
+    }
 
     void FixedUpdate()
     {
@@ -162,6 +173,8 @@ public class PlayerMovement : MonoBehaviour {
         if(!isGrounded && !isStuckToWall_L && !isStuckToWall_R)
             jumpCounter++;
         UnstickFromWall();
+
+        animator.SetTrigger("Jump");
     }
     void EndJump()
     {
@@ -198,6 +211,15 @@ public class PlayerMovement : MonoBehaviour {
         isStuckToWall_R = false;
         rb.gravityScale = gravityScale;
     }
+
+    void SetDir(bool isRight)
+    {
+        isDirRight = isRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
+
     bool IsGrounded()
     {
         Vector2 origin = coll.bounds.center;
