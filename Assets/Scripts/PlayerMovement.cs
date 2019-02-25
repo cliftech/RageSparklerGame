@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public LayerMask groundMask;
 
+    private SpriteRenderer spriteRenderer;
     private Animator animator;
     private Rigidbody2D rb;
     private CapsuleCollider2D coll;
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour {
     [Header("states (for debuging)")]
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isDashing;
+    [SerializeField] private bool isAttacking;
     [SerializeField] private bool isStuckToWall_L;
     [SerializeField] private bool isStuckToWall_R;
     private Vector3 dashPos;
@@ -37,14 +39,16 @@ public class PlayerMovement : MonoBehaviour {
 
     private float dashTimer;
     private int jumpCounter;
+    private int attackComboCount;
     private int midairDashCounter;
 
     void Awake ()
     {
-        animator = this.GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<CapsuleCollider2D>();
-	}
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
     void Start()
     {
         yRaylength = coll.size.y / 2 + 0.05f;
@@ -63,16 +67,19 @@ public class PlayerMovement : MonoBehaviour {
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
         // flip character if going in a differrent direction
-        if (horizontalInput > 0 && !isDirRight)
-            SetDir(!isDirRight);
-        else if (horizontalInput < 0 && isDirRight)
-            SetDir(!isDirRight);
+        if (!isDashing)
+        {
+            if (horizontalInput > 0 && !isDirRight)
+                SetDir(true);
+            else if (horizontalInput < 0 && isDirRight)
+                SetDir(false);
+        }
 
         if (!isGrounded && (!isStuckToWall_L && !isStuckToWall_R))
         {
-            if (IsUpAgainstWallLeft() && horizontalInput < 0)
+            if (CanSlideLeft() && horizontalInput < 0)
                 StickToWall(-1);
-            else if (IsUpAgainstWallRight() && horizontalInput > 0)
+            else if (CanSlideRight() && horizontalInput > 0)
                 StickToWall(1);
         }
 
@@ -93,11 +100,19 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
+        if (attackComboCount < 3 && !isDashing && isGrounded)
+        {
+            if (Input.GetButtonDown("Attack"))
+                Attack();
+        }
 
         // setting animator parameters
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("Vertical Velocity", rb.velocity.y);
         animator.SetBool("Is Grounded", isGrounded);
+        animator.SetBool("Is Wall Sliding", isStuckToWall_L || isStuckToWall_R);
+        animator.SetFloat("Wall Sliding Speed", 0.5f + rb.gravityScale / gravityScale);
+        animator.SetFloat("Slide Stand Speed", horizontalInput == 0 ? 1 : 10);
     }
 
     void FixedUpdate()
@@ -113,34 +128,70 @@ public class PlayerMovement : MonoBehaviour {
         {
             rb.gravityScale = Mathf.MoveTowards(rb.gravityScale, gravityScale * stuckToWall_g_mult, Time.fixedDeltaTime);
 
-            if ((IsUpAgainstWallLeft() && horizontalInput > 0) || (IsUpAgainstWallRight() && horizontalInput < 0) || (!IsUpAgainstWallLeft() && !IsUpAgainstWallRight()))
+            if ((CanSlideLeft() && horizontalInput > 0) || (CanSlideRight() && horizontalInput < 0) || (!CanSlideLeft() && !CanSlideRight()))
                 UnstickFromWall();
+        }
+        else if (isAttacking)
+        {
+            rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
         }
         else
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(horizontalInput * movSpeed, rb.velocity.y), acceleration);
+            if (horizontalInput == 0 || (horizontalInput > 0 && CanGoRight()) || (horizontalInput < 0 && CanGoLeft()))
+                rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(horizontalInput * movSpeed, rb.velocity.y), acceleration);
+            else
+                rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
         }
         if(acceleration < accel)
             acceleration = Mathf.MoveTowards(acceleration, accel, Time.fixedDeltaTime);
     }
 
+    void Attack()
+    {
+        animator.SetTrigger("Attack");
+        isAttacking = true;
+        attackComboCount++;
+    }
+
+    //called in animator events
+    public void EndAttack()
+    {
+        isAttacking = false;
+        attackComboCount = 0;
+    }
+
     void DashLeft()
     {
+        SetDir(false);
         Dash(-1);
     }
     void DashRight()
     {
+        SetDir(true);
         Dash(1);
     }
     void Dash(int direction)
     {
+        Vector2 defaultPos = Vector3.right * direction * dashDistance + transform.position;
+        dashPos = defaultPos;
+
         Vector2 origin = coll.bounds.center;
+        int numOfRays = 5;
+        float yIncrament = coll.size.y / numOfRays;
         origin.y -= coll.size.y / 2f;
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, dashDistance, groundMask);
-        if (hit)
-            dashPos = new Vector2(hit.point.x - (direction * coll.size.x / 2f), transform.position.y);
-        else
-            dashPos = Vector3.right * direction * dashDistance + transform.position;
+        for (int i = 0; i < numOfRays + 1; i++)
+        {
+            Debug.DrawRay(origin, Vector2.right * direction * dashDistance, Color.white, 0.15f);
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, dashDistance, groundMask);
+            Vector2 hitPos = defaultPos;
+            if (hit)
+            {
+                hitPos = new Vector2(hit.point.x - (direction * coll.size.x / 2f), transform.position.y);
+                dashPos = Vector2.Distance(transform.position, hitPos) < Vector2.Distance(transform.position, defaultPos) ?
+                    hitPos : defaultPos;
+            }
+            origin.y += yIncrament;
+        }
 
         if (!isGrounded)
             midairDashCounter++;
@@ -149,12 +200,18 @@ public class PlayerMovement : MonoBehaviour {
         isStuckToWall_R = false;
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
+
+        animator.SetBool("Dashing", isGrounded);
+        animator.SetBool("Rolling", !isGrounded);
     }
     void StopDashing()
     {
         dashTimer = minDelayBetweenDashes;
         isDashing = false;
         rb.gravityScale = gravityScale;
+
+        animator.SetBool("Dashing", false);
+        animator.SetBool("Rolling", false);
     }
 
     void Jump()
@@ -162,7 +219,7 @@ public class PlayerMovement : MonoBehaviour {
         Vector3 jumpDir;
         if (isStuckToWall_L || isStuckToWall_R)
         {
-            jumpDir = IsUpAgainstWallLeft() ? new Vector2(1, 1) : new Vector2(-1, 1);
+            jumpDir = CanSlideLeft() ? new Vector2(1, 1) : new Vector2(-1, 1);
             acceleration = 0;
         }
         else
@@ -214,10 +271,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void SetDir(bool isRight)
     {
+        spriteRenderer.flipX = !isRight;
         isDirRight = isRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
     }
 
     bool IsGrounded()
@@ -235,28 +290,68 @@ public class PlayerMovement : MonoBehaviour {
         return false;
     }
 
-    bool IsUpAgainstWallLeft()
+    bool CanSlideLeft()
     {
-        return IsUpAgainstWall(-1);
+        return RaycastSideways_AND(-1, 2, Color.magenta);
     }
-    bool IsUpAgainstWallRight()
+    bool CanSlideRight()
     {
-        return IsUpAgainstWall(1);
+        return RaycastSideways_AND(1, 2, Color.magenta);
     }
-    bool IsUpAgainstWall(int direction)
+
+    bool CanGoRight()
+    {
+        return !RaycastSideways_OR(1, 5, Color.red);
+    }
+
+    bool CanGoLeft()
+    {
+        return !RaycastSideways_OR(-1, 5, Color.red);
+    }
+
+
+    bool RaycastSideways_OR(int direction, int perpRayCount, Color debugColor)
     {
         Vector2 origin = coll.bounds.center;
-        float yOffset = coll.bounds.size.y / 4f;
-        origin.y = coll.bounds.min.y + yOffset  * 1.5f;
-        for (int i = 0; i < 2; i++)
+        if (perpRayCount == 1)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, Color.blue, 0.075f);
+            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
+            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask);
+        }
+        float yOffset = coll.size.y / perpRayCount;
+        origin.y -= yOffset * perpRayCount / 2;
+        for (int i = 0; i < perpRayCount + 1; i++)
+        {
+            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
             if (Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask))
                 return true;
             origin.y += yOffset;
         }
         return false;
     }
+
+    bool RaycastSideways_AND(int direction, int perpRayCount, Color debugColor)
+    {
+        Vector2 origin = coll.bounds.center;
+        if (perpRayCount == 1)
+        {
+            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
+            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask);
+        }
+
+        float yOffset = coll.size.y / perpRayCount;
+        origin.y -= yOffset * perpRayCount / 4;
+        for (int i = 0; i < perpRayCount; i++)
+        {
+            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
+            if (!Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, groundMask))
+                return false;
+            origin.y += yOffset;
+        }
+        return true;
+    }
+
+
 
     float GetHorizontalDistance(Vector2 a, Vector2 b)
     {

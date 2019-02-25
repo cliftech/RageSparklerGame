@@ -25,4 +25,9 @@ public class Player : MonoBehaviour
     {
         health = base_maxhealth + level * health_perLevel;
     }
+
+    public float GetDamage()
+    {
+        return 10;
+    }
 }
