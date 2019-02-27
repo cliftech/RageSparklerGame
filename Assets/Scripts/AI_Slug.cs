@@ -9,6 +9,7 @@ public class AI_Slug : MonoBehaviour
     private CapsuleCollider2D coll;
     private Animator animator;
     private Transform target;
+    private DamageContainer damageContainer;
 
     public enum State { Patrol, Aggro, Attacking };
     private State state;
@@ -29,12 +30,14 @@ public class AI_Slug : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
+        damageContainer = GetComponent<DamageContainer>();
         target = FindObjectOfType<Player>().transform;
     }
     void Start()
     {
         xRayLength = coll.size.x / 2 + 0.05f;
         originalScale = transform.localScale;
+        damageContainer.SetDamageCall(() => attackDamage); 
         SetPatrol();
     }
 
@@ -74,7 +77,6 @@ public class AI_Slug : MonoBehaviour
             }
         }
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
-        print(state + " " + rb.velocity);
     }
     void FixedUpdate()
     {

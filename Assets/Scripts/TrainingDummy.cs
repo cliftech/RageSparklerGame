@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrainingDummy : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
+    DamageContainer damageContainer;
     private Player player;
     public float maxHealth = 100;
     private float health = 100;
@@ -13,11 +14,13 @@ public class TrainingDummy : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        damageContainer = GetComponent<DamageContainer>();
     }
 
     void Start()
     {
         health = maxHealth;
+        damageContainer.SetDamageCall(() => 0);
     }
 
     void GetHit()

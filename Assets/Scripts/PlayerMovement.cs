@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour {
     public int maxMidairDashesCount = 1;
     public float knockBackVel = 3;
     public float knockBackTime = 0.1f;
+    public float invincibilityFrameTime = .2f;
+    public float spriteFlashFrequency = .05f;
 
     public LayerMask groundMask;
     public LayerMask wallMask;
@@ -28,6 +30,8 @@ public class PlayerMovement : MonoBehaviour {
     public LayerMask slamPushableMask;
     public string enemyLayerName;
     private int enemyLayer;
+    public string enemyWeaponLayerName;
+    private int enemyWeaponLayer;
 
     [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public Animator animator;
@@ -51,14 +55,15 @@ public class PlayerMovement : MonoBehaviour {
     private float knockBackTimer;
     private float attackCooldownTime = .2f;
     private float attackCooldownTimer;
-
-    private float yRaylength;
-    private float xRaylength;
-
     private float dashTimer;
     private int jumpCounter;
     private int attackComboCount;
     private int midairDashCounter;
+    private IEnumerator spriteFlashRoutine;
+    private Color normalSpriteColor;
+
+    private float yRaylength;
+    private float xRaylength;
 
     void Awake ()
     {
@@ -74,6 +79,7 @@ public class PlayerMovement : MonoBehaviour {
         gravityScale = rb.gravityScale;
         accel = acceleration;
         isDirRight = true;
+        enemyWeaponLayer = LayerMask.NameToLayer(enemyWeaponLayerName);
         enemyLayer = LayerMask.NameToLayer(enemyLayerName);
     }
 	
@@ -99,7 +105,7 @@ public class PlayerMovement : MonoBehaviour {
             Jump();
         else if (Input.GetButtonUp("Jump"))
             EndJump();
-        if (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking)
+        if (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking && (knockBackTimer < knockBackTime / 2))
         {
             if (Input.GetButtonDown("DashLeft"))
                 DashLeft();
@@ -112,7 +118,7 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
-        if (attackComboCount < 3 && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R)
+        if (attackComboCount < 3 && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R && !isKnockedBack)
         {
             if (Input.GetButtonDown("Attack")) {
                 if (isGrounded)
@@ -125,6 +131,13 @@ public class PlayerMovement : MonoBehaviour {
                         DownwardAttack();
                 }
             }
+        }
+
+        if (isKnockedBack)
+        {
+            knockBackTimer -= Time.fixedDeltaTime;
+            if (knockBackTimer <= 0)
+                EndKnockBack();
         }
 
         // setting animator parameters
@@ -141,12 +154,6 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isKnockedBack)
         {
-            knockBackTimer -= Time.fixedDeltaTime;
-            if (knockBackTimer <= 0)
-            {
-                isKnockedBack = false;
-                knockBackTimer = 0;
-            }
         }
         else if (isDashing)
         {
@@ -223,7 +230,6 @@ public class PlayerMovement : MonoBehaviour {
         isDownwardAttacking = false;
         if(isGrounded)
             attackComboCount = 0;
-        print("end " + attackComboCount);
         attackCooldownTimer = 0;
     }
     void AirAttack()
@@ -239,7 +245,7 @@ public class PlayerMovement : MonoBehaviour {
         isDownwardAttacking = true;
         rb.velocity = new Vector2(rb.velocity.x, 
             rb.velocity.y < -downwardAttackDownwardVel ? rb.velocity.y : -downwardAttackDownwardVel);
-        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyLayer, true);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, true);
     }
     /// <summary>
     /// Pushes all rigid bodies away from PC while mid air
@@ -307,7 +313,8 @@ public class PlayerMovement : MonoBehaviour {
     }
     void StopDashing()
     {
-        dashTimer = minDelayBetweenDashes;
+        if(isDashing)
+            dashTimer = minDelayBetweenDashes;
         isDashing = false;
         rb.gravityScale = gravityScale;
 
@@ -349,7 +356,7 @@ public class PlayerMovement : MonoBehaviour {
         midairDashCounter = 0;
         attackComboCount = 0;
         isAttacking = false;
-        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyLayer, false);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, false);
     }
     #endregion
     #region sticking to walls
@@ -383,15 +390,53 @@ public class PlayerMovement : MonoBehaviour {
         knockBackTimer = knockBackTime;
         isKnockedBack = true;
         isDownwardAttacking = false;
+        isStuckToWall_L = false;
+        isStuckToWall_R = false;
         isAttacking = false;
+        StopDashing();
         SetDirFacing(knockbackToLeftSide);
+
+        if (spriteFlashRoutine != null)
+        {
+            StopCoroutine(spriteFlashRoutine);
+            spriteRenderer.color = normalSpriteColor;
+            unDashableMask = unDashableMask | (1 << enemyLayer);
+        }
+        spriteFlashRoutine = StartInvincibillityFrame(invincibilityFrameTime, spriteFlashFrequency);
+        StartCoroutine(spriteFlashRoutine);
         animator.SetTrigger("GetHit");
+    }
+
+    public void EndKnockBack()
+    {
+        isKnockedBack = false;
+        knockBackTimer = 0;
     }
 
     void SetDirFacing(bool isRight)
     {
         spriteRenderer.flipX = !isRight;
         isDirRight = isRight;
+    }
+
+    IEnumerator StartInvincibillityFrame(float duration, float flashFrequency)
+    {
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, true);
+        unDashableMask = unDashableMask & ~(1 << enemyLayer);
+
+        bool currentColor = false;
+        normalSpriteColor = spriteRenderer.color;
+        Color alternateColor = new Color(1 - normalSpriteColor.r, 1 - normalSpriteColor.g, 1 - normalSpriteColor.b, normalSpriteColor.a / 2);
+        while (duration > 0)
+        {
+            spriteRenderer.color = currentColor ? alternateColor : normalSpriteColor;
+            currentColor = !currentColor;
+            duration -= flashFrequency;
+            yield return new WaitForSecondsRealtime(flashFrequency);
+        }
+        spriteRenderer.color = normalSpriteColor;
+
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, false);
     }
 
     bool IsGrounded()
@@ -469,8 +514,6 @@ public class PlayerMovement : MonoBehaviour {
         }
         return true;
     }
-
-
 
     float GetHorizontalDistance(Vector2 a, Vector2 b)
     {

@@ -10,9 +10,10 @@ public class Player : MonoBehaviour
     public float health_perLevel = 20;
     public float Health { get { return health; } }
     public int Level { get { return level; } }
+    public string enemyWeaponTag;
+
     private float health;
     private int level;
-    public string enemyTag;
 
     void Awake()
     {
@@ -23,11 +24,17 @@ public class Player : MonoBehaviour
         Initialize();
     }
 
-    public void GetHit(bool hitFromRightSide, float damage)
+    /// <summary>
+    /// Hits the player
+    /// </summary>
+    /// <param name="damage">the amount of damage to deal</param>
+    /// <param name="knockBackDirection">set to 1 if attack came from right of PC, -1 if from left, leave 0 if no knockback</param>
+    public void GetHit(float damage, int knockBackDirection = 0)
     {
         health -= damage;
         print("PC Health - " + health);
-        playerMovement.KnockBack(hitFromRightSide, damage);
+        if(knockBackDirection != 0)
+            playerMovement.KnockBack(knockBackDirection == 1, damage);
     }
 
     private void Initialize()
@@ -41,9 +48,10 @@ public class Player : MonoBehaviour
     }
 
 
-    void OnCollisionEnter2D(Collision2D coll)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (coll.collider.CompareTag(enemyTag))
-            GetHit(coll.collider.transform.position.x > transform.position.x, 10);
+        if (other.CompareTag(enemyWeaponTag))
+            GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
+                other.transform.position.x > transform.position.x ? 1 : -1);
     }
 }

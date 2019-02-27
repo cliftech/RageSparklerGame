@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7cf2a655e9b2b4d8088c64a9426ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movSpeed: 5
+  movVelocity: 5
   acceleration: 1
   jumpVel: 10
   inAirAttackUpwardVel: 2.25
@@ -207,12 +207,14 @@ MonoBehaviour:
   maxMidairDashesCount: 1
   knockBackVel: 6
   knockBackTime: 0.2
+  invincibilityFrameTime: 0.5
+  spriteFlashFrequency: 0.05
   groundMask:
     serializedVersion: 2
     m_Bits: 512
   wallMask:
     serializedVersion: 2
-    m_Bits: 2560
+    m_Bits: 512
   wallStickMask:
     serializedVersion: 2
     m_Bits: 512
@@ -223,6 +225,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   enemyLayerName: Enemy
+  enemyWeaponLayerName: EnemyWeapon
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
@@ -248,7 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   base_maxhealth: 100
   health_perLevel: 20
-  enemyTag: Enemy
+  enemyWeaponTag: EnemyWeapon
 --- !u!95 &1056179042876710186
 Animator:
   serializedVersion: 3
