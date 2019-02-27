@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-    public float movSpeed = 5;
+    public float movVelocity = 5;
     public float acceleration = 5;
     public float jumpVel = 5;
     public float inAirAttackUpwardVel = 1;
@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour {
         else
         {
             if (horizontalInput == 0 || (horizontalInput > 0 && CanGoRight()) || (horizontalInput < 0 && CanGoLeft()))
-                rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(horizontalInput * movSpeed, rb.velocity.y), acceleration);
+                rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(horizontalInput * movVelocity, rb.velocity.y), acceleration);
             else
                 rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
 
@@ -382,6 +382,8 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = forceDir * knockBackVel * Mathf.Clamp(forceMult / 100, 1, 1.5f);
         knockBackTimer = knockBackTime;
         isKnockedBack = true;
+        isDownwardAttacking = false;
+        isAttacking = false;
         SetDirFacing(knockbackToLeftSide);
         animator.SetTrigger("GetHit");
     }
