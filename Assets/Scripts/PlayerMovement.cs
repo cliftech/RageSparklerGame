@@ -8,7 +8,8 @@ public class PlayerMovement : MonoBehaviour {
     public float acceleration = 5;
     public float jumpVel = 5;
     public float inAirAttackUpwardVel = 1;
-    public float downwardAttackUpwardVel = 1.5f;
+    public float downwardAttackDownwardVel = 1.5f;
+    public float slamPushVel = 2;
     public float inAirJumpVelMult = 0.75f;
     public float dashDistance = 3;
     public float dashSpeed = 20;
@@ -17,29 +18,39 @@ public class PlayerMovement : MonoBehaviour {
     public float minDelayBetweenDashes = 0.5f;
     public int maxJumpCount = 3;
     public int maxMidairDashesCount = 1;
+    public float knockBackVel = 3;
+    public float knockBackTime = 0.1f;
 
     public LayerMask groundMask;
     public LayerMask wallMask;
     public LayerMask wallStickMask;
     public LayerMask unDashableMask;
+    public LayerMask slamPushableMask;
+    public string enemyLayerName;
+    private int enemyLayer;
 
-    private SpriteRenderer spriteRenderer;
-    private Animator animator;
-    private Rigidbody2D rb;
-    private CapsuleCollider2D coll;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public CapsuleCollider2D coll;
     private float horizontalInput;
     private float verticalInput;
     [Header("states (for debuging)")]
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool isAttacking;
+    [SerializeField] private bool isDownwardAttacking;
     [SerializeField] private bool isStuckToWall_L;
     [SerializeField] private bool isStuckToWall_R;
+    [SerializeField] private bool isKnockedBack;
     private bool hasSlowedDownFromSticking;
     private Vector2 dashPos;
     private float gravityScale;
     private float accel;
     private bool isDirRight;
+    private float knockBackTimer;
+    private float attackCooldownTime = .2f;
+    private float attackCooldownTimer;
 
     private float yRaylength;
     private float xRaylength;
@@ -63,6 +74,7 @@ public class PlayerMovement : MonoBehaviour {
         gravityScale = rb.gravityScale;
         accel = acceleration;
         isDirRight = true;
+        enemyLayer = LayerMask.NameToLayer(enemyLayerName);
     }
 	
 	void Update ()
@@ -74,14 +86,6 @@ public class PlayerMovement : MonoBehaviour {
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        // flip character if going in a differrent direction
-        if (!isDashing)
-        {
-            if (horizontalInput > 0 && !isDirRight)
-                SetDir(true);
-            else if (horizontalInput < 0 && isDirRight)
-                SetDir(false);
-        }
 
         if (!isGrounded && (!isStuckToWall_L && !isStuckToWall_R))
         {
@@ -91,11 +95,11 @@ public class PlayerMovement : MonoBehaviour {
                 StickToWall(1);
         }
 
-        if (Input.GetButtonDown("Jump") /*&& (isGrounded || IsUpAgainstWallLeft() || IsUpAgainstWallRight())*/ && jumpCounter < maxJumpCount - 1 && !isDashing)
+        if (Input.GetButtonDown("Jump") && !isDownwardAttacking && jumpCounter < maxJumpCount - 1 && !isDashing)
             Jump();
         else if (Input.GetButtonUp("Jump"))
             EndJump();
-        if (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount)
+        if (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking)
         {
             if (Input.GetButtonDown("DashLeft"))
                 DashLeft();
@@ -108,19 +112,18 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
-        if (attackComboCount < 3 && !isDashing)
+        if (attackComboCount < 3 && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R)
         {
             if (Input.GetButtonDown("Attack")) {
                 if (isGrounded)
-                    if (verticalInput >= 0)
-                        Attack();
-                    else
-                        DownwardAttack();
+                    Attack();
                 else
+                {
                     if (verticalInput >= 0)
                         AirAttack();
                     else
                         DownwardAttack();
+                }
             }
         }
 
@@ -136,7 +139,16 @@ public class PlayerMovement : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (isDashing)
+        if (isKnockedBack)
+        {
+            knockBackTimer -= Time.fixedDeltaTime;
+            if (knockBackTimer <= 0)
+            {
+                isKnockedBack = false;
+                knockBackTimer = 0;
+            }
+        }
+        else if (isDashing)
         {
             if (isGrounded)
                 transform.position = Vector2.Lerp(transform.position, dashPos, dashSpeed * Time.fixedDeltaTime);
@@ -156,7 +168,8 @@ public class PlayerMovement : MonoBehaviour {
                     rb.velocity = Vector2.zero;
                     hasSlowedDownFromSticking = true;
                 }
-            }else
+            }
+            else
                 rb.gravityScale = Mathf.MoveTowards(rb.gravityScale, gravityScale * stuckToWall_g_mult, Time.fixedDeltaTime);
 
             if ((CanSlideLeft() && horizontalInput > 0) || (CanSlideRight() && horizontalInput < 0) || (!CanSlideLeft() && !CanSlideRight()))
@@ -165,6 +178,13 @@ public class PlayerMovement : MonoBehaviour {
         else if (isAttacking)
         {
             rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
+            attackCooldownTimer -= Time.fixedDeltaTime;
+        }
+        else if (isDownwardAttacking)
+        {
+            // push rigid bodies that are beneath the PC
+            PushRigidBodies();
+            rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
         }
         else
         {
@@ -172,22 +192,39 @@ public class PlayerMovement : MonoBehaviour {
                 rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(horizontalInput * movSpeed, rb.velocity.y), acceleration);
             else
                 rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
+
+            // flip character if going in a differrent direction
+            if (!isDashing)
+            {
+                if (horizontalInput > 0 && !isDirRight)
+                    SetDirFacing(true);
+                else if (horizontalInput < 0 && isDirRight)
+                    SetDirFacing(false);
+            }
         }
         if(acceleration < accel)
             acceleration = Mathf.MoveTowards(acceleration, accel, Time.fixedDeltaTime);
     }
 
+    #region attacking
     void Attack()
     {
         animator.SetTrigger("Attack");
         isAttacking = true;
         attackComboCount++;
+        print("start " + attackComboCount);
+
+        attackCooldownTimer = attackCooldownTime;
     }
     //called in animator events
     public void EndAttack()
     {
         isAttacking = false;
-        attackComboCount = 0;
+        isDownwardAttacking = false;
+        if(isGrounded)
+            attackComboCount = 0;
+        print("end " + attackComboCount);
+        attackCooldownTimer = 0;
     }
     void AirAttack()
     {
@@ -199,18 +236,38 @@ public class PlayerMovement : MonoBehaviour {
     void DownwardAttack()
     {
         animator.SetTrigger("Downward Attack");
-        isAttacking = true;
-        rb.velocity = new Vector2(rb.velocity.x, downwardAttackUpwardVel);
+        isDownwardAttacking = true;
+        rb.velocity = new Vector2(rb.velocity.x, 
+            rb.velocity.y < -downwardAttackDownwardVel ? rb.velocity.y : -downwardAttackDownwardVel);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyLayer, true);
     }
-
+    /// <summary>
+    /// Pushes all rigid bodies away from PC while mid air
+    /// </summary>
+    void PushRigidBodies()
+    {
+        Vector2 origin = coll.bounds.center;
+        origin.y = coll.bounds.min.y - 0.25f;
+        float pushDistance = coll.size.x / 1.9f;
+        Debug.DrawLine(origin + Vector2.right * pushDistance, origin - Vector2.right * pushDistance, Color.red, 0.1f);
+        RaycastHit2D[] hits = Physics2D.LinecastAll(origin - Vector2.right * pushDistance, origin + Vector2.right * pushDistance, slamPushableMask);
+        foreach (RaycastHit2D hit in hits)
+        {
+            Rigidbody2D hitRb = hit.collider.GetComponent<Rigidbody2D>();
+            Vector2 pushDir = hitRb.transform.position.x > transform.position.x ? Vector2.right : Vector2.left;
+            hitRb.velocity = pushDir * slamPushVel;
+        }
+    }
+    #endregion
+    #region dashing
     void DashLeft()
     {
-        SetDir(false);
+        SetDirFacing(false);
         Dash(-1);
     }
     void DashRight()
     {
-        SetDir(true);
+        SetDirFacing(true);
         Dash(1);
     }
     void Dash(int direction)
@@ -241,6 +298,7 @@ public class PlayerMovement : MonoBehaviour {
         isDashing = true;
         isStuckToWall_L = false;
         isStuckToWall_R = false;
+        EndAttack();
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
 
@@ -256,7 +314,8 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetBool("Dashing", false);
         animator.SetBool("Rolling", false);
     }
-
+    #endregion
+    #region jumping
     void Jump()
     {
         Vector3 jumpDir;
@@ -275,6 +334,7 @@ public class PlayerMovement : MonoBehaviour {
         UnstickFromWall();
 
         animator.SetTrigger("Jump");
+        isAttacking = false;
     }
     void EndJump()
     {
@@ -288,8 +348,11 @@ public class PlayerMovement : MonoBehaviour {
         jumpCounter = 0;
         midairDashCounter = 0;
         attackComboCount = 0;
+        isAttacking = false;
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyLayer, false);
     }
-
+    #endregion
+    #region sticking to walls
     void StickToWall(int direction)
     {
         isStuckToWall_L = direction == -1 ? true : false;
@@ -311,8 +374,19 @@ public class PlayerMovement : MonoBehaviour {
         hasSlowedDownFromSticking = false;
         rb.gravityScale = gravityScale;
     }
+    #endregion
 
-    void SetDir(bool isRight)
+    public void KnockBack(bool knockbackToLeftSide, float forceMult)
+    {
+        Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
+        rb.velocity = forceDir * knockBackVel * Mathf.Clamp(forceMult / 100, 1, 1.5f);
+        knockBackTimer = knockBackTime;
+        isKnockedBack = true;
+        SetDirFacing(knockbackToLeftSide);
+        animator.SetTrigger("GetHit");
+    }
+
+    void SetDirFacing(bool isRight)
     {
         spriteRenderer.flipX = !isRight;
         isDirRight = isRight;

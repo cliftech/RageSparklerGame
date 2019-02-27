@@ -224,59 +224,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1056179042256454311}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &282294931 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6223562338534363475, guid: 96cf95b50eb011e4f9fd7e42bbdc84df,
-    type: 3}
-  m_PrefabInstance: {fileID: 6223562338252123072}
-  m_PrefabAsset: {fileID: 0}
---- !u!50 &282294935
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282294931}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
---- !u!61 &282294936
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282294931}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
-  m_EdgeRadius: 0
 --- !u!1 &382265621
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,14 +355,16 @@ TextMesh:
 
     ''space'' - jump
 
-    ''w'' - attack'
+    ''w'' - attack (while on ground or in air)
+
+    ''w''+''down'' - downward attack (while in air)'
   m_OffsetZ: 0
   m_CharacterSize: 0.3
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 0
+  m_FontSize: 100
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 0}
@@ -468,7 +417,7 @@ Transform:
   m_GameObject: {fileID: 462134644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.27, y: 0.67, z: -0.09765625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2139,7 +2088,7 @@ PrefabInstance:
     - target: {fileID: 6223562338534363477, guid: 96cf95b50eb011e4f9fd7e42bbdc84df,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.75
+      value: -2.96
       objectReference: {fileID: 0}
     - target: {fileID: 6223562338534363477, guid: 96cf95b50eb011e4f9fd7e42bbdc84df,
         type: 3}
