@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
 
     private Vector3 Offset;
     private Vector3 ExtraOffset;
-    private float MaxExtra = 5f;
+    private float MaxExtra = 2.5f;
 
 
     // Start is called before the first frame update
@@ -36,10 +36,12 @@ public class CameraController : MonoBehaviour
             if (ExtraOffset.x > -MaxExtra)
                 ExtraOffset.x -= 0.1f;
         }
+        /*
         else if (ExtraOffset.x > 0.002f || ExtraOffset.x < -0.002f )
         {
                 ExtraOffset.x += ExtraOffset.x > 0f? -0.1f:0.1f;
         }
+        */
         var position = PlayerCharacter.transform.position + Offset;
         var Camera = GetComponent<Camera>();
         position += ExtraOffset;
