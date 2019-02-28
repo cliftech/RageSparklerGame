@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 9049953765661922271}
   - component: {fileID: 9049953765661922268}
   - component: {fileID: 9049953765661922270}
+  - component: {fileID: 1931576515}
   m_Layer: 11
   m_Name: Slug
   m_TagString: Enemy
@@ -267,7 +268,23 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 512
+  playerWeaponTag: PlayerWeapon
   movVelocity: 1
   aggroRange: 5
-  attackRange: 1
+  attackRange: 0.85
   attackDamage: 20
+  maxHealth: 50
+  knockBackVelocity: 5
+  knockBackTime: 0.2
+--- !u!114 &1931576515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9049953765661922256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04df802fc6deaf488b845cd7f90d434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

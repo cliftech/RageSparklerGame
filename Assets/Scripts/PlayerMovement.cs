@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public CapsuleCollider2D coll;
+    [HideInInspector] public DamageContainer damageContainer;
     private float horizontalInput;
     private float verticalInput;
     [Header("states (for debuging)")]
@@ -57,10 +58,11 @@ public class PlayerMovement : MonoBehaviour {
     private float attackCooldownTimer;
     private float dashTimer;
     private int jumpCounter;
-    private int attackComboCount;
+    [HideInInspector]public int attackComboCount;
     private int midairDashCounter;
     private IEnumerator spriteFlashRoutine;
     private Color normalSpriteColor;
+    private Vector2 originalScale;
 
     private float yRaylength;
     private float xRaylength;
@@ -71,6 +73,7 @@ public class PlayerMovement : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        damageContainer = GetComponent<DamageContainer>();
     }
     void Start()
     {
@@ -81,6 +84,7 @@ public class PlayerMovement : MonoBehaviour {
         isDirRight = true;
         enemyWeaponLayer = LayerMask.NameToLayer(enemyWeaponLayerName);
         enemyLayer = LayerMask.NameToLayer(enemyLayerName);
+        originalScale = transform.localScale;
     }
 	
 	void Update ()
@@ -219,7 +223,6 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetTrigger("Attack");
         isAttacking = true;
         attackComboCount++;
-        print("start " + attackComboCount);
 
         attackCooldownTimer = attackCooldownTime;
     }
@@ -383,6 +386,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     void UnstickFromWall()
     {
+        SetDirFacing(isStuckToWall_L);
         isStuckToWall_L = false;
         isStuckToWall_R = false;
         hasSlowedDownFromSticking = false;
@@ -422,7 +426,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void SetDirFacing(bool isRight)
     {
-        spriteRenderer.flipX = !isRight;
+        transform.localScale = new Vector3(isRight ? originalScale.x : -originalScale.x, originalScale.y);
         isDirRight = isRight;
     }
 

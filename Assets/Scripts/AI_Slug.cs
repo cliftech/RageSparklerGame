@@ -10,7 +10,6 @@ public class AI_Slug : MonoBehaviour
     private Animator animator;
     private Transform target;
     private DamageContainer damageContainer;
-    private Player player;
 
     public enum State { Patrol, Aggro, Attacking, KnockedBack };
     private State state;
@@ -22,6 +21,8 @@ public class AI_Slug : MonoBehaviour
     private float knockBackTimer;
 
     public LayerMask wallMask;
+    public LayerMask playerMask;
+    public string playerTag;
     public string playerWeaponTag;
     public float movVelocity;
     public float aggroRange;
@@ -30,6 +31,7 @@ public class AI_Slug : MonoBehaviour
     public float maxHealth;
     public float knockBackVelocity;
     public float knockBackTime;
+    public bool chaseInBothDirs;
     // Start is called before the first frame update
     void Awake()
     {
@@ -39,7 +41,6 @@ public class AI_Slug : MonoBehaviour
         animator = GetComponent<Animator>();
         damageContainer = GetComponent<DamageContainer>();
         target = FindObjectOfType<Player>().transform;
-        player = FindObjectOfType<Player>();
     }
     void Start()
     {
@@ -55,13 +56,16 @@ public class AI_Slug : MonoBehaviour
     {
         if(state == State.Patrol)
         {
-            if (RaycastSideways_OR(isDirRight, 5, Color.red, wallMask))
+            if (RaycastSideways_OR(isDirRight, 5, xRayLength, wallMask, Color.red))
             {
                 ChangeDirection(!isDirRight);
             }
-            if (Vector2.Distance(target.position, transform.position) < aggroRange)
+            if (Vector2.Distance(transform.position, target.position) < aggroRange)
             {
-                SetAggro();
+                if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, wallMask, Color.blue) || (chaseInBothDirs && RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, wallMask, Color.blue)))
+                {
+                    SetAggro();
+                }
             }
         }
         else if(state == State.Aggro)
@@ -83,6 +87,10 @@ public class AI_Slug : MonoBehaviour
             if (Vector2.Distance(target.position, transform.position) < attackRange)
             {
                 SetAttack();
+            }
+            if (!RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, wallMask, Color.blue))
+            {
+                SetPatrol();
             }
         }
         else if(state == State.KnockedBack)
@@ -173,18 +181,39 @@ public class AI_Slug : MonoBehaviour
     void GetHit(bool isRight, float damage)
     {
         health -= damage;
+        print(name + " Health: " + health);
         KnockBack(isRight, damage);
     }
     public void KnockBack(bool knockbackToLeftSide, float forceMult)
     {
-        Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
-        rb.velocity = forceDir * knockBackVelocity * Mathf.Clamp(forceMult / 100, 1, 1.5f);
-        SetKnockedBack();
         ChangeDirection(knockbackToLeftSide);
+        Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
+        rb.velocity = forceDir * knockBackVelocity * Mathf.Clamp(forceMult / 10, 1, 1.5f);
+        SetKnockedBack();
 
         animator.SetTrigger("GetHit");
     }
-    bool RaycastSideways_OR(bool isRight, int perpRayCount, Color debugColor, LayerMask mask)
+    bool RaycastToPlayer(bool isRight, float distance, string playerTag, LayerMask playerMask, LayerMask wallMask, Color debugColor)
+    {
+        int direction;
+        if (isRight)
+        {
+            direction = 1;
+        }
+        else
+        {
+            direction = -1;
+        }
+        Vector2 origin = coll.bounds.center;
+        Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, distance, playerMask | wallMask);
+        if (!hit)
+        {
+            return false;
+        }
+        return hit.collider.CompareTag(playerTag);
+    }
+    bool RaycastSideways_OR(bool isRight, int perpRayCount, float distance, LayerMask mask, Color debugColor)
     {
         int direction;
         if (isRight)
@@ -198,15 +227,15 @@ public class AI_Slug : MonoBehaviour
         Vector2 origin = coll.bounds.center;
         if (perpRayCount == 1)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * xRayLength, debugColor, 0.075f);
-            return Physics2D.Raycast(origin, Vector2.right * direction, xRayLength, mask);
+            Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
+            return Physics2D.Raycast(origin, Vector2.right * direction, distance, mask);
         }
         float yOffset = coll.size.y / perpRayCount;
         origin.y -= yOffset * perpRayCount / 2;
         for (int i = 0; i < perpRayCount + 1; i++)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * xRayLength, debugColor, 0.075f);
-            if (Physics2D.Raycast(origin, Vector2.right * direction, xRayLength, mask))
+            Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
+            if (Physics2D.Raycast(origin, Vector2.right * direction, distance, mask))
                 return true;
             origin.y += yOffset;
         }
@@ -214,10 +243,9 @@ public class AI_Slug : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag(playerWeaponTag))
+        if(other.CompareTag(playerWeaponTag) && state != State.KnockedBack)
         {
-            GetHit(transform.position.x < other.transform.position.x, player.GetDamage());
+            GetHit(transform.position.x < other.transform.position.x, other.GetComponentInParent<DamageContainer>().GetDamage());
         }
     }
-
 }

@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        playerMovement.damageContainer.SetDamageCall(() => GetDamage());
         Initialize();
     }
 
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour
 
     public float GetDamage()
     {
-        return 10;
+        return (playerMovement.attackComboCount + 1) * 5;
     }
 
 
