@@ -10,19 +10,26 @@ public class AI_Slug : MonoBehaviour
     private Animator animator;
     private Transform target;
     private DamageContainer damageContainer;
+    private Player player;
 
-    public enum State { Patrol, Aggro, Attacking };
+    public enum State { Patrol, Aggro, Attacking, KnockedBack };
     private State state;
 
     private bool isDirRight;
     private float xRayLength;
     private Vector2 originalScale;
+    private float health;
+    private float knockBackTimer;
 
     public LayerMask wallMask;
+    public string playerWeaponTag;
     public float movVelocity;
     public float aggroRange;
     public float attackRange;
     public float attackDamage;
+    public float maxHealth;
+    public float knockBackVelocity;
+    public float knockBackTime;
     // Start is called before the first frame update
     void Awake()
     {
@@ -32,12 +39,14 @@ public class AI_Slug : MonoBehaviour
         animator = GetComponent<Animator>();
         damageContainer = GetComponent<DamageContainer>();
         target = FindObjectOfType<Player>().transform;
+        player = FindObjectOfType<Player>();
     }
     void Start()
     {
         xRayLength = coll.size.x / 2 + 0.05f;
         originalScale = transform.localScale;
-        damageContainer.SetDamageCall(() => attackDamage); 
+        damageContainer.SetDamageCall(() => attackDamage);
+        health = maxHealth;
         SetPatrol();
     }
 
@@ -76,6 +85,14 @@ public class AI_Slug : MonoBehaviour
                 SetAttack();
             }
         }
+        else if(state == State.KnockedBack)
+        {
+            knockBackTimer -= Time.deltaTime;
+            if(knockBackTimer <= 0)
+            {
+                EndKnockedBack();
+            }
+        }
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
     void FixedUpdate()
@@ -93,7 +110,7 @@ public class AI_Slug : MonoBehaviour
             }
             rb.velocity = new Vector2(direction.x * movVelocity, rb.velocity.y);
         }
-        else if(state == State.Aggro)
+        else if (state == State.Aggro)
         {
             Vector2 direction;
             if (isDirRight)
@@ -106,9 +123,12 @@ public class AI_Slug : MonoBehaviour
             }
             rb.velocity = new Vector2(direction.x * movVelocity, rb.velocity.y);
         }
-        else if(state == State.Attacking)
+        else if (state == State.Attacking)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        else if (state == State.KnockedBack)
+        {
         }
     }
     void SetPatrol()
@@ -128,9 +148,19 @@ public class AI_Slug : MonoBehaviour
     {
         SetAggro();
     }
-    void ChangeDirection(bool isRight)
+    void SetKnockedBack()
     {
-        if (isRight)
+        state = State.KnockedBack;
+        knockBackTimer = knockBackTime;
+    }
+    void EndKnockedBack()
+    {
+        SetAggro();
+        knockBackTimer = 0;
+    }
+    void ChangeDirection(bool toRight)
+    {
+        if (toRight)
         {
             transform.localScale = new Vector2(-originalScale.x, transform.localScale.y);
         }
@@ -138,7 +168,21 @@ public class AI_Slug : MonoBehaviour
         {
             transform.localScale = new Vector2(originalScale.x, transform.localScale.y);
         }
-        isDirRight = isRight;
+        isDirRight = toRight;
+    }
+    void GetHit(bool isRight, float damage)
+    {
+        health -= damage;
+        KnockBack(isRight, damage);
+    }
+    public void KnockBack(bool knockbackToLeftSide, float forceMult)
+    {
+        Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
+        rb.velocity = forceDir * knockBackVelocity * Mathf.Clamp(forceMult / 100, 1, 1.5f);
+        SetKnockedBack();
+        ChangeDirection(knockbackToLeftSide);
+
+        animator.SetTrigger("GetHit");
     }
     bool RaycastSideways_OR(bool isRight, int perpRayCount, Color debugColor, LayerMask mask)
     {
@@ -167,6 +211,13 @@ public class AI_Slug : MonoBehaviour
             origin.y += yOffset;
         }
         return false;
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag(playerWeaponTag))
+        {
+            GetHit(transform.position.x < other.transform.position.x, player.GetDamage());
+        }
     }
 
 }

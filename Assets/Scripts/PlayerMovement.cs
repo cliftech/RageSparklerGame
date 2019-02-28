@@ -232,6 +232,13 @@ public class PlayerMovement : MonoBehaviour {
             attackComboCount = 0;
         attackCooldownTimer = 0;
     }
+    void ForceEndAttack()
+    {
+        isAttacking = false;
+        isDownwardAttacking = false;
+        attackComboCount = 0;
+        attackCooldownTimer = 0;
+    }
     void AirAttack()
     {
         animator.SetTrigger("Attack");
@@ -304,7 +311,7 @@ public class PlayerMovement : MonoBehaviour {
         isDashing = true;
         isStuckToWall_L = false;
         isStuckToWall_R = false;
-        EndAttack();
+        ForceEndAttack();
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
 
@@ -341,7 +348,7 @@ public class PlayerMovement : MonoBehaviour {
         UnstickFromWall();
 
         animator.SetTrigger("Jump");
-        isAttacking = false;
+        ForceEndAttack();
     }
     void EndJump()
     {
@@ -355,7 +362,7 @@ public class PlayerMovement : MonoBehaviour {
         jumpCounter = 0;
         midairDashCounter = 0;
         attackComboCount = 0;
-        isAttacking = false;
+        ForceEndAttack();
         Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, false);
     }
     #endregion
@@ -392,7 +399,7 @@ public class PlayerMovement : MonoBehaviour {
         isDownwardAttacking = false;
         isStuckToWall_L = false;
         isStuckToWall_R = false;
-        isAttacking = false;
+        ForceEndAttack();
         StopDashing();
         SetDirFacing(knockbackToLeftSide);
 
