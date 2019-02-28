@@ -102,6 +102,13 @@ public class AI_Slug : MonoBehaviour
             }
         }
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
+
+        if(health <= 0)
+        {
+            Destroy(gameObject, 1f);
+            rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        animator.SetFloat("HP", health);
     }
     void FixedUpdate()
     {
