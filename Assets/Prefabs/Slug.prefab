@@ -268,6 +268,10 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 512
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  playerTag: 
   playerWeaponTag: PlayerWeapon
   movVelocity: 1
   aggroRange: 5
@@ -276,6 +280,8 @@ MonoBehaviour:
   maxHealth: 50
   knockBackVelocity: 5
   knockBackTime: 0.2
+  rayMultiplier: 1
+  chaseInBothDirs: 0
 --- !u!114 &1931576515
 MonoBehaviour:
   m_ObjectHideFlags: 0

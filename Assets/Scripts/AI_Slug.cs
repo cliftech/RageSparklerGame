@@ -31,6 +31,7 @@ public class AI_Slug : MonoBehaviour
     public float maxHealth;
     public float knockBackVelocity;
     public float knockBackTime;
+    public float rayMultiplier;
     public bool chaseInBothDirs;
     // Start is called before the first frame update
     void Awake()
@@ -56,7 +57,7 @@ public class AI_Slug : MonoBehaviour
     {
         if(state == State.Patrol)
         {
-            if (RaycastSideways_OR(isDirRight, 5, xRayLength, wallMask, Color.red))
+            if (RaycastSideways_OR(isDirRight, 5, xRayLength*rayMultiplier, wallMask, Color.red))
             {
                 ChangeDirection(!isDirRight);
             }
