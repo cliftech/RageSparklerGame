@@ -12,19 +12,37 @@ public class CameraController : MonoBehaviour
     public GameObject BottomBound;
 
     private Vector3 Offset;
+    private Vector3 ExtraOffset;
+    private float MaxExtra = 5f;
 
 
     // Start is called before the first frame update
     void Start()
     {
         Offset = transform.position - PlayerCharacter.transform.position;
+        ExtraOffset = new Vector3(0, 0, 0);
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
+        
+        if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
+        {
+            if (ExtraOffset.x < MaxExtra)
+                ExtraOffset.x += 0.1f;
+        }
+        else if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") < 0)
+        {
+            if (ExtraOffset.x > -MaxExtra)
+                ExtraOffset.x -= 0.1f;
+        }
+        else if (ExtraOffset.x > 0.002f || ExtraOffset.x < -0.002f )
+        {
+                ExtraOffset.x += ExtraOffset.x > 0f? -0.1f:0.1f;
+        }
         var position = PlayerCharacter.transform.position + Offset;
         var Camera = GetComponent<Camera>();
+        position += ExtraOffset;
         position = new Vector3
         (
             Mathf.Clamp(position.x, LeftBound.transform.position.x + Camera.orthographicSize * Camera.aspect, RightBound.transform.position.x - Camera.orthographicSize * Camera.aspect),
