@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     private float health;
     private int level;
 
+    [HideInInspector] public bool isDead;
+
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
@@ -23,6 +25,15 @@ public class Player : MonoBehaviour
     {
         playerMovement.damageContainer.SetDamageCall(() => GetDamage());
         Initialize();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            print("DON'T CHEAT!!!!!!!!!!!!!!!");
+            Revive();
+        }
     }
 
     /// <summary>
@@ -36,6 +47,20 @@ public class Player : MonoBehaviour
         print("PC Health - " + health);
         if(knockBackDirection != 0)
             playerMovement.KnockBack(knockBackDirection == 1, damage);
+        if (health <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        playerMovement.animator.SetBool("Dead", true);
+    }
+
+    private void Revive()
+    {
+        isDead = false;
+        playerMovement.animator.SetBool("Dead", false);
     }
 
     private void Initialize()

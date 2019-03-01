@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public CapsuleCollider2D coll;
     [HideInInspector] public DamageContainer damageContainer;
+    [HideInInspector] public Player player;
     private float horizontalInput;
     private float verticalInput;
     [Header("states (for debuging)")]
@@ -74,6 +75,7 @@ public class PlayerMovement : MonoBehaviour {
         coll = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageContainer = GetComponent<DamageContainer>();
+        player = GetComponent<Player>();
     }
     void Start()
     {
@@ -89,6 +91,8 @@ public class PlayerMovement : MonoBehaviour {
 	
 	void Update ()
     {
+        if (player.isDead)
+            return;
         bool newGrounded = IsGrounded();
         if (!isGrounded && newGrounded)
             Land();
@@ -156,6 +160,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (player.isDead)
+            return;
         if (isKnockedBack)
         {
         }
@@ -386,7 +392,8 @@ public class PlayerMovement : MonoBehaviour {
     }
     void UnstickFromWall()
     {
-        SetDirFacing(isStuckToWall_L);
+        if(isStuckToWall_L || isStuckToWall_R)
+            SetDirFacing(isStuckToWall_L);
         isStuckToWall_L = false;
         isStuckToWall_R = false;
         hasSlowedDownFromSticking = false;

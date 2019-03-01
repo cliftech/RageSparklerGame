@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 1056179042876710191}
   - component: {fileID: 1056179042876710185}
   - component: {fileID: 1056179042876710186}
+  - component: {fileID: 143479156}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -223,13 +224,14 @@ MonoBehaviour:
     m_Bits: 2560
   slamPushableMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 0
   enemyLayerName: Enemy
   enemyWeaponLayerName: EnemyWeapon
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
   coll: {fileID: 0}
+  damageContainer: {fileID: 0}
   isGrounded: 0
   isDashing: 0
   isAttacking: 0
@@ -237,6 +239,7 @@ MonoBehaviour:
   isStuckToWall_L: 0
   isStuckToWall_R: 0
   isKnockedBack: 0
+  attackComboCount: 0
 --- !u!114 &1056179042876710185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,3 +274,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &143479156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04df802fc6deaf488b845cd7f90d434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
