@@ -14,21 +14,22 @@ public class AI_Base : MonoBehaviour
     protected Collider2D[] bodyWeaponColliders;
     protected ItemSpawner itemSpawner;
 
-    public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running };
+    public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling };
     protected State state;
 
     protected bool isDirRight;
     protected float xRayLength;
+    protected float yRayLength;
     protected Vector2 originalScale;
     protected float health;
     protected float knockBackTimer;
     protected Color aliveColor;
+    protected float knockBackTime = .2f;
 
     public float movVelocity;
     public float aggroRange;
     public float maxHealth;
     public float knockBackVelocity;
-    public float knockBackTime;
     public Color deadColor;
 
     protected void Initialize()
@@ -44,7 +45,10 @@ public class AI_Base : MonoBehaviour
             colls.Add(c);
         bodyWeaponColliders = colls.ToArray();
         itemSpawner = GetComponent<ItemSpawner>();
-
+        xRayLength = 0.05f;
+        yRayLength = 0.05f;
+        originalScale = transform.localScale;
+        aliveColor = renderer.color;
     }
     protected void SetIdle()
     {
@@ -73,14 +77,18 @@ public class AI_Base : MonoBehaviour
         state = State.Attacking;
         animator.SetTrigger("Attack3");
     }
-    protected void EndAttack()
+    void EndAttack()
     {
         SetAggro();
     }
-    protected void SetKnockedBack()
+    protected void SetKnockedBack(bool knockbackToLeftSide, float forceMult)
     {
         state = State.KnockedBack;
+        ChangeDirection(knockbackToLeftSide);
+        Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
+        rb.velocity = forceDir * knockBackVelocity * Mathf.Clamp(forceMult / 10, 1, 1.5f);
         knockBackTimer = knockBackTime;
+        animator.SetTrigger("GetHit");
     }
     protected void EndKnockedBack()
     {
@@ -91,7 +99,6 @@ public class AI_Base : MonoBehaviour
     {
         state = State.Dead;
         health = 0;
-        //rb.velocity = new Vector2(0, 0);
         renderer.color = deadColor;
         foreach (var c in bodyWeaponColliders)
             c.enabled = false;
@@ -119,6 +126,20 @@ public class AI_Base : MonoBehaviour
     {
         state = State.Running;
     }
+    protected void SetJumping(Vector2 jumpelocity)
+    {
+        state = State.Jumping;
+        animator.SetTrigger("Jump");
+        rb.velocity = jumpelocity;
+    }
+    protected void SetImmobilized()
+    {
+        state = State.Immobilized;
+    }
+    protected void SetFalling()
+    {
+        state = State.Falling;
+    }
     protected void ChangeDirection(bool toRight)
     {
         float posOffset = coll.bounds.center.x - transform.position.x;
@@ -137,16 +158,13 @@ public class AI_Base : MonoBehaviour
     {
         health -= damage;
         print(name + " Health: " + health);
-        KnockBack(isRight, damage);
-    }
-    protected void KnockBack(bool knockbackToLeftSide, float forceMult)
-    {
-        ChangeDirection(knockbackToLeftSide);
-        Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
-        rb.velocity = forceDir * knockBackVelocity * Mathf.Clamp(forceMult / 10, 1, 1.5f);
-        SetKnockedBack();
-
-        animator.SetTrigger("GetHit");
+        if (health <= 0)
+        {
+            if (state != State.Dead)
+                SetDead();
+        }
+        else
+            SetKnockedBack(isRight, damage * (state == State.Dead ? 2 : 1));
     }
     protected bool RaycastToPlayer(bool isRight, float distance, string playerTag, LayerMask playerMask, LayerMask wallMask, Color debugColor)
     {
@@ -160,13 +178,10 @@ public class AI_Base : MonoBehaviour
             direction = -1;
         }
         Vector2 origin = coll.bounds.center;
-        origin.y = coll.bounds.min.y + 0.2f;
         Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, distance, playerMask | wallMask);
+        RaycastHit2D hit = Physics2D.BoxCast(origin, coll.bounds.size * .9f, 0, new Vector2(direction, 0), distance, playerMask | wallMask);
         if (!hit)
-        {
             return false;
-        }
         return hit.collider.CompareTag(playerTag);
     }
     protected bool RaycastSideways_OR(bool isRight, int perpRayCount, float distance, LayerMask mask, Color debugColor)
@@ -195,6 +210,21 @@ public class AI_Base : MonoBehaviour
             if (Physics2D.Raycast(origin, Vector2.right * direction, distance, mask))
                 return true;
             origin.y += yOffset;
+        }
+        return false;
+    }
+    protected bool IsGrounded(LayerMask groundMask)
+    {
+        Vector2 origin = coll.bounds.center;
+        origin.y = coll.bounds.min.y - 0.01f;
+        float xOffset = coll.bounds.size.x / 3f;
+        origin.x = coll.bounds.min.x + xOffset / 2f;
+        for (int i = 0; i < 3; i++)
+        {
+            Debug.DrawRay(origin, -Vector2.up * yRayLength, Color.blue, 0.075f);
+            if (Physics2D.Raycast(origin, -Vector2.up, yRayLength, groundMask))
+                return true;
+            origin.x += xOffset;
         }
         return false;
     }

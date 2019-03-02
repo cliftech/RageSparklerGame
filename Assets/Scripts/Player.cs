@@ -13,7 +13,9 @@ public class Player : MonoBehaviour
     public int Level { get { return level; } }
     public string enemyWeaponTag;
     public Text coinText;
+    public Text healhtText;
 
+    private float activeMaxHealth;
     private float health;
     private int level;
     private int coins;
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
         Initialize();
         coins = 0;
         SetCoinText();
+        SetHealthText();
     }
 
     void Update()
@@ -54,6 +57,7 @@ public class Player : MonoBehaviour
             playerMovement.KnockBack(knockBackDirection == 1, damage);
         if (health <= 0)
             Die();
+        SetHealthText();
     }
 
     private void Die()
@@ -65,12 +69,14 @@ public class Player : MonoBehaviour
     private void Revive()
     {
         isDead = false;
+        health = activeMaxHealth;
         playerMovement.animator.SetBool("Dead", false);
     }
 
     private void Initialize()
     {
-        health = base_maxhealth + level * health_perLevel;
+        activeMaxHealth = base_maxhealth + level * health_perLevel;
+        health = activeMaxHealth;
     }
 
     public float GetDamage()
@@ -81,7 +87,7 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(enemyWeaponTag))
+        if (other.CompareTag(enemyWeaponTag) && !isDead && !playerMovement.isInvalnurable)
             GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
 
@@ -95,5 +101,10 @@ public class Player : MonoBehaviour
     void SetCoinText()
     {
         coinText.text = "Coins: " + coins.ToString();
+    }
+
+    void SetHealthText()
+    {
+        healhtText.text = "Health: " + health.ToString("0") + activeMaxHealth.ToString("0");
     }
 }

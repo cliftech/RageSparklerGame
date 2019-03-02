@@ -18,9 +18,8 @@ public class PlayerMovement : MonoBehaviour {
     public float minDelayBetweenDashes = 0.5f;
     public int maxJumpCount = 3;
     public int maxMidairDashesCount = 1;
-    public float knockBackVel = 3;
-    public float knockBackTime = 0.1f;
-    public float invincibilityFrameTime = .2f;
+    public float knockBackVel = 5;
+    public float invincibilityFrameTime = .5f;
     public float spriteFlashFrequency = .05f;
 
     public LayerMask groundMask;
@@ -49,11 +48,13 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private bool isStuckToWall_L;
     [SerializeField] private bool isStuckToWall_R;
     [SerializeField] private bool isKnockedBack;
+    [SerializeField] public bool isInvalnurable;
     private bool hasSlowedDownFromSticking;
     private Vector2 dashPos;
     private float gravityScale;
     private float accel;
     private bool isDirRight;
+    private float knockBackTime = 0.2f;
     private float knockBackTimer;
     private float attackCooldownTime = .2f;
     private float attackCooldownTimer;
@@ -389,6 +390,7 @@ public class PlayerMovement : MonoBehaviour {
 
         jumpCounter = 0;
         midairDashCounter = 0;
+        SetDirFacing(direction == 1);
     }
     void UnstickFromWall()
     {
@@ -418,6 +420,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             StopCoroutine(spriteFlashRoutine);
             spriteRenderer.color = normalSpriteColor;
+            // add enemy layer from undashable
             unDashableMask = unDashableMask | (1 << enemyLayer);
         }
         spriteFlashRoutine = StartInvincibillityFrame(invincibilityFrameTime, spriteFlashFrequency);
@@ -439,8 +442,9 @@ public class PlayerMovement : MonoBehaviour {
 
     IEnumerator StartInvincibillityFrame(float duration, float flashFrequency)
     {
-        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, true);
+        // remove enemy layer from undashable
         unDashableMask = unDashableMask & ~(1 << enemyLayer);
+        isInvalnurable = true;
 
         bool currentColor = false;
         normalSpriteColor = spriteRenderer.color;
@@ -454,7 +458,9 @@ public class PlayerMovement : MonoBehaviour {
         }
         spriteRenderer.color = normalSpriteColor;
 
-        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, false);
+        // add enemy layer from undashable
+        unDashableMask = unDashableMask | (1 << enemyLayer);
+        isInvalnurable = false; 
     }
 
     bool IsGrounded()

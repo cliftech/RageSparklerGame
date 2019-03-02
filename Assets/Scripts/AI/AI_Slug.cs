@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI_FireGolem : AI_Base
+public class AI_Slug : AI_Base
 {
     public LayerMask changeDirMask;
     public LayerMask playerMask;
     public LayerMask enemyMask;
-    public string playerTag;
-    public string playerWeaponTag;
     public float attackRange;
     public float attackDamage;
-    [Range(0, 1)] public float doubleAttackChance;
-    public float doubleAttackRange;
-    public float doubleAttackDamage;
+    [Range(0, 1)] public float vomitAttackChance;
+    public float vomitAttackRange;
+    public float vomitAttackDamage;
 
-    private bool isNextDoubleAttack;
+    private string playerTag = "Player";
+    private string playerWeaponTag = "PlayerWeapon";
+    private bool isNextAttackVomit;
 
     void Awake()
     {
@@ -24,19 +24,28 @@ public class AI_FireGolem : AI_Base
 
     void Start()
     {
-        xRayLength = 0.05f;
-        originalScale = transform.localScale;
         damageContainer.SetDamageCall(() => attackDamage);
         health = maxHealth;
-        aliveColor = renderer.color;
-        isNextDoubleAttack = Random.value < doubleAttackChance;
-        SetIdle();
+        isNextAttackVomit = Random.value < vomitAttackChance;
+        SetPatrol();
     }
     void Update()
     {
         switch (state)
         {
             case State.Patrol:
+                if (RaycastSideways_OR(isDirRight, 5, xRayLength, changeDirMask, Color.red) ||
+                    RaycastSideways_OR(isDirRight, 5, xRayLength, enemyMask, Color.red))
+                {
+                    ChangeDirection(!isDirRight);
+                }
+                if (Vector2.Distance(transform.position, target.position) < aggroRange)
+                {
+                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, changeDirMask, Color.blue))
+                    {
+                        SetAggro();
+                    }
+                }
                 break;
             case State.Aggro:
                 if (target.position.x < transform.position.x)
@@ -53,27 +62,27 @@ public class AI_FireGolem : AI_Base
                         ChangeDirection(true);
                     }
                 }
-                if (!isNextDoubleAttack)
+                if (!isNextAttackVomit)
                 {
                     if (Vector2.Distance(target.position, transform.position) < attackRange)
                     {
                         damageContainer.SetDamageCall(() => attackDamage);
                         SetAttack1();
-                        isNextDoubleAttack = Random.value < doubleAttackChance;
+                        isNextAttackVomit = Random.value < vomitAttackChance;
                     }
                 }
                 else
                 {
-                    if (Vector2.Distance(target.position, transform.position) < doubleAttackRange)
+                    if (Vector2.Distance(target.position, transform.position) < vomitAttackRange)
                     {
-                        damageContainer.SetDamageCall(() => doubleAttackDamage);
+                        damageContainer.SetDamageCall(() => vomitAttackDamage);
                         SetAttack2();
-                        isNextDoubleAttack = Random.value < doubleAttackChance;
+                        isNextAttackVomit = Random.value < vomitAttackChance;
                     }
                 }
                 if (!RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, changeDirMask, Color.blue))
                 {
-                    SetIdle();
+                    SetPatrol();
                 }
                 break;
             case State.Attacking:
@@ -86,18 +95,6 @@ public class AI_FireGolem : AI_Base
                 }
                 break;
             case State.Idle:
-                if (RaycastSideways_OR(isDirRight, 5, xRayLength, changeDirMask, Color.red) ||
-                    RaycastSideways_OR(isDirRight, 5, xRayLength, enemyMask, Color.red))
-                {
-                    ChangeDirection(!isDirRight);
-                }
-                if (Vector2.Distance(transform.position, target.position) < aggroRange)
-                {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, changeDirMask, Color.blue))
-                    {
-                        SetAggro();
-                    }
-                }
                 break;
             case State.Dead:
                 break;
@@ -107,10 +104,6 @@ public class AI_FireGolem : AI_Base
                 break;
         }
 
-        if (state != State.Dead && health <= 0)
-        {
-            SetDead();
-        }
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
     void FixedUpdate()
@@ -118,7 +111,19 @@ public class AI_FireGolem : AI_Base
         switch (state)
         {
             case State.Patrol:
-                break;
+                {
+                    Vector2 direction;
+                    if (isDirRight)
+                    {
+                        direction = Vector2.right;
+                    }
+                    else
+                    {
+                        direction = Vector2.left;
+                    }
+                    rb.velocity = new Vector2(direction.x * movVelocity, rb.velocity.y);
+                    break;
+                }
             case State.Aggro:
                 {
                     Vector2 direction;
@@ -146,7 +151,6 @@ public class AI_FireGolem : AI_Base
             case State.KnockedBack:
                 break;
             case State.Idle:
-                rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case State.Dead:
                 rb.velocity = new Vector2(0, rb.velocity.y);
