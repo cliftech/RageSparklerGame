@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class Player : MonoBehaviour
     public float Health { get { return health; } }
     public int Level { get { return level; } }
     public string enemyWeaponTag;
+    public Text coinText;
 
     private float health;
     private int level;
+    private int coins;
 
     [HideInInspector] public bool isDead;
 
@@ -25,6 +28,8 @@ public class Player : MonoBehaviour
     {
         playerMovement.damageContainer.SetDamageCall(() => GetDamage());
         Initialize();
+        coins = 0;
+        SetCoinText();
     }
 
     void Update()
@@ -79,5 +84,16 @@ public class Player : MonoBehaviour
         if (other.CompareTag(enemyWeaponTag))
             GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
+
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            Destroy(other.gameObject);
+            coins++;
+            SetCoinText();
+        }
+    }
+    void SetCoinText()
+    {
+        coinText.text = "Coins: " + coins.ToString();
     }
 }

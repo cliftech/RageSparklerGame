@@ -12,6 +12,7 @@ public class AI_Base : MonoBehaviour
     protected Transform target;
     protected DamageContainer damageContainer;
     protected Collider2D[] bodyWeaponColliders;
+    protected ItemSpawner itemSpawner;
 
     public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running };
     protected State state;
@@ -42,6 +43,7 @@ public class AI_Base : MonoBehaviour
         foreach (var c in transform.Find("DamagePCHitbox").GetComponents<Collider2D>())
             colls.Add(c);
         bodyWeaponColliders = colls.ToArray();
+        itemSpawner = GetComponent<ItemSpawner>();
 
     }
     protected void SetIdle()
@@ -95,6 +97,7 @@ public class AI_Base : MonoBehaviour
             c.enabled = false;
         StartCoroutine(DeathRoutine(.5f));
         animator.SetBool("Dead", true);
+        itemSpawner.Spawn();
     }
     protected IEnumerator DeathRoutine(float time)
     {

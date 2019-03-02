@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 282294935}
   - component: {fileID: 282294936}
   - component: {fileID: 119035366}
+  - component: {fileID: 6481117399106318830}
   m_Layer: 11
   m_Name: TrainingDummy
   m_TagString: Enemy
@@ -214,6 +215,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f04df802fc6deaf488b845cd7f90d434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6481117399106318830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6223562338534363475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33d0b20e7d6fa044b9c221f6a8f1e042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minimumCount: 1
+  maximumCount: 2
+  prefab: {fileID: 0}
 --- !u!1 &6223562339915942528
 GameObject:
   m_ObjectHideFlags: 0

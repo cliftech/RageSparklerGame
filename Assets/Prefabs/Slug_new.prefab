@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 7542770926214921575}
   - component: {fileID: 1529723252936698488}
   - component: {fileID: 7542770926214921573}
+  - component: {fileID: 7334161040144605244}
   m_Layer: 11
   m_Name: Slug_new
   m_TagString: Enemy
@@ -299,4 +300,18 @@ MonoBehaviour:
   vomitAttackChance: 0.5
   vomitAttackRange: 1
   vomitAttackDamage: 20
-  chaseInBothDirs: 1
+--- !u!114 &7334161040144605244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7542770926214921579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33d0b20e7d6fa044b9c221f6a8f1e042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minimumCount: 3
+  maximumCount: 5
+  prefab: {fileID: 1713412524982658169, guid: e87bb6914926a7741b3402274485da40, type: 3}
