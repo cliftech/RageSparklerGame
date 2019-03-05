@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float Health { get { return health; } }
     public int Level { get { return level; } }
     public string enemyWeaponTag;
+    public string trapTag;
     public Text coinText;
     public Text healhtText;
 
@@ -53,7 +54,9 @@ public class Player : MonoBehaviour
     {
         health -= damage;
         print("PC Health - " + health);
-        if(knockBackDirection != 0)
+        if (knockBackDirection == 2)
+            playerMovement.KnockbackUp(damage);
+        else if (knockBackDirection != 0)
             playerMovement.KnockBack(knockBackDirection == 1, damage);
         if (health <= 0)
             Die();
@@ -87,7 +90,7 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(enemyWeaponTag) && !isDead && !playerMovement.isInvalnurable)
+        if (other.CompareTag(enemyWeaponTag) && !isDead && !playerMovement.isInvulnerable)
             GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
 
@@ -98,6 +101,15 @@ public class Player : MonoBehaviour
             SetCoinText();
         }
     }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(trapTag) && !playerMovement.isInvulnerable && !isDead)
+        {
+            GetHit(collision.collider.GetComponent<Trap>().damagePercent * activeMaxHealth / 100, 2);
+        }
+    }
+
     void SetCoinText()
     {
         coinText.text = "Coins: " + coins.ToString();

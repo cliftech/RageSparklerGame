@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private bool isStuckToWall_L;
     [SerializeField] private bool isStuckToWall_R;
     [SerializeField] private bool isKnockedBack;
-    [SerializeField] public bool isInvalnurable;
+    [SerializeField] public bool isInvulnerable;
     private bool hasSlowedDownFromSticking;
     private Vector2 dashPos;
     private float gravityScale;
@@ -428,6 +428,30 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetTrigger("GetHit");
     }
 
+    public void KnockbackUp(float forceMult)
+    {
+        Vector2 forceDir = Vector2.up;
+        rb.velocity = forceDir * knockBackVel * Mathf.Clamp(forceMult / 100, 1, 1.5f);
+        knockBackTimer = knockBackTime;
+        isKnockedBack = true;
+        isDownwardAttacking = false;
+        isStuckToWall_L = false;
+        isStuckToWall_R = false;
+        ForceEndAttack();
+        StopDashing();
+
+        if (spriteFlashRoutine != null)
+        {
+            StopCoroutine(spriteFlashRoutine);
+            spriteRenderer.color = normalSpriteColor;
+            // add enemy layer from undashable
+            unDashableMask = unDashableMask | (1 << enemyLayer);
+        }
+        spriteFlashRoutine = StartInvincibillityFrame(invincibilityFrameTime, spriteFlashFrequency);
+        StartCoroutine(spriteFlashRoutine);
+        animator.SetTrigger("GetHit");
+    }
+
     public void EndKnockBack()
     {
         isKnockedBack = false;
@@ -444,7 +468,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         // remove enemy layer from undashable
         unDashableMask = unDashableMask & ~(1 << enemyLayer);
-        isInvalnurable = true;
+        isInvulnerable = true;
 
         bool currentColor = false;
         normalSpriteColor = spriteRenderer.color;
@@ -460,7 +484,7 @@ public class PlayerMovement : MonoBehaviour {
 
         // add enemy layer from undashable
         unDashableMask = unDashableMask | (1 << enemyLayer);
-        isInvalnurable = false; 
+        isInvulnerable = false; 
     }
 
     bool IsGrounded()

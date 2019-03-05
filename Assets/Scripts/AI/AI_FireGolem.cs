@@ -17,6 +17,7 @@ public class AI_FireGolem : AI_Base
     public float jumpDamage;
     public float jumpVelocity;
     public float minYJumpDist;
+    public float maxYDiff;
     private float maxYJumpDist;
 
     public float attackImmobalizeTime = .5f;
@@ -71,18 +72,24 @@ public class AI_FireGolem : AI_Base
                         AttackSingle();
                     else if (isNextDoubleAttack && Vector2.Distance(target.position, transform.position) < doubleAttackRange)
                         AttackDouble();
-
                 }
                 else // player is either higher or lower
                 {
                     float dist = Vector2.Distance(transform.position, target.position);
                     float yDiff = target.position.y - transform.position.y;
-                    if (yDiff >= minYJumpDist && yDiff < maxYJumpDist && dist >= minJumpRange && dist < maxJumpRange) // player is higher - perform jump to it
-                        AttackJump(dist);
-                    else if (isNextDoubleAttack && dist < doubleAttackRange)
-                        AttackDouble();
-                    else if (!isNextDoubleAttack && dist < attackRange)
-                        AttackSingle();
+                    if (yDiff > maxYDiff)
+                        SetIdle();
+                    {
+
+                        if (yDiff >= minYJumpDist && yDiff < maxYJumpDist && dist >= minJumpRange && dist < maxJumpRange) // player is higher - perform jump to it
+                            AttackJump(dist);
+                        else if (isNextDoubleAttack && dist < doubleAttackRange)
+                            AttackDouble();
+                        else if (!isNextDoubleAttack && dist < attackRange)
+                            AttackSingle();
+                    }
+
+
                 }
                 break;
             case State.Attacking:

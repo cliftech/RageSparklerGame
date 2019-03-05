@@ -15,7 +15,7 @@ public class AI_Base : MonoBehaviour
     protected ItemSpawner itemSpawner;
 
     public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling };
-    protected State state;
+    [Header ("for debugging")][SerializeField] protected State state;
 
     protected bool isDirRight;
     protected float xRayLength;
@@ -179,7 +179,7 @@ public class AI_Base : MonoBehaviour
         }
         Vector2 origin = coll.bounds.center;
         Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
-        RaycastHit2D hit = Physics2D.BoxCast(origin, coll.bounds.size * .9f, 0, new Vector2(direction, 0), distance, playerMask | wallMask);
+        RaycastHit2D hit = Physics2D.BoxCast(origin, coll.bounds.size * .75f, 0, new Vector2(direction, 0), distance, playerMask | wallMask);
         if (!hit)
             return false;
         return hit.collider.CompareTag(playerTag);
