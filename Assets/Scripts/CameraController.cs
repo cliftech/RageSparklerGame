@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject PlayerCharacter;
+    public Player PlayerCharacter;
     //Bounds are to be set by the maker of the area.
     public GameObject LeftBound;
     public GameObject TopBound;
@@ -25,23 +25,19 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        
-        if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
+        if (!PlayerCharacter.isDead)
         {
-            if (ExtraOffset.x < MaxExtra)
-                ExtraOffset.x += 0.1f;
+            if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
+            {
+                if (ExtraOffset.x < MaxExtra)
+                    ExtraOffset.x += 0.1f;
+            }
+            else if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") < 0)
+            {
+                if (ExtraOffset.x > -MaxExtra)
+                    ExtraOffset.x -= 0.1f;
+            }
         }
-        else if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") < 0)
-        {
-            if (ExtraOffset.x > -MaxExtra)
-                ExtraOffset.x -= 0.1f;
-        }
-        /*
-        else if (ExtraOffset.x > 0.002f || ExtraOffset.x < -0.002f )
-        {
-                ExtraOffset.x += ExtraOffset.x > 0f? -0.1f:0.1f;
-        }
-        */
         var position = PlayerCharacter.transform.position + Offset;
         var Camera = GetComponent<Camera>();
         position += ExtraOffset;
