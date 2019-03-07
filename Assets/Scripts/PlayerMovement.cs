@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
     public float jumpVel = 5;
     public float inAirAttackUpwardVel = 1;
     public float downwardAttackDownwardVel = 1.5f;
+    public float groundedAttackHorizontalVel = 0.5f;
     public float slamPushVel = 2;
     public float inAirJumpVelMult = 0.75f;
     public float dashDistance = 3;
@@ -44,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool isAttacking;
-    [SerializeField] private bool isDownwardAttacking;
+    [SerializeField] public bool isDownwardAttacking;
     [SerializeField] private bool isStuckToWall_L;
     [SerializeField] private bool isStuckToWall_R;
     [SerializeField] private bool isKnockedBack;
@@ -60,7 +61,8 @@ public class PlayerMovement : MonoBehaviour {
     private float attackCooldownTimer;
     private float dashTimer;
     private int jumpCounter;
-    [HideInInspector]public int attackComboCount;
+    private int attackComboCount;
+    [HideInInspector] public int currentAttackNum;
     private int midairDashCounter;
     private IEnumerator spriteFlashRoutine;
     private Color normalSpriteColor;
@@ -116,9 +118,9 @@ public class PlayerMovement : MonoBehaviour {
             EndJump();
         if (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking && (knockBackTimer < knockBackTime / 2))
         {
-            if (Input.GetButtonDown("DashLeft"))
+            if (Input.GetButtonDown("DashLeft") && !isStuckToWall_L)
                 DashLeft();
-            if (Input.GetButtonDown("DashRight"))
+            if (Input.GetButtonDown("DashRight") && !isStuckToWall_R)
                 DashRight();
         }
         else if (dashTimer > 0)
@@ -127,7 +129,7 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
-        if (attackComboCount < 3 && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R && !isKnockedBack)
+        if (((isGrounded && attackComboCount < 3) || (!isGrounded && attackComboCount < 2)) && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R && !isKnockedBack)
         {
             if (Input.GetButtonDown("Attack")) {
                 if (isGrounded)
@@ -192,10 +194,15 @@ public class PlayerMovement : MonoBehaviour {
 
             if ((CanSlideLeft() && horizontalInput > 0) || (CanSlideRight() && horizontalInput < 0) || (!CanSlideLeft() && !CanSlideRight()))
                 UnstickFromWall();
+            else
+                TeleportToWall(isStuckToWall_R);
         }
         else if (isAttacking)
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
+            if(!isGrounded)
+                if (horizontalInput == 0 || (horizontalInput > 0 && CanGoRight()) || (horizontalInput < 0 && CanGoLeft()))
+                    rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(horizontalInput * movVelocity, rb.velocity.y), acceleration);
+            //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
             attackCooldownTimer -= Time.fixedDeltaTime;
         }
         else if (isDownwardAttacking)
@@ -230,17 +237,28 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetTrigger("Attack");
         isAttacking = true;
         attackComboCount++;
-
+        if (isGrounded)
+            rb.velocity = new Vector2(rb.velocity.x / 2, rb.velocity.y);
         attackCooldownTimer = attackCooldownTime;
+    }
+    //called in animator events
+    public void SlideForwardDuringAttack()
+    {
+        currentAttackNum++;
+        if (IsGroundInFrontExists())
+            rb.velocity = new Vector2((isDirRight ? 1 : -1) * groundedAttackHorizontalVel, rb.velocity.y);
     }
     //called in animator events
     public void EndAttack()
     {
         isAttacking = false;
         isDownwardAttacking = false;
-        if(isGrounded)
+        if (isGrounded)
+        {
             attackComboCount = 0;
-        attackCooldownTimer = 0;
+            currentAttackNum = 0;
+            attackCooldownTimer = 0;
+        }
     }
     void ForceEndAttack()
     {
@@ -248,6 +266,7 @@ public class PlayerMovement : MonoBehaviour {
         isDownwardAttacking = false;
         attackComboCount = 0;
         attackCooldownTimer = 0;
+        currentAttackNum = 0;
     }
     void AirAttack()
     {
@@ -255,6 +274,10 @@ public class PlayerMovement : MonoBehaviour {
         isAttacking = true;
         rb.velocity = new Vector2(rb.velocity.x, inAirAttackUpwardVel);
         attackComboCount++;
+    }
+    public void AirAttackCommence()
+    {
+        currentAttackNum++;
     }
     void DownwardAttack()
     {
@@ -382,15 +405,20 @@ public class PlayerMovement : MonoBehaviour {
         isStuckToWall_L = direction == -1 ? true : false;
         isStuckToWall_R = !isStuckToWall_L;
 
-        Vector2 origin = transform.position;
-        Debug.DrawRay(origin, Vector2.right * direction * xRaylength, Color.yellow, 0.075f);
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, wallStickMask);
-        if(hit)
-            transform.position = hit.point + (Vector2.right * coll.size.x / 2f * -direction);
+        TeleportToWall(isStuckToWall_R);
 
         jumpCounter = 0;
         midairDashCounter = 0;
         SetDirFacing(direction == 1);
+    }
+    void TeleportToWall(bool toRightWall)
+    {
+        int direction = toRightWall ? 1 : -1;
+        Vector2 origin = transform.position;
+        Debug.DrawRay(origin, Vector2.right * direction * xRaylength, Color.yellow, 0.075f);
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, wallStickMask);
+        if (hit)
+            transform.position = hit.point + (Vector2.right * coll.size.x / 2f * -direction);
     }
     void UnstickFromWall()
     {
@@ -500,6 +528,15 @@ public class PlayerMovement : MonoBehaviour {
             origin.x += xOffset;
         }
         return false;
+    }
+    bool IsGroundInFrontExists()
+    {
+        Vector2 origin = coll.bounds.center;
+        origin.y = coll.bounds.min.y;
+        origin.x += (isDirRight ? 1 : -1) * coll.bounds.extents.x;
+
+        Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.cyan, 0.075f);
+        return (Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask));
     }
 
     bool CanSlideLeft()

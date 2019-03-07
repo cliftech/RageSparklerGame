@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 865174565
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a8fd31ecb4d99a4498b8a162d31cc5de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -141,8 +141,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.10693072, y: -0.20873253}
-  m_Size: {x: 1.433862, y: 1.3121281}
-  m_Direction: 1
+  m_Size: {x: 0.96, y: 1.3121281}
+  m_Direction: 0
 --- !u!114 &3651349108853326409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,33 +182,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26fc65adfbd74e1419503b1a6d47781d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   movVelocity: 3
   aggroRange: 5
   maxHealth: 100
-  knockBackVelocity: 3
+  knockBackVelocity: 6
+  staggerVelocity: 2
   deadColor: {r: 1, g: 1, b: 1, a: 1}
-  changeDirMask:
+  terrainMask:
     serializedVersion: 2
     m_Bits: 512
   playerMask:
     serializedVersion: 2
     m_Bits: 256
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 512
-  attackRange: 2
-  attackDamage: 0
+  attackRange: 1.5
+  attackDamage: 10
   doubleAttackChance: 0.5
-  doubleAttackRange: 2
-  doubleAttackDamage: 0
+  doubleAttackRange: 1.5
+  doubleAttackDamage: 10
   maxJumpRange: 10
   minJumpRange: 2.5
-  jumpDamage: 0
+  jumpDamage: 10
   jumpVelocity: 10
   minYJumpDist: 1
+  maxYDiff: 4
   attackImmobalizeTime: 0.5
   landImmobalizedTime: 0.5
 --- !u!1 &3231782177319819344

@@ -23,7 +23,7 @@ TagManager:
   - PlayerWeapon
   - Enemy
   - EnemyWeapon
-  - Trap
+  - PickUps
   - 
   - 
   - 
@@ -45,4 +45,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2547201563
+    locked: 0
+  - name: Player
+    uniqueID: 629335217
+    locked: 0
+  - name: Enemies
+    uniqueID: 865174565
+    locked: 0
+  - name: PickUps
+    uniqueID: 1076842169
+    locked: 0
+  - name: Terrain
+    uniqueID: 1821581025
+    locked: 0
+  - name: Foreground
+    uniqueID: 3509339291
     locked: 0

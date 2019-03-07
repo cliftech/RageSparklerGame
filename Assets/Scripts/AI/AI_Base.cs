@@ -14,7 +14,7 @@ public class AI_Base : MonoBehaviour
     protected Collider2D[] bodyWeaponColliders;
     protected ItemSpawner itemSpawner;
 
-    public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling };
+    public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling, Staggered };
     [Header ("for debugging")][SerializeField] protected State state;
 
     protected bool isDirRight;
@@ -22,15 +22,21 @@ public class AI_Base : MonoBehaviour
     protected float yRayLength;
     protected Vector2 originalScale;
     protected float health;
-    protected float knockBackTimer;
     protected Color aliveColor;
-    protected float knockBackTime = .2f;
+    protected bool fullyKnockedDown;
+    protected bool fullyAwakened;
+    protected Action stateAfterKnockbackCall;
+    protected Action stateAfterStaggeredCall;
+    protected Action stateAfterAttackCall;
+    protected Action stateAfterAwake;
 
     public float movVelocity;
     public float aggroRange;
     public float maxHealth;
     public float knockBackVelocity;
+    public float staggerVelocity;
     public Color deadColor;
+
 
     protected void Initialize()
     {
@@ -79,21 +85,39 @@ public class AI_Base : MonoBehaviour
     }
     void EndAttack()
     {
-        SetAggro();
+        stateAfterAttackCall();
     }
-    protected void SetKnockedBack(bool knockbackToLeftSide, float forceMult)
+    protected void SetKnockedBack(bool knockbackToLeftSide)
     {
         state = State.KnockedBack;
         ChangeDirection(knockbackToLeftSide);
         Vector2 forceDir = (knockbackToLeftSide ? new Vector2(-1, .5f) : new Vector2(1, .5f)).normalized;
-        rb.velocity = forceDir * knockBackVelocity * Mathf.Clamp(forceMult / 10, 1, 1.5f);
-        knockBackTimer = knockBackTime;
-        animator.SetTrigger("GetHit");
+        rb.velocity = forceDir * knockBackVelocity;
+        animator.SetBool("Dead", true);
+        fullyKnockedDown = false;
     }
     protected void EndKnockedBack()
     {
-        SetAggro();
-        knockBackTimer = 0;
+        stateAfterKnockbackCall();
+        animator.SetBool("Dead", false);
+        fullyKnockedDown = false;
+    }
+    // called in animation events
+    protected void FullyKnockedDown()
+    {
+        fullyKnockedDown = true;
+    }
+    protected void SetStaggered(bool knockbackToLeftSide)
+    {
+        state = State.Staggered;
+        ChangeDirection(knockbackToLeftSide);
+        Vector2 forceDir = new Vector2(knockbackToLeftSide ? -1 : 1, 0);
+        rb.velocity = forceDir * staggerVelocity;
+        animator.SetTrigger("GetHit");
+    }
+    protected void EndStagger()
+    {
+        stateAfterStaggeredCall();
     }
     protected void SetDead()
     {
@@ -121,6 +145,11 @@ public class AI_Base : MonoBehaviour
         rb.isKinematic = false;
         coll.enabled = true;
         animator.SetBool("Dead", false);
+    }
+    protected void FullyAwakened()
+    {
+        fullyAwakened = true;
+        stateAfterAwake();
     }
     protected void SetRunning()
     {
@@ -153,18 +182,6 @@ public class AI_Base : MonoBehaviour
         }
         transform.position = new Vector3(transform.position.x + posOffset, transform.position.y, transform.position.z);
         isDirRight = toRight;
-    }
-    protected void GetHit(bool isRight, float damage)
-    {
-        health -= damage;
-        print(name + " Health: " + health);
-        if (health <= 0)
-        {
-            if (state != State.Dead)
-                SetDead();
-        }
-        else
-            SetKnockedBack(isRight, damage * (state == State.Dead ? 2 : 1));
     }
     protected bool RaycastToPlayer(bool isRight, float distance, string playerTag, LayerMask playerMask, LayerMask wallMask, Color debugColor)
     {
@@ -213,6 +230,19 @@ public class AI_Base : MonoBehaviour
         }
         return false;
     }
+    protected bool DoesGroundForwardExists(bool isRight, float distance, LayerMask mask, Color debugColor)
+    {
+        int direction;
+        if (isRight)
+            direction = 1;
+        else
+            direction = -1;
+        Vector2 origin = coll.bounds.center;
+        origin.y = coll.bounds.min.y + 0.01f;
+        origin.x += coll.bounds.extents.x * direction;
+        Debug.DrawRay(origin, Vector2.down * distance, debugColor, 0.075f);
+        return Physics2D.Raycast(origin, Vector2.down, distance, mask);
+    }
     protected bool IsGrounded(LayerMask groundMask)
     {
         Vector2 origin = coll.bounds.center;
@@ -221,7 +251,7 @@ public class AI_Base : MonoBehaviour
         origin.x = coll.bounds.min.x + xOffset / 2f;
         for (int i = 0; i < 3; i++)
         {
-            Debug.DrawRay(origin, -Vector2.up * yRayLength, Color.blue, 0.075f);
+            Debug.DrawRay(origin, -Vector2.up * yRayLength, Color.cyan, 0.075f);
             if (Physics2D.Raycast(origin, -Vector2.up, yRayLength, groundMask))
                 return true;
             origin.x += xOffset;

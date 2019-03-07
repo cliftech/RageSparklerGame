@@ -11,8 +11,10 @@ public class Player : MonoBehaviour
     public float health_perLevel = 20;
     public float Health { get { return health; } }
     public int Level { get { return level; } }
-    public string enemyWeaponTag;
-    public string trapTag;
+    public float attack1Dam = 5;
+    public float attack2Dam = 7.5f;
+    public float attack3Dam = 10;
+    public float downwardAttackDam = 7.5f;
     public Text coinText;
     public Text healhtText;
 
@@ -20,6 +22,8 @@ public class Player : MonoBehaviour
     private float health;
     private int level;
     private int coins;
+    private string enemyWeaponTag = "EnemyWeapon";
+    private string trapTag = "Trap";
 
     [HideInInspector] public bool isDead;
 
@@ -30,6 +34,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerMovement.damageContainer.SetDamageCall(() => GetDamage());
+        playerMovement.damageContainer.SetDoKnockbackCall(() => IsCurrnetAttackKnockingBack());
         Initialize();
         coins = 0;
         SetCoinText();
@@ -84,7 +89,24 @@ public class Player : MonoBehaviour
 
     public float GetDamage()
     {
-        return (playerMovement.attackComboCount + 1) * 5;
+        if (playerMovement.isDownwardAttacking)
+            return downwardAttackDam;
+        switch (playerMovement.currentAttackNum)
+        {
+            case 1:
+                return attack1Dam;
+            case 2:
+                return attack2Dam;
+            case 3:
+                return attack3Dam;
+        }
+        Debug.LogError("current attack number is nor recognized: " + playerMovement.currentAttackNum);
+        return -1;
+    }
+
+    public bool IsCurrnetAttackKnockingBack()
+    {
+        return playerMovement.currentAttackNum == 3;
     }
 
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5445484580356455074}
   - component: {fileID: 3666744327568057872}
   - component: {fileID: 166820052256635258}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Coin
   m_TagString: Pick Up
   m_Icon: {fileID: 0}
@@ -68,8 +68,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1076842169
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3fae8da8d15984c48ba0988f84e1a240, type: 3}
   m_Color: {r: 0.91507936, g: 1, b: 0, a: 1}

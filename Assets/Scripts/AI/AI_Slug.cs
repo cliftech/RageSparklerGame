@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class AI_Slug : AI_Base
 {
-    public LayerMask changeDirMask;
+    public LayerMask terrainMask;
     public LayerMask playerMask;
-    public LayerMask enemyMask;
     public float attackRange;
     public float attackDamage;
     [Range(0, 1)] public float vomitAttackChance;
@@ -28,20 +27,25 @@ public class AI_Slug : AI_Base
         health = maxHealth;
         isNextAttackVomit = Random.value < vomitAttackChance;
         SetPatrol();
+
+        stateAfterAttackCall = () => SetAggro();
+        stateAfterKnockbackCall = () => SetAwakening();
+        stateAfterStaggeredCall = () => SetAggro();
+        stateAfterAwake = () => SetAggro();
     }
     void Update()
     {
         switch (state)
         {
             case State.Patrol:
-                if (RaycastSideways_OR(isDirRight, 5, xRayLength, changeDirMask, Color.red) ||
-                    RaycastSideways_OR(isDirRight, 5, xRayLength, enemyMask, Color.red))
+                if (!DoesGroundForwardExists(isDirRight, yRayLength, terrainMask, Color.blue) ||
+                    RaycastSideways_OR(isDirRight, 5, xRayLength, terrainMask, Color.red))
                 {
                     ChangeDirection(!isDirRight);
                 }
                 if (Vector2.Distance(transform.position, target.position) < aggroRange)
                 {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, changeDirMask, Color.blue))
+                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask, Color.blue))
                     {
                         SetAggro();
                     }
@@ -80,7 +84,7 @@ public class AI_Slug : AI_Base
                         isNextAttackVomit = Random.value < vomitAttackChance;
                     }
                 }
-                if (!RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, changeDirMask, Color.blue))
+                if (!RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask, Color.blue))
                 {
                     SetPatrol();
                 }
@@ -88,24 +92,20 @@ public class AI_Slug : AI_Base
             case State.Attacking:
                 break;
             case State.KnockedBack:
-                knockBackTimer -= Time.deltaTime;
-                if (knockBackTimer <= 0)
-                {
+                if (IsGrounded(terrainMask) && fullyKnockedDown && state != State.Dead)
                     EndKnockedBack();
-                }
-                break;
-            case State.Idle:
                 break;
             case State.Dead:
                 break;
-            case State.Awakening:
-                break;
-            case State.Running:
+            case State.Falling:
+                if (IsGrounded(terrainMask))
+                    SetAggro();
                 break;
         }
 
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
+
     void FixedUpdate()
     {
         switch (state)
@@ -135,7 +135,7 @@ public class AI_Slug : AI_Base
                     {
                         direction = Vector2.left;
                     }
-                    if (RaycastSideways_OR(isDirRight, 5, xRayLength, enemyMask, Color.red))
+                    if (!IsGrounded(terrainMask) || !DoesGroundForwardExists(isDirRight, yRayLength, terrainMask, Color.blue))
                     {
                         rb.velocity = new Vector2(0, rb.velocity.y);
                     }
@@ -162,12 +162,30 @@ public class AI_Slug : AI_Base
                 break;
         }
     }
-
+    protected void GetHit(bool isRight, float damage, bool doKnockback)
+    {
+        health -= damage;
+        print(name + " Health: " + health);
+        if (health <= 0)
+        {
+            if (state != State.Dead)
+                SetDead();
+        }
+        else
+        {
+            if (!doKnockback)
+                SetStaggered(isRight);
+            else
+                SetKnockedBack(isRight);
+        }
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(playerWeaponTag) && state != State.KnockedBack && state != State.Dead)
         {
-            GetHit(transform.position.x < other.transform.position.x, other.GetComponentInParent<DamageContainer>().GetDamage());
+            var dc = other.GetComponentInParent<DamageContainer>();
+            GetHit(transform.position.x < other.transform.position.x, 
+                dc.GetDamage(), dc.doKnockback());
         }
     }
 }
