@@ -10,6 +10,8 @@ public class ItemSpawner : MonoBehaviour
     private int maximumCount = 10;
     [SerializeField]
     private GameObject prefab = null;
+    [SerializeField]
+    private int dropChance = 100;
 
     public int MinimumCount
     {
@@ -29,12 +31,16 @@ public class ItemSpawner : MonoBehaviour
 
     public void Spawn()
     {
+        int rollDrop = Random.Range(0, 100);
         // Randomly pick the count of item to spawn.
         int count = Random.Range(this.MinimumCount, this.MaximumCount);
-        // Spawn that item
-        for (int i = 0; i < count; ++i)
+        // Spawn that item 
+        if(rollDrop <= dropChance)
         {
-            Instantiate(this.prefab, this.transform.position, Quaternion.identity);
-        }
+            for (int i = 0; i < count; ++i)
+            {
+                Instantiate(this.prefab, this.transform.position, Quaternion.identity);
+            }
+        }      
     }
 }

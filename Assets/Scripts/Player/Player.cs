@@ -6,22 +6,23 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     private PlayerMovement playerMovement;
+    private PlayerLevel level;
 
     public float base_maxhealth = 100;
     public float health_perLevel = 20;
     public float Health { get { return health; } }
-    public int Level { get { return level; } }
+    public int Level { get { return level.currentLevel; } }
     public float attack1Dam = 5;
     public float attack2Dam = 7.5f;
     public float attack3Dam = 10;
     public float downwardAttackDam = 7.5f;
     public Text coinText;
     public Text healhtText;
+    public int coins;
 
     private float activeMaxHealth;
     private float health;
-    private int level;
-    private int coins;
+    //private int level;
     private string enemyWeaponTag = "EnemyWeapon";
     private string trapTag = "Trap";
 
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        level = GetComponent<PlayerLevel>();
     }
     void Start()
     {
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour
         coins = 0;
         SetCoinText();
         SetHealthText();
+        level.SetLevelText();
     }
 
     void Update()
@@ -47,7 +50,7 @@ public class Player : MonoBehaviour
         {
             print("DON'T CHEAT!!!!!!!!!!!!!!!");
             Revive();
-        }
+        }     
     }
 
     /// <summary>
@@ -83,10 +86,15 @@ public class Player : MonoBehaviour
 
     private void Initialize()
     {
-        activeMaxHealth = base_maxhealth + level * health_perLevel;
+        activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
         health = activeMaxHealth;
     }
 
+    public void setHealthByLevel()
+    {
+        activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
+        health = activeMaxHealth;
+    }
     public float GetDamage()
     {
         if (playerMovement.isDownwardAttacking)
@@ -102,6 +110,15 @@ public class Player : MonoBehaviour
         }
         Debug.LogError("current attack number is nor recognized: " + playerMovement.currentAttackNum);
         return -1;
+    }
+
+    public void AddHealth(float healthAmount)
+    {
+        healthAmount = activeMaxHealth * healthAmount / 100;
+        health += healthAmount;
+        if (health >= activeMaxHealth)
+            health = activeMaxHealth;
+        SetHealthText();
     }
 
     public bool IsCurrnetAttackKnockingBack()
@@ -132,13 +149,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SetCoinText()
+    public void SetCoinText()
     {
         coinText.text = "Coins: " + coins.ToString();
     }
 
-    void SetHealthText()
+    public void SetHealthText()
     {
-        healhtText.text = "Health: " + health.ToString("0") + activeMaxHealth.ToString("0");
+        healhtText.text = "Health: " + health.ToString("0") + "/" + activeMaxHealth.ToString("0");
     }
 }

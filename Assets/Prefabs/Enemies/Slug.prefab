@@ -311,3 +311,4 @@ MonoBehaviour:
   minimumCount: 3
   maximumCount: 5
   prefab: {fileID: 1713412524982658169, guid: e87bb6914926a7741b3402274485da40, type: 3}
+  dropChance: 100
