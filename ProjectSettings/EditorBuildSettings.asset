@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 036064c9375db9c4a9a88bfc3f9cac79
   - enabled: 1
-    path: Assets/Scenes/AncientTemple.unity
+    path: Assets/Scenes/GameplayScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
