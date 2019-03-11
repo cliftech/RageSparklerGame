@@ -70,6 +70,9 @@ GameObject:
   - component: {fileID: 1056179042876710189}
   - component: {fileID: 1056179042876710190}
   - component: {fileID: 1056179042876710191}
+  - component: {fileID: 7236081369271385233}
+  - component: {fileID: 7958124925400199662}
+  - component: {fileID: 1412240953855950337}
   - component: {fileID: 1056179042876710185}
   - component: {fileID: 1056179042876710186}
   - component: {fileID: 143479156}
@@ -130,7 +133,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 629335217
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4aebe3c8bbcc49649b1a57483897997c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -242,6 +245,59 @@ MonoBehaviour:
   isKnockedBack: 0
   isInvulnerable: 0
   currentAttackNum: 0
+--- !u!114 &7236081369271385233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca59683eda2c3647a406d7fc4787fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelText: {fileID: 0}
+  currentLevel: 0
+  xpToLevelUp: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+--- !u!114 &7958124925400199662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebaf945d29e79ab4680f68adb7c4dd73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentInterObj: {fileID: 0}
+  currentInterObjScript: {fileID: 0}
+  inventory: {fileID: 0}
+--- !u!114 &1412240953855950337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c64c564d2648954082e9a24e987862f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1056179042876710185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +318,7 @@ MonoBehaviour:
   downwardAttackDam: 7.5
   coinText: {fileID: 0}
   healhtText: {fileID: 0}
+  coins: 0
   isDead: 0
 --- !u!95 &1056179042876710186
 Animator:

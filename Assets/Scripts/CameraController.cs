@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        PlayerCharacter = FindObjectOfType<Player>();
         Offset = transform.position - PlayerCharacter.transform.position;
         ExtraOffset = new Vector3(0, 0, 0);
         Camera = GetComponent<Camera>();
