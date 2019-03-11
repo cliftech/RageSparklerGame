@@ -9,6 +9,7 @@ TagManager:
   - EnemyWeapon
   - Pick Up
   - Trap
+  - Portal
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Enemy
   - EnemyWeapon
   - PickUps
-  - 
+  - Interactable
   - 
   - 
   - 
@@ -46,8 +47,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Background0
     uniqueID: 2547201563
+    locked: 0
+  - name: Background1
+    uniqueID: 1320687317
+    locked: 0
+  - name: Background2
+    uniqueID: 601818101
     locked: 0
   - name: Player
     uniqueID: 629335217
@@ -61,6 +68,9 @@ TagManager:
   - name: Terrain
     uniqueID: 1821581025
     locked: 0
-  - name: Foreground
+  - name: Foreground0
     uniqueID: 3509339291
+    locked: 0
+  - name: Foreground1
+    uniqueID: 1599174853
     locked: 0

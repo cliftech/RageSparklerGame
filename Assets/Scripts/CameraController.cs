@@ -6,21 +6,22 @@ public class CameraController : MonoBehaviour
 {
     public Player PlayerCharacter;
     //Bounds are to be set by the maker of the area.
-    public GameObject LeftBound;
-    public GameObject TopBound;
-    public GameObject RightBound;
-    public GameObject BottomBound;
+    private Transform LeftBound;
+    private Transform TopBound;
+    private Transform RightBound;
+    private Transform BottomBound;
 
     private Vector3 Offset;
     private Vector3 ExtraOffset;
     private float MaxExtra = 2.5f;
-
+    Camera Camera;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Offset = transform.position - PlayerCharacter.transform.position;
         ExtraOffset = new Vector3(0, 0, 0);
+        Camera = GetComponent<Camera>();
     }
 
     void LateUpdate()
@@ -30,22 +31,29 @@ public class CameraController : MonoBehaviour
             if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
             {
                 if (ExtraOffset.x < MaxExtra)
-                    ExtraOffset.x += 0.1f;
+                    ExtraOffset.x += 10f * Time.deltaTime;
             }
             else if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") < 0)
             {
                 if (ExtraOffset.x > -MaxExtra)
-                    ExtraOffset.x -= 0.1f;
+                    ExtraOffset.x -= 10f * Time.deltaTime;
             }
         }
         var position = PlayerCharacter.transform.position + Offset;
-        var Camera = GetComponent<Camera>();
         position += ExtraOffset;
         position = new Vector3
         (
-            Mathf.Clamp(position.x, LeftBound.transform.position.x + Camera.orthographicSize * Camera.aspect, RightBound.transform.position.x - Camera.orthographicSize * Camera.aspect),
-            Mathf.Clamp(position.y, BottomBound.transform.position.y + Camera.orthographicSize, TopBound.transform.position.y - Camera.orthographicSize),
+            Mathf.Clamp(position.x, LeftBound.position.x + Camera.orthographicSize * Camera.aspect, RightBound.position.x - Camera.orthographicSize * Camera.aspect),
+            Mathf.Clamp(position.y, BottomBound.position.y + Camera.orthographicSize, TopBound.position.y - Camera.orthographicSize),
             position.z);
         transform.position = position;
+    }
+
+    public void SetBounds(Transform LeftBound, Transform TopBound, Transform RightBound, Transform BottomBound)
+    {
+        this.LeftBound = LeftBound;
+        this.TopBound = TopBound;
+        this.RightBound = RightBound;
+        this.BottomBound = BottomBound;
     }
 }

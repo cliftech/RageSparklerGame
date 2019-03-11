@@ -224,7 +224,7 @@ MonoBehaviour:
     m_Bits: 2560
   slamPushableMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8192
   enemyLayerName: Enemy
   enemyWeaponLayerName: EnemyWeapon
   spriteRenderer: {fileID: 0}
