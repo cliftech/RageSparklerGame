@@ -34,23 +34,32 @@ public class LevelManager : MonoBehaviour
 
     // loading levels in 3 steps --- cover screen -> load level -> uncover screen
 
-    public void LoadLevel(GameObject level)
+    public void LoadLevel(GameObject level, int checkPointIndex = -1)
     {
         levelToLoad = level;
         if (currentLevel != null)
-            screenCover.CoverScreen(.1f, () => LoadLevel());
+            screenCover.CoverScreen(.1f, () => LoadLevel(checkPointIndex));
         else
-            LoadLevel();
+            LoadLevel(checkPointIndex);
     }
 
-    private void LoadLevel()
+    private void LoadLevel(int checkPointIndex)
     {
         if (currentLevel != null)
             DestroyCurrentLevel();
         currentLevel = Instantiate(levelToLoad).GetComponent<Level>();
 
-        player.transform.position = currentLevel.spawnPoint.position;
-        player.SetRespawnPos(currentLevel.spawnPoint.position);
+        Vector2 pos;
+        if (checkPointIndex == -1)
+        {
+             pos = currentLevel.spawnPoint.position;
+        }
+        else
+        {
+            pos = currentLevel.checkPoints[checkPointIndex].transform.position;
+        }
+        player.transform.position = pos;
+        player.SetRespawnPos(pos);
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);
         screenCover.UncoverScreen(.1f);
