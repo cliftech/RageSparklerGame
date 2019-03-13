@@ -7018,6 +7018,11 @@ PrefabInstance:
       propertyPath: isInHub
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: portalId
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f, type: 3}
 --- !u!4 &8467518878172450868 stripped
@@ -7119,6 +7124,11 @@ PrefabInstance:
       propertyPath: isInHub
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: portalId
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f, type: 3}
 --- !u!4 &9161423307354820467 stripped
@@ -7134,16 +7144,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4833971093930179215}
     m_Modifications:
-    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
-        type: 3}
-      propertyPath: m_Name
-      value: SmithNPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
-        type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
     - target: {fileID: 6223562338534363477, guid: d1c7b8baca16b6c48bb7e1575078eac2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7199,6 +7199,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
+        type: 3}
+      propertyPath: m_Name
+      value: SmithNPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223562339915942528, guid: d1c7b8baca16b6c48bb7e1575078eac2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223562339915942528, guid: d1c7b8baca16b6c48bb7e1575078eac2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6223562338534363476, guid: d1c7b8baca16b6c48bb7e1575078eac2,
         type: 3}
       propertyPath: m_SortingOrder
@@ -7213,16 +7233,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223562339915942528, guid: d1c7b8baca16b6c48bb7e1575078eac2,
-        type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223562339915942528, guid: d1c7b8baca16b6c48bb7e1575078eac2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6223562339915942531, guid: d1c7b8baca16b6c48bb7e1575078eac2,
         type: 3}

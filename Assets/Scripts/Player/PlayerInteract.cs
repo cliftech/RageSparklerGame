@@ -32,7 +32,7 @@ public class PlayerInteract : MonoBehaviour
                         player.SetCoinText();
                         level.SetLevelText();
                         print("Level up!");
-                        player.setHealthByLevel();
+                        player.SetHealthByLevel();
                         player.SetHealthText();
                     }
                     else

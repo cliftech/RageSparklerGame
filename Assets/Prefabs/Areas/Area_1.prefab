@@ -25226,6 +25226,11 @@ PrefabInstance:
       propertyPath: checkPointName
       value: 1-1
       objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: portalId
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 3968900172975147784, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
       propertyPath: m_Size.x

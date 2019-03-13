@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public float attack3Dam = 10;
     public float downwardAttackDam = 7.5f;
     public Text coinText;
-    public Text healhtText;
+    public Text healthText;
     public int coins;
 
     private float activeMaxHealth;
@@ -43,9 +43,9 @@ public class Player : MonoBehaviour
         playerMovement.damageContainer.SetDamageCall(() => GetDamage());
         playerMovement.damageContainer.SetDoKnockbackCall(() => IsCurrnetAttackKnockingBack());
         coins = 0;
+        CalculateStats();
         SetCoinText();
         SetHealthText();
-        CalculateStats();
         level.SetLevelText();
     }
 
@@ -113,12 +113,13 @@ public class Player : MonoBehaviour
     }
 
     private void CalculateStats()
-    {        
-        activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
-        health = activeMaxHealth;
+    {
+        //activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
+        //health = activeMaxHealth;
+        SetHealthByLevel();
     }
 
-    public void setHealthByLevel()
+    public void SetHealthByLevel()
     {
         activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
         health = activeMaxHealth;
@@ -184,6 +185,6 @@ public class Player : MonoBehaviour
 
     public void SetHealthText()
     {
-        healhtText.text = "Health: " + health.ToString("0") + "/" + activeMaxHealth.ToString("0");
+        healthText.text = "Health: " + health.ToString() + "/" + activeMaxHealth.ToString();
     }
 }

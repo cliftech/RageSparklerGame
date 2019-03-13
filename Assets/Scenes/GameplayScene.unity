@@ -1121,6 +1121,11 @@ PrefabInstance:
       propertyPath: healhtText
       value: 
       objectReference: {fileID: 1072773120}
+    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: healthText
+      value: 
+      objectReference: {fileID: 1072773120}
     - target: {fileID: 1056179042876710187, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_LocalPosition.x
