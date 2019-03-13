@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -34,13 +35,13 @@ public class LevelManager : MonoBehaviour
 
     // loading levels in 3 steps --- cover screen -> load level -> uncover screen
 
-    public void LoadLevel(GameObject level, int checkPointIndex = -1)
+    public void LoadLevel(GameObject level, int potalId = -1)
     {
         levelToLoad = level;
         if (currentLevel != null)
-            screenCover.CoverScreen(.1f, () => LoadLevel(checkPointIndex));
+            screenCover.CoverScreen(.1f, () => LoadLevel(potalId));
         else
-            LoadLevel(checkPointIndex);
+            LoadLevel(potalId);
     }
 
     private void LoadLevel(int checkPointIndex)
@@ -56,7 +57,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            pos = currentLevel.checkPoints[checkPointIndex].transform.position;
+            pos = currentLevel.checkPoints.First(p => p.portalId == checkPointIndex).transform.position;
         }
         player.transform.position = pos;
         player.SetRespawnPos(pos);

@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public float health_perLevel = 20;
     public float Health { get { return health; } }
     public int Level { get { return level.currentLevel; } }
+
+    public List<int> Checkpoints;
+
     public float attack1Dam = 5;
     public float attack2Dam = 7.5f;
     public float attack3Dam = 10;

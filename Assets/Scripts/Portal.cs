@@ -14,9 +14,13 @@ public class Portal : MonoBehaviour
 
     public GameObject levelToLoad;
     public string interactTextToDisplay = "to blah";
+    //Portal id is  used to check if player unlocked this point and can get to it from hub. Id "XY" means that portal
+    //is in X area and is the Yth portal. Y index starts from 0.
+    public int portalId;
 
     public bool forceEntry = false;
     public bool isInHub = false;
+    public bool isCheckpint = false;
     private bool checkpointActivated = false;
     private Vector2 guiOffset;
 
@@ -38,13 +42,23 @@ public class Portal : MonoBehaviour
     private void playerEnteredBounds()
     {
         Level level = levelToLoad.GetComponent<Level>();
+        portalGUI.SetOption(0, () => ActivateHubPortal(-1), level.title + " - Start");
         if (isInHub && level.checkPoints.Count > 0)
         {
-            for (int i = 0; i < level.checkPoints.Count; i++)
+            int index = 1;
+            foreach(var Checkpoint in level.checkPoints)
             {
-                int index = i;
-                portalGUI.SetOption(i, () => ActivateHubPortal(index), level.title + " - " + index);
+                if(player.Checkpoints.Contains(Checkpoint.portalId))
+                {
+                    portalGUI.SetOption(index, () => ActivateHubPortal(Checkpoint.portalId), level.title + " - " + index);
+                    index++;
+                }
             }
+            //for (int i = 0; i < level.checkPoints.Count; i++)
+            //{
+            //    int index = i;
+            //    portalGUI.SetOption(i+1, () => ActivateHubPortal(index), level.title + " - " + index);
+            //}
             interactableGUI.Show(interactTextToDisplay, transform, guiOffset + Vector2.up * 2.1f);
             portalGUI.Show(transform, guiOffset);
         }
@@ -82,6 +96,10 @@ public class Portal : MonoBehaviour
             {
                 player.SetRespawnPos(transform.position);
                 checkpointActivated = true;
+            }
+            if(isCheckpint)
+            {
+                player.Checkpoints.Add(portalId);
             }
             if (!forceEntry)
                 playerEnteredBounds();
