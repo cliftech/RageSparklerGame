@@ -11,15 +11,19 @@ public class Slot : MonoBehaviour
     public string type;
     public string descriptio;
     public Sprite icon;
-    public Transform slotIconGO;
+    public Sprite defaultIcon;
+    public Transform slotIcon;
 
     public void UpdateSlot()
     {
-        slotIconGO.GetComponent<Image>().sprite = icon;
+        if(icon != null)
+            slotIcon.GetComponent<Image>().sprite = icon;
+        else
+            slotIcon.GetComponent<Image>().sprite = defaultIcon;
     }
 
     private void Start()
     {
-        slotIconGO = transform.GetChild(0);
+        slotIcon = transform.GetChild(0);
     }
 }

@@ -31,16 +31,16 @@ public class Smith : MonoBehaviour
 
     private void Interact()
     {
-        Debug.Log("coins: " + player.coins.ToString() + " price: "+ upgradePrice.ToString() + " dmg: "+ player.attack1Dam.ToString());
-        if (player.coins >= upgradePrice)
+        Debug.Log("essence: " + player.essence.ToString() + " price: "+ upgradePrice.ToString() + " dmg: "+ player.attack1Dam.ToString());
+        if (player.essence >= upgradePrice)
         {
             player.attack1Dam += 1f;
             player.attack2Dam += 1.5f;
             player.attack3Dam += 2f;
             player.downwardAttackDam += 1.5f;
-            player.coins -= upgradePrice;
+            player.essence -= upgradePrice;
             upgradePrice = (upgradePrice + 5) * 2;
-            player.SetCoinText();
+            player.SetEssenceText();
             interactableGUI.Hide();
             interactableGUI.Show(interactTextToDisplay + " " + upgradePrice.ToString(), transform, new Vector2(0, 2f));
         }

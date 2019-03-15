@@ -8,5 +8,11 @@ public class Item : MonoBehaviour
     public string type;
     public string description;
     public Sprite icon;
-    public bool pickedUp; 
+    public bool pickedUp;
+    public bool equipable;
+
+    public void ItemUsage()
+    {
+
+    }
 }

@@ -19,9 +19,9 @@ public class Player : MonoBehaviour
     public float attack2Dam = 7.5f;
     public float attack3Dam = 10;
     public float downwardAttackDam = 7.5f;
-    public Text coinText;
+    public Text essenceText;
     public Text healthText;
-    public int coins;
+    public int essence;
 
     private float activeMaxHealth;
     private float health;
@@ -42,9 +42,9 @@ public class Player : MonoBehaviour
     {
         playerMovement.damageContainer.SetDamageCall(() => GetDamage());
         playerMovement.damageContainer.SetDoKnockbackCall(() => IsCurrnetAttackKnockingBack());
-        coins = 0;
+        essence = 0;
         CalculateStats();
-        SetCoinText();
+        SetEssenceText();
         SetHealthText();
         level.SetLevelText();
     }
@@ -91,6 +91,8 @@ public class Player : MonoBehaviour
         isDead = true;
         playerMovement.animator.SetBool("Dead", true);
         StartCoroutine(ReviveAfterTime(2f));
+        essence = 0;
+        SetEssenceText();
     }
     private IEnumerator ReviveAfterTime(float time)
     {
@@ -105,7 +107,7 @@ public class Player : MonoBehaviour
         playerMovement.animator.SetBool("Dead", false);
         transform.position = respawnPos;
         SetHealthText();
-        SetCoinText();
+        SetEssenceText();
     }
     public void SetRespawnPos(Vector2 respawnPos)
     {
@@ -165,8 +167,8 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Pick Up"))
         {
             Destroy(other.gameObject);
-            coins++;
-            SetCoinText();
+            essence++;
+            SetEssenceText();
         }
     }
 
@@ -178,9 +180,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetCoinText()
+    public void SetEssenceText()
     {
-        coinText.text = "Coins: " + coins.ToString();
+        essenceText.text = "Essence: " + essence.ToString();
     }
 
     public void SetHealthText()

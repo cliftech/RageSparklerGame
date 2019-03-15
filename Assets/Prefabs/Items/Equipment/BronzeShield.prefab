@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8953906349727764791}
   - component: {fileID: 3400309323250313781}
   m_Layer: 0
-  m_Name: BronzeAxe
+  m_Name: BronzeShield
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,11 +69,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
-  type: Weapon
-  descriptio: Bronze axe
-  icon: {fileID: 21300000, guid: 4a4dfcb2d5b0dfe44a4d9c14de14f662, type: 3}
+  ID: 70
+  type: SecondaryWeapon
+  description: 
+  icon: {fileID: 21300000, guid: 3209fbd80fd8b7e4caea212e6c81caf6, type: 3}
   pickedUp: 0
+  equipable: 1
 --- !u!61 &3005029407476772883
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -179,7 +180,7 @@ SpriteRenderer:
   m_SortingLayerID: 1076842169
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4a4dfcb2d5b0dfe44a4d9c14de14f662, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3209fbd80fd8b7e4caea212e6c81caf6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 7236081369271385233}
   - component: {fileID: 7958124925400199662}
   - component: {fileID: 1412240953855950337}
+  - component: {fileID: 454859859997555492}
   - component: {fileID: 1056179042876710185}
   - component: {fileID: 1056179042876710186}
   - component: {fileID: 143479156}
@@ -133,7 +134,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 629335217
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4aebe3c8bbcc49649b1a57483897997c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -287,17 +288,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c64c564d2648954082e9a24e987862f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  inventoryUI: {fileID: 0}
+  InvSlots: {fileID: 0}
+  inventoryEnabled: 0
+  slot: []
+  totalSlots: 0
+--- !u!114 &454859859997555492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c64c564d2648954082e9a24e987862f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 0}
+  InvSlots: {fileID: 0}
+  inventoryEnabled: 0
+  slot: []
+  totalSlots: 0
 --- !u!114 &1056179042876710185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,13 +324,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   base_maxhealth: 100
   health_perLevel: 20
+  Checkpoints: 
   attack1Dam: 5
   attack2Dam: 7.5
   attack3Dam: 10
   downwardAttackDam: 7.5
-  coinText: {fileID: 0}
-  healhtText: {fileID: 0}
-  coins: 0
+  essenceText: {fileID: 0}
+  healthText: {fileID: 0}
+  essence: 0
   isDead: 0
 --- !u!95 &1056179042876710186
 Animator:

@@ -179,8 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 2
-  type: HealthPotion
-  descriptio: Heals the player for 50% max hp
+  ID: 81
+  type: Potion
+  description: 
   icon: {fileID: 21300000, guid: 384681ec1344ebe478ee0adbf07f605a, type: 3}
   pickedUp: 0
+  equipable: 1

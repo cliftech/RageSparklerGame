@@ -8,11 +8,14 @@ public class PlayerInteract : MonoBehaviour
 
     public GameObject currentInterObj = null;
     public InteractionObject currentInterObjScript = null;
-    public Inventory inventory;
+    public Inventory hubChest;
+    public Inventory equipment;
 
+    private PlayerLevel playerLevel;
+    private InteractableGUI interactableGUI;
     private Player player;
     private HealthPotions hpPot;
-    private PlayerLevel level;
+    private int priceToLevelUp;
 
     void Update()
     {
@@ -24,70 +27,82 @@ public class PlayerInteract : MonoBehaviour
 
                 if(currentInterObj.name == "LevelUpNPC")
                 {
-                    if (player.coins >= level.xpToLevelUp[level.currentLevel])
+                    if (player.essence >= priceToLevelUp)
                     {                
-                        if(player.coins > 0)
-                        player.coins -= level.xpToLevelUp[level.currentLevel];
-                        level.currentLevel++;
-                        player.SetCoinText();
-                        level.SetLevelText();
-                        print("Level up!");
+                        if(player.essence > 0)
+                        player.essence -= priceToLevelUp;
+                        playerLevel.currentLevel++;
+                        priceToLevelUp++;
+                        player.SetEssenceText();
+                        playerLevel.SetLevelText();
                         player.SetHealthByLevel();
                         player.SetHealthText();
+                        interactableGUI.Hide();
+                        interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
                     }
-                    else
-                        print("You need " + level.xpToLevelUp[level.currentLevel] + " coins to level up!");
                 }
             }
             if(currentInterObjScript.openable)
             {
                 if (currentInterObj.name == "HubChest")
                 {
-                    inventory.inventoryEnabled = !inventory.inventoryEnabled;
+                    hubChest.inventoryEnabled = !hubChest.inventoryEnabled;
 
-                    if (inventory.inventoryEnabled)
+                    if (hubChest.inventoryEnabled)
                     {
-                        inventory.inventoryUI.SetActive(true);
+                        hubChest.inventoryUI.SetActive(true);
                     }
                     else
-                        inventory.inventoryUI.SetActive(false);
+                        hubChest.inventoryUI.SetActive(false);
                 }
             }
         }
 
-    //    if (Input.GetButtonDown("UseHealthPotion"))
-    //    {
-    //        if (player.Health != player.base_maxhealth)
-    //        {
-    //            GameObject potion = inventory.FindItemByType("Health Potion");
-    //            float heal = potion.GetComponent<HealthPotions>().healPercent;
-    //            if (potion != null)
-    //            {
-    //                inventory.RemoveItem(potion);
-    //                player.AddHealth(heal);
-    //            }
-    //        }
-    //        else
-    //            print("Already at full health");
-    //    }
+        if (Input.GetButtonDown("UseHealthPotion"))
+        {
+            if (player.Health != player.base_maxhealth)
+            {
+                GameObject potion = equipment.GetPotion();
+                if (potion != null)
+                {
+                    float heal = potion.GetComponent<HealthPotions>().healPercent;
+                    int id = potion.GetComponent<Item>().ID;
+                    if (potion != null)
+                    {
+                        equipment.RemoveItem(id);
+                        player.AddHealth(heal);
+                    }
+                }
+            }
+        }
     }
     void Start()
     {
-        inventory = GetComponent<Inventory>();
+        hubChest = GetComponent<Inventory>();
         player = GetComponent<Player>();
         hpPot = GetComponent<HealthPotions>();
-        level = GetComponent<PlayerLevel>();
+        interactableGUI = FindObjectOfType<InteractableGUI>();
+        playerLevel = GetComponent<PlayerLevel>();
+        priceToLevelUp = 0;
     }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("InterObject") || other.CompareTag("Item"))
         {
             currentInterObj = other.gameObject;
+            if (currentInterObj.name == "LevelUpNPC")
+                interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
             Item item = currentInterObj.GetComponent<Item>();
             currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
             if (currentInterObjScript.collectable)
             {
-                inventory.AddItem(currentInterObj, item.ID, item.type, item.description, item.icon);
+                bool Equipped = false;
+                if (item.equipable)
+                {
+                    Equipped = equipment.Equip(currentInterObj, item.ID, item.type, item.description, item.icon);
+                }
+                if (Equipped == false)
+                hubChest.AddItem(currentInterObj, item.ID, item.type, item.description, item.icon);
             }
         }
     }
@@ -98,6 +113,9 @@ public class PlayerInteract : MonoBehaviour
             if (other.gameObject == currentInterObj)
             {
                 currentInterObj = null;
+                hubChest.inventoryEnabled = false;
+                hubChest.inventoryUI.SetActive(false);
+                interactableGUI.Hide();
             }
         }
     }
