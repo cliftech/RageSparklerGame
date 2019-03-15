@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2096862995051645892}
   - component: {fileID: 3651349108853326409}
   - component: {fileID: 5220622177331529080}
+  - component: {fileID: 6100929663425709444}
   - component: {fileID: 2677249111788508308}
   m_Layer: 11
   m_Name: Fire Golem
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 865174565
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a8fd31ecb4d99a4498b8a162d31cc5de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -167,9 +168,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33d0b20e7d6fa044b9c221f6a8f1e042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumCount: 8
-  maximumCount: 10
-  prefab: {fileID: 1713412524982658169, guid: e87bb6914926a7741b3402274485da40, type: 3}
+  allDrops: {fileID: 6100929663425709444}
+--- !u!114 &6100929663425709444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2677249111788508307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3007d48211f99564b9056bf39c4c001a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootTable:
+  - item: {fileID: 3048069553989436969, guid: e87bb6914926a7741b3402274485da40, type: 3}
+    dropChance: 100
+  - item: {fileID: 2329661892707025574, guid: 666b63debeba4ab4bbf78a863e24d478, type: 3}
+    dropChance: 50
 --- !u!114 &2677249111788508308
 MonoBehaviour:
   m_ObjectHideFlags: 0

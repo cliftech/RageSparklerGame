@@ -10,6 +10,9 @@ TagManager:
   - Pick Up
   - Trap
   - Portal
+  - InterObject
+  - HubChest
+  - Item
   layers:
   - Default
   - TransparentFX

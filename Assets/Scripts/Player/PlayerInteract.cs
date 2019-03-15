@@ -39,23 +39,37 @@ public class PlayerInteract : MonoBehaviour
                         print("You need " + level.xpToLevelUp[level.currentLevel] + " coins to level up!");
                 }
             }
-        }
-
-        if (Input.GetButtonDown("UseHealthPotion"))
-        {
-            if (player.Health != player.base_maxhealth)
+            if(currentInterObjScript.openable)
             {
-                GameObject potion = inventory.FindItemByType("Health Potion");
-                float heal = potion.GetComponent<HealthPotions>().healPercent;
-                if (potion != null)
+                if (currentInterObj.name == "HubChest")
                 {
-                    inventory.RemoveItem(potion);
-                    player.AddHealth(heal);
+                    inventory.inventoryEnabled = !inventory.inventoryEnabled;
+
+                    if (inventory.inventoryEnabled)
+                    {
+                        inventory.inventoryUI.SetActive(true);
+                    }
+                    else
+                        inventory.inventoryUI.SetActive(false);
                 }
             }
-            else
-                print("Already at full health");
         }
+
+    //    if (Input.GetButtonDown("UseHealthPotion"))
+    //    {
+    //        if (player.Health != player.base_maxhealth)
+    //        {
+    //            GameObject potion = inventory.FindItemByType("Health Potion");
+    //            float heal = potion.GetComponent<HealthPotions>().healPercent;
+    //            if (potion != null)
+    //            {
+    //                inventory.RemoveItem(potion);
+    //                player.AddHealth(heal);
+    //            }
+    //        }
+    //        else
+    //            print("Already at full health");
+    //    }
     }
     void Start()
     {
@@ -66,13 +80,14 @@ public class PlayerInteract : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("InterObject"))
+        if (other.CompareTag("InterObject") || other.CompareTag("Item"))
         {
             currentInterObj = other.gameObject;
+            Item item = currentInterObj.GetComponent<Item>();
             currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
-            if (currentInterObjScript.inventory)
+            if (currentInterObjScript.collectable)
             {
-                inventory.AddItem(currentInterObj);
+                inventory.AddItem(currentInterObj, item.ID, item.type, item.description, item.icon);
             }
         }
     }
@@ -87,3 +102,4 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 }
+

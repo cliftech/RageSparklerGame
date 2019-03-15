@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5445484580356455074}
   - component: {fileID: 3666744327568057872}
   - component: {fileID: 166820052256635258}
+  - component: {fileID: 3048069553989436969}
   m_Layer: 13
   m_Name: Coin
   m_TagString: Pick Up
@@ -69,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1076842169
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 32b264cf55ad7444696b291a8a1b4886, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -135,3 +136,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3048069553989436969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713412524982658169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 5
+  type: Essence
+  description: Currency in this game
+  icon: {fileID: 21300000, guid: 32b264cf55ad7444696b291a8a1b4886, type: 3}
+  pickedUp: 0
