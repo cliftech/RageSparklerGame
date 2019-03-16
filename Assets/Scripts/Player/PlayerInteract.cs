@@ -23,8 +23,6 @@ public class PlayerInteract : MonoBehaviour
         {
             if (currentInterObjScript.talks)
             {
-                currentInterObjScript.Talk();
-
                 if(currentInterObj.name == "LevelUpNPC")
                 {
                     if (player.essence >= priceToLevelUp)
@@ -66,16 +64,17 @@ public class PlayerInteract : MonoBehaviour
                 if (potion != null)
                 {
                     float heal = potion.GetComponent<HealthPotions>().healPercent;
-                    int id = potion.GetComponent<Item>().ID;
+                    string type = potion.GetComponent<Item>().type;
                     if (potion != null)
                     {
-                        equipment.RemoveItem(id);
+                        equipment.RemoveItem(type);
                         player.AddHealth(heal);
                     }
                 }
             }
         }
     }
+
     void Start()
     {
         hubChest = GetComponent<Inventory>();
@@ -85,6 +84,25 @@ public class PlayerInteract : MonoBehaviour
         playerLevel = GetComponent<PlayerLevel>();
         priceToLevelUp = 0;
     }
+
+    //swap player inventory item with hub chest inventory item
+    public void swap(GameObject itemObj, int itemID, string itemType, string itemDescription, Sprite itemIcon)
+    {
+        GameObject which = equipment.FindItemByType(itemType);
+        if(!which.GetComponent<Slot>().empty)
+        {
+            hubChest.RemoveItem(itemID);
+            hubChest.AddItem(which.GetComponent<Slot>().item, which.GetComponent<Slot>().ID, which.GetComponent<Slot>().type, which.GetComponent<Slot>().description, which.GetComponent<Slot>().icon);
+            equipment.RemoveItem(itemType);
+            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemIcon);
+        }
+        else
+        {
+            hubChest.RemoveItem(itemID);
+            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemIcon);
+        }           
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("InterObject") || other.CompareTag("Item"))

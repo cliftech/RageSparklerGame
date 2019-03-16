@@ -11,8 +11,4 @@ public class InteractionObject : MonoBehaviour
     public bool openable;
     public string itemType;
 
-    public void Talk()
-    {
-        print("Hi!");
-    }
 }

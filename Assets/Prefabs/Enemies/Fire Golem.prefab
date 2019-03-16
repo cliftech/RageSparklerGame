@@ -184,7 +184,7 @@ MonoBehaviour:
   lootTable:
   - item: {fileID: 3048069553989436969, guid: e87bb6914926a7741b3402274485da40, type: 3}
     dropChance: 100
-  - item: {fileID: 2329661892707025574, guid: 666b63debeba4ab4bbf78a863e24d478, type: 3}
+  - item: {fileID: 8993061056632405719, guid: db65c5d59e7e62d4c961992a90359185, type: 3}
     dropChance: 50
 --- !u!114 &2677249111788508308
 MonoBehaviour:

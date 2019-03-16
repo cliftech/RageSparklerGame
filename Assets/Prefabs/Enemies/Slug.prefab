@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTable:
-  - item: {fileID: 200292175091309359, guid: d10caad3f44c5c04fa5c013a24322dca, type: 3}
+  - item: {fileID: 1106699394497858426, guid: 8259b644400f7ae4f99d30cb53abbb89, type: 3}
     dropChance: 50
   - item: {fileID: 3048069553989436969, guid: e87bb6914926a7741b3402274485da40, type: 3}
     dropChance: 100

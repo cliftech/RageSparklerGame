@@ -11,8 +11,4 @@ public class Item : MonoBehaviour
     public bool pickedUp;
     public bool equipable;
 
-    public void ItemUsage()
-    {
-
-    }
 }

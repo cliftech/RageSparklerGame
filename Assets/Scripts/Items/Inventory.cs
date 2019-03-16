@@ -53,7 +53,7 @@ public class Inventory : MonoBehaviour
             return add(itemObj, itemID, itemType, itemDescription, itemIcon, 6);
         else if (itemType == "SecondaryWeapon")
             return add(itemObj, itemID, itemType, itemDescription, itemIcon, 7);
-        else if (itemType == "Potion")
+        else if (itemType == "Potions")
             return add(itemObj, itemID, itemType, itemDescription, itemIcon, 8);
         else
             return false;
@@ -67,7 +67,7 @@ public class Inventory : MonoBehaviour
 
             slot[i].GetComponent<Slot>().icon = itemIcon;
             slot[i].GetComponent<Slot>().type = itemType;
-            slot[i].GetComponent<Slot>().descriptio = itemDescription;
+            slot[i].GetComponent<Slot>().description = itemDescription;
             slot[i].GetComponent<Slot>().ID = itemID;
             slot[i].GetComponent<Slot>().item = itemObj;
 
@@ -91,7 +91,7 @@ public class Inventory : MonoBehaviour
 
                 slot[i].GetComponent<Slot>().icon = itemIcon;
                 slot[i].GetComponent<Slot>().type = itemType;
-                slot[i].GetComponent<Slot>().descriptio = itemDescription;
+                slot[i].GetComponent<Slot>().description = itemDescription;
                 slot[i].GetComponent<Slot>().ID = itemID;
                 slot[i].GetComponent<Slot>().item = itemObj;
 
@@ -109,36 +109,50 @@ public class Inventory : MonoBehaviour
     {
         return slot[8].GetComponent<Slot>().item;
     }
-    public void RemoveItem(int id)
+    public void RemoveItem(string type)
     {
         for (int i = 0; i < slot.Length; i++)
         {
-            if (slot[i].GetComponent<Slot>().ID.ToString().StartsWith(id.ToString()))
+            if (slot[i].GetComponent<Slot>().type == type)
             {
-                slot[i].GetComponent<Slot>().icon = default;
-                slot[i].GetComponent<Slot>().type = "";
-                slot[i].GetComponent<Slot>().descriptio = "";
-                slot[i].GetComponent<Slot>().ID = 0;
-                Destroy(slot[i].GetComponent<Slot>().item);
-                slot[i].GetComponent<Slot>().UpdateSlot();
-                slot[i].GetComponent<Slot>().empty = true;
-                //slot[i] = InvSlots.transform.GetChild(i).gameObject;
+                Remove(i);
                 break;
             }
         }
     }
-    //public GameObject FindItemByType(string itemType)
-    //{
-    //    for (int i = 0; i < inventory.Length; i++)
-    //    {
-    //        if (inventory[i] != null)
-    //        {
-    //            if (inventory[i].GetComponent<InteractionObject>().itemType == itemType)
-    //            {
-    //                return inventory[i];
-    //            }
-    //        }              
-    //    }
-    //    return null;
-    //}
+    public void RemoveItem(int id)
+    {
+        for (int i = 0; i < slot.Length; i++)
+        {
+            if (slot[i].GetComponent<Slot>().ID == id)
+            {
+                Remove(i);
+                break;
+            }
+        }
+    }
+    void Remove(int i)
+    {
+        slot[i].GetComponent<Slot>().icon = default;
+        slot[i].GetComponent<Slot>().type = "";
+        slot[i].GetComponent<Slot>().description = "";
+        slot[i].GetComponent<Slot>().ID = 0;
+        slot[i].GetComponent<Slot>().item = null;
+        slot[i].GetComponent<Slot>().UpdateSlot();
+        slot[i].GetComponent<Slot>().empty = true;
+    }
+    public GameObject FindItemByType(string itemType)
+    {
+        for (int i = 0; i < slot.Length; i++)
+        {
+            if (slot[i] != null)
+            {
+                if (slot[i].name == itemType)
+                {
+                    return slot[i];
+                }
+            }
+        }
+        return null;
+    }
 }
