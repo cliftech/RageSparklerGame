@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     public enum OnStartLoadType { loadArea0, loadHub }
     public OnStartLoadType onStartLoadType = OnStartLoadType.loadHub;
 
-    private GameObject levelToLoad;
+    private GameObject currentLevelPrefab;
     private Level currentLevel;
     void Awake()
     {
@@ -37,33 +37,38 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel(GameObject level, int potalId = -1)
     {
-        levelToLoad = level;
+        currentLevelPrefab = level;
         if (currentLevel != null)
             screenCover.CoverScreen(.1f, () => LoadLevel(potalId));
         else
             LoadLevel(potalId);
     }
 
-    private void LoadLevel(int checkPointIndex)
+    private void LoadLevel(int portalID)
     {
         if (currentLevel != null)
             DestroyCurrentLevel();
-        currentLevel = Instantiate(levelToLoad).GetComponent<Level>();
+        currentLevel = Instantiate(currentLevelPrefab).GetComponent<Level>();
 
         Vector2 pos;
-        if (checkPointIndex == -1)
+        if (portalID == -1)
         {
              pos = currentLevel.spawnPoint.position;
         }
         else
         {
-            pos = currentLevel.checkPoints.First(p => p.portalId == checkPointIndex).transform.position;
+            pos = currentLevel.checkPoints.First(p => p.portalId == portalID).transform.position;
         }
         player.transform.position = pos;
-        player.SetRespawnPos(pos);
+        player.SetRespawnPortal(portalID);
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);
         screenCover.UncoverScreen(.1f);
+    }
+
+    public void ResetLevel(int portalID)
+    {
+        LoadLevel(currentLevelPrefab, portalID);
     }
 
     private void DestroyCurrentLevel()

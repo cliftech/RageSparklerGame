@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 public class Player : MonoBehaviour
 {
+    private LevelManager levelManager;
     private PlayerMovement playerMovement;
     private PlayerLevel level;
 
@@ -29,12 +30,13 @@ public class Player : MonoBehaviour
     private string enemyWeaponTag = "EnemyWeapon";
     private string trapTag = "Trap";
     private Action interactAction;
-    private Vector2 respawnPos;
+    private int respawnPortalID;
 
     [HideInInspector] public bool isDead;
 
     void Awake()
     {
+        levelManager = FindObjectOfType<LevelManager>();
         playerMovement = GetComponent<PlayerMovement>();
         level = GetComponent<PlayerLevel>();
     }
@@ -96,7 +98,9 @@ public class Player : MonoBehaviour
     }
     private IEnumerator ReviveAfterTime(float time)
     {
-        yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSecondsRealtime(.5f);
+        playerMovement.rb.velocity = Vector2.zero;
+        yield return new WaitForSecondsRealtime(time - .5f);
         Revive();
     }
 
@@ -105,13 +109,13 @@ public class Player : MonoBehaviour
         isDead = false;
         health = activeMaxHealth;
         playerMovement.animator.SetBool("Dead", false);
-        transform.position = respawnPos;
+        levelManager.ResetLevel(respawnPortalID);
         SetHealthText();
         SetEssenceText();
     }
-    public void SetRespawnPos(Vector2 respawnPos)
+    public void SetRespawnPortal(int respawnPortalID)
     {
-        this.respawnPos = respawnPos;
+        this.respawnPortalID = respawnPortalID;
     }
 
     private void CalculateStats()

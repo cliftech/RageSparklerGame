@@ -94,7 +94,7 @@ public class Portal : MonoBehaviour
         {
             if (!checkpointActivated)
             {
-                player.SetRespawnPos(transform.position);
+                player.SetRespawnPortal(portalId);
                 checkpointActivated = true;
             }
             if(isCheckpint)
