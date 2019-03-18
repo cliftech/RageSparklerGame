@@ -71,10 +71,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 70
   type: SecondaryWeapon
+  itemName: Bronze Shield
   description: 
   icon: {fileID: 21300000, guid: 3209fbd80fd8b7e4caea212e6c81caf6, type: 3}
+  quality: Common
   pickedUp: 0
   equipable: 1
+  damage: 0
+  armour: 0
 --- !u!61 &3005029407476772883
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1,9 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    private static GameObject toolTip;
+    private static Text textBox;
+    private static Text visualText;
+    public GameObject toolTipObject;    
+    public Text textBoxObject;
+    public Text visualTextObject;
+
     public GameObject inventoryUI;
     public GameObject InvSlots;
     public bool inventoryEnabled;
@@ -11,8 +19,14 @@ public class Inventory : MonoBehaviour
     public GameObject[] slot;
     public int totalSlots;
 
+    public float slotPaddingHorizontal;
+    public float slotPaddingVertical;
+
     void Start()
     {
+        visualText = visualTextObject;
+        textBox = textBoxObject;
+        toolTip = toolTipObject;
         slot = new GameObject[totalSlots];
         for (int i = 0; i < totalSlots; i++)
         {
@@ -32,34 +46,57 @@ public class Inventory : MonoBehaviour
                 inventoryUI.SetActive(true);
             else
                 inventoryUI.SetActive(false);
+            toolTipObject.SetActive(false);
         }
     }
 
-    public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, Sprite itemIcon)
+    public void ShowToolTip(GameObject slot)
+    {
+        
+        Slot tmpslot = slot.GetComponent<Slot>();
+        if (!tmpslot.empty)
+        {
+            visualText.text = tmpslot.GetToolTip();
+            textBox.text = visualText.text;
+
+            toolTip.SetActive(true);
+
+            float xPos = slot.transform.position.x - slotPaddingHorizontal - 35;
+            float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - slotPaddingVertical - 15;
+
+            toolTip.transform.position = new Vector2(xPos, yPos);
+        }
+    }
+    public void HideToolTip()
+    {
+        toolTip.SetActive(false);
+    }
+
+    public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality)
     {
         if (itemType == "Helmet")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 0);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 0);
         else if (itemType == "Amulet")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 1);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 1);
         else if (itemType == "BodyArmor")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 2);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 2);
         else if (itemType == "Weapon")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 3);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 3);
         else if (itemType == "LegArmor")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 4);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 4);
         else if (itemType == "Boots")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 5);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 5);
         else if (itemType == "Gloves")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 6);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 6);
         else if (itemType == "SecondaryWeapon")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 7);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7);
         else if (itemType == "Potions")
-            return add(itemObj, itemID, itemType, itemDescription, itemIcon, 8);
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8);
         else
             return false;
     }
 
-    public bool add(GameObject itemObj, int itemID, string itemType, string itemDescription, Sprite itemIcon, int i)
+    public bool add(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, int i)
     {
         if (slot[i].GetComponent<Slot>().empty)
         {
@@ -70,6 +107,8 @@ public class Inventory : MonoBehaviour
             slot[i].GetComponent<Slot>().description = itemDescription;
             slot[i].GetComponent<Slot>().ID = itemID;
             slot[i].GetComponent<Slot>().item = itemObj;
+            slot[i].GetComponent<Slot>().quality = quality;
+            slot[i].GetComponent<Slot>().itemName = itemName;
 
             itemObj.transform.parent = slot[i].transform;
             itemObj.SetActive(false);
@@ -81,7 +120,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void AddItem(GameObject itemObj, int itemID, string itemType, string itemDescription, Sprite itemIcon)
+    public void AddItem(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, string quality, Sprite itemIcon)
     {
         for (int i = 0; i < totalSlots; i++)
         {
@@ -94,6 +133,8 @@ public class Inventory : MonoBehaviour
                 slot[i].GetComponent<Slot>().description = itemDescription;
                 slot[i].GetComponent<Slot>().ID = itemID;
                 slot[i].GetComponent<Slot>().item = itemObj;
+                slot[i].GetComponent<Slot>().itemName = itemName;
+                slot[i].GetComponent<Slot>().quality = quality;
 
                 itemObj.transform.parent = slot[i].transform;
                 itemObj.SetActive(false);
@@ -140,6 +181,8 @@ public class Inventory : MonoBehaviour
         slot[i].GetComponent<Slot>().item = null;
         slot[i].GetComponent<Slot>().UpdateSlot();
         slot[i].GetComponent<Slot>().empty = true;
+        slot[i].GetComponent<Slot>().quality = "";
+        slot[i].GetComponent<Slot>().itemName = "";
     }
     public GameObject FindItemByType(string itemType)
     {

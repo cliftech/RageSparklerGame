@@ -72,10 +72,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 80
   type: Potions
-  description: 
+  itemName: Small Health Potion
+  description: Heals the player for 25% max hp
   icon: {fileID: 21300000, guid: a38de2af0ebcd1d438398af9491043ac, type: 3}
+  quality: Common
   pickedUp: 0
   equipable: 1
+  damage: 0
+  armour: 0
 --- !u!61 &1677769102622771607
 BoxCollider2D:
   m_ObjectHideFlags: 0
