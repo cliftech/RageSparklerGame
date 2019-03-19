@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
@@ -8,7 +9,12 @@ public class Inventory : MonoBehaviour
     private static GameObject toolTip;
     private static Text textBox;
     private static Text visualText;
-    public GameObject toolTipObject;    
+    private Player player;
+    private PlayerInteract plrInter;
+    private CameraController followCamera;
+
+    public Slot slotC;
+    public GameObject toolTipObject;
     public Text textBoxObject;
     public Text visualTextObject;
 
@@ -22,12 +28,18 @@ public class Inventory : MonoBehaviour
     public float slotPaddingHorizontal;
     public float slotPaddingVertical;
 
+
     void Start()
     {
         visualText = visualTextObject;
         textBox = textBoxObject;
         toolTip = toolTipObject;
         slot = new GameObject[totalSlots];
+        plrInter = GetComponent<PlayerInteract>();
+        player = GetComponent<Player>();
+        slotC = GetComponent<Slot>();
+        followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
+
         for (int i = 0; i < totalSlots; i++)
         {
             slot[i] = InvSlots.transform.GetChild(i).gameObject;
@@ -39,21 +51,34 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI")
+        if (Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI")
         {
+            EventSystem.current.SetSelectedGameObject(slot[0]);
             inventoryEnabled = !inventoryEnabled;
             if (inventoryEnabled == true)
+            {
                 inventoryUI.SetActive(true);
+                player.GetComponent<PlayerMovement>().enabled = false;
+                followCamera.GetComponent<CameraController>().enabled = false;
+            }
             else
+            {
                 inventoryUI.SetActive(false);
+                player.GetComponent<PlayerMovement>().enabled = true;
+                followCamera.GetComponent<CameraController>().enabled = true;
+                EventSystem.current.SetSelectedGameObject(plrInter.hubChest.slot[0]);
+            }
             toolTipObject.SetActive(false);
         }
     }
 
     public void ShowToolTip(GameObject slot)
     {
-        
         Slot tmpslot = slot.GetComponent<Slot>();
+        Transform panel = tmpslot.transform.GetChild(0);
+        tmpslot.selected = true;
+        panel.GetComponent<Image>().color = Color.grey;
+
         if (!tmpslot.empty)
         {
             visualText.text = tmpslot.GetToolTip();
@@ -67,9 +92,13 @@ public class Inventory : MonoBehaviour
             toolTip.transform.position = new Vector2(xPos, yPos);
         }
     }
-    public void HideToolTip()
+    public void HideToolTip(GameObject slot)
     {
+        Slot tmpslot = slot.GetComponent<Slot>();
+        Transform panel = tmpslot.transform.GetChild(0);
+        panel.GetComponent<Image>().color = Color.white;
         toolTip.SetActive(false);
+        tmpslot.selected = false;
     }
 
     public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality)
@@ -142,7 +171,7 @@ public class Inventory : MonoBehaviour
                 slot[i].GetComponent<Slot>().UpdateSlot();
                 slot[i].GetComponent<Slot>().empty = false;
                 break;
-            }      
+            }
         }
     }
 
@@ -197,5 +226,18 @@ public class Inventory : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void FindGrey()
+    {
+        Transform panel;
+        for (int i = 0; i < slot.Length; i++)
+        {
+            panel = slot[i].transform.GetChild(0);
+            if (panel.GetComponent<Image>().color == Color.grey)
+            {
+                panel.GetComponent<Image>().color = Color.white;
+            }
+        }
     }
 }

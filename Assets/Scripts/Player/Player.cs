@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Interact"))
         {
-            if(interactAction != null)
+            if (interactAction != null)
                 interactAction.Invoke();
         }
     }

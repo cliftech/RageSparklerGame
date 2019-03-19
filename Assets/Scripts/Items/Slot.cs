@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
+    private Navigation navigation;
+    private Button button;
+
+    public bool selected = false;
     public GameObject item;
     public bool empty;
     public int ID;
@@ -23,19 +27,36 @@ public class Slot : MonoBehaviour
 
     public void UpdateSlot()
     {
-        if(icon != null)
+        if (icon != null)
             slotIcon.GetComponent<Image>().sprite = icon;
         else
+        {
             slotIcon.GetComponent<Image>().sprite = defaultIcon;
+            slotIcon.GetComponent<Image>().color = Color.white;
+        }
+
     }
 
-    public void Swap()
+    public void Swapas()
     {
         if(!empty)
             inter.swap(item, ID, type, description, quality, itemName, icon);
     }
 
-    private void Start()
+    void Awake()
+    {
+        button = GetComponent<Button>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L) && selected)
+        {
+            button.onClick.Invoke();
+        }
+    }
+
+    void Start()
     {
         slotIcon = transform.GetChild(0);
     }

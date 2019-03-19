@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -14,12 +15,13 @@ public class PlayerInteract : MonoBehaviour
     private PlayerLevel playerLevel;
     private InteractableGUI interactableGUI;
     private Player player;
+    private CameraController followCamera;
     private HealthPotions hpPot;
     private int priceToLevelUp;
 
     void Update()
     {
-        if (Input.GetButtonDown("Interact") && currentInterObj)
+        if (Input.GetKeyDown(KeyCode.F) && currentInterObj)
         {
             if (currentInterObjScript.talks)
             {
@@ -45,15 +47,25 @@ public class PlayerInteract : MonoBehaviour
                 hubChest.toolTipObject.SetActive(false);
                 equipment.toolTipObject.SetActive(false);
                 if (currentInterObj.name == "HubChest")
-                {
+                {                   
                     hubChest.inventoryEnabled = !hubChest.inventoryEnabled;
 
                     if (hubChest.inventoryEnabled)
                     {
+                        EventSystem.current.SetSelectedGameObject(hubChest.slot[0]);
                         hubChest.inventoryUI.SetActive(true);
+                        player.GetComponent<PlayerMovement>().enabled = false;
+                        followCamera.GetComponent<CameraController>().enabled = false;
                     }
                     else
+                    {
                         hubChest.inventoryUI.SetActive(false);
+                        player.GetComponent<PlayerMovement>().enabled = true;
+                        followCamera.GetComponent<CameraController>().enabled = true;
+                        EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
+                        hubChest.HideToolTip(hubChest.slot[0]);
+                        hubChest.FindGrey();
+                    }
                 }
             }
         }
@@ -81,6 +93,7 @@ public class PlayerInteract : MonoBehaviour
     {
         hubChest = GetComponent<Inventory>();
         player = GetComponent<Player>();
+        followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
         hpPot = GetComponent<HealthPotions>();
         interactableGUI = FindObjectOfType<InteractableGUI>();
         playerLevel = GetComponent<PlayerLevel>();
@@ -114,8 +127,11 @@ public class PlayerInteract : MonoBehaviour
             currentInterObj = other.gameObject;
             if (currentInterObj.name == "LevelUpNPC")
                 interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
+            
             Item item = currentInterObj.GetComponent<Item>();
             currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
+            if (currentInterObjScript.openable)
+                interactableGUI.Show("Open", transform, new Vector2(0, 2f));
             if (currentInterObjScript.collectable)
             {
                 bool Equipped = false;
@@ -141,6 +157,8 @@ public class PlayerInteract : MonoBehaviour
                 equipment.toolTipObject.SetActive(false);
                 hubChest.toolTipObject.SetActive(false);
             }
+            player.GetComponent<PlayerMovement>().enabled = true;
+            followCamera.GetComponent<CameraController>().enabled = true;
         }
     }
 }
