@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+    private PlayerSoundController playerSoundController;
+
     public float movVelocity = 5;
     public float acceleration = 5;
     public float jumpVel = 5;
@@ -42,7 +44,7 @@ public class PlayerMovement : MonoBehaviour {
     private float horizontalInput;
     private float verticalInput;
     [Header("states (for debuging)")]
-    [SerializeField] private bool isGrounded;
+    [SerializeField] public bool isGrounded;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool isAttacking;
     [SerializeField] public bool isDownwardAttacking;
@@ -293,6 +295,8 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = new Vector2(rb.velocity.x, 
             rb.velocity.y < -downwardAttackDownwardVel ? rb.velocity.y : -downwardAttackDownwardVel);
         Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, true);
+
+        player.soundController.PlayDownwardAttackStart();
     }
     /// <summary>
     /// Pushes all rigid bodies away from PC while mid air
@@ -357,6 +361,8 @@ public class PlayerMovement : MonoBehaviour {
 
         animator.SetBool("Dashing", isGrounded);
         animator.SetBool("Rolling", !isGrounded);
+
+        player.soundController.PlayDashSound();
     }
     void StopDashing()
     {
@@ -389,6 +395,8 @@ public class PlayerMovement : MonoBehaviour {
 
         animator.SetTrigger("Jump");
         ForceEndAttack();
+
+        player.soundController.PlayJumpSound();
     }
     void EndJump()
     {
@@ -404,6 +412,8 @@ public class PlayerMovement : MonoBehaviour {
         attackComboCount = 0;
         ForceEndAttack();
         Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, false);
+
+        player.soundController.PlayLandSound();
     }
     #endregion
     #region sticking to walls

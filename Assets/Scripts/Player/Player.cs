@@ -6,7 +6,8 @@ using System;
 public class Player : MonoBehaviour
 {
     private LevelManager levelManager;
-    private PlayerMovement playerMovement;
+    [HideInInspector]public PlayerSoundController soundController;
+    [HideInInspector]public PlayerMovement playerMovement;
     private PlayerLevel level;
 
     public float base_maxhealth = 100;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         levelManager = FindObjectOfType<LevelManager>();
+        soundController = GetComponentInChildren<PlayerSoundController>();
         playerMovement = GetComponent<PlayerMovement>();
         level = GetComponent<PlayerLevel>();
     }
@@ -76,6 +78,8 @@ public class Player : MonoBehaviour
         if (health <= 0)
             Die();
         SetHealthText();
+
+        soundController.PlayGetHitSound();
     }
 
     public void SetInteractAction(Action action)
@@ -192,5 +196,22 @@ public class Player : MonoBehaviour
     public void SetHealthText()
     {
         healthText.text = "Health: " + health.ToString() + "/" + activeMaxHealth.ToString();
+    }
+
+    public void FootstepEffectEvent()
+    {
+        soundController.PlayFootstepSound();
+    }
+    public void AttackEffectEvent(int attacknum)
+    {
+        soundController.PlayAttackSound(attacknum);
+    }
+    public void AirAttackEffectEvent(int attacknum)
+    {
+        soundController.PlayAirAttackSound(attacknum);
+    }
+    public void DownwardAttackSlamEffectEvent()
+    {
+        soundController.PlayDownwardAttackCommence();
     }
 }
