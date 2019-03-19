@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     private LevelManager levelManager;
     [HideInInspector]public PlayerSoundController soundController;
     [HideInInspector]public PlayerMovement playerMovement;
+    [HideInInspector] public TheFirstFlash AmuletFlash;
     private PlayerLevel level;
 
     public float base_maxhealth = 100;
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
         soundController = GetComponentInChildren<PlayerSoundController>();
         playerMovement = GetComponent<PlayerMovement>();
         level = GetComponent<PlayerLevel>();
+        AmuletFlash = FindObjectOfType<TheFirstFlash>();
     }
     void Start()
     {

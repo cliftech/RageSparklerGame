@@ -13,6 +13,7 @@ TagManager:
   - InterObject
   - HubChest
   - Item
+  - StoryEvent
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - EnemyWeapon
   - PickUps
   - Interactable
-  - 
+  - StoryEvent
   - 
   - 
   - 

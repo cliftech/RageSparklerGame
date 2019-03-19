@@ -14,4 +14,6 @@ public class Level : MonoBehaviour
     public Transform BottomBound;
 
     public Transform spawnPoint;
+    public Transform LevelEnd;
+    public bool DoesAmuletFlash;
 }

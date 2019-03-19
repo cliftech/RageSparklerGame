@@ -70,6 +70,7 @@ public class LevelManager : MonoBehaviour
         {
             soundManager.PlayMusic(currentLevel.backgroundMusic);
         }
+        player.AmuletFlash.SetAmuletFlash(currentLevel.DoesAmuletFlash, currentLevel.LevelEnd);
     }
 
     public void ResetLevel(int portalID)
