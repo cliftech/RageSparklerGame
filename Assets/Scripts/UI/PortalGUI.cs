@@ -94,28 +94,32 @@ public class PortalGUI : MonoBehaviour
 
     private void UpdateGUI()
     {
-        int buttonEnabled = 0;
-        for (int i = 0; i < optionButtons.Count && optionButtons[i].gameObject.activeSelf; i++, buttonEnabled++) ;
+        int buttonsEnabled = 0;
+        for (int i = 0; i < optionButtons.Count && optionButtons[i].gameObject.activeSelf; i++, buttonsEnabled++) ;
 
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, buttonHeight * buttonEnabled);
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, buttonHeight * buttonsEnabled);
 
         Navigation nav = optionButtons[0].navigation;
         nav.mode = Navigation.Mode.Explicit;
-        nav.selectOnUp = optionButtons[buttonEnabled - 1];
-        nav.selectOnDown = buttonEnabled > 0 ? optionButtons[1] : null;
+        nav.selectOnUp = optionButtons[buttonsEnabled - 1];
+        nav.selectOnDown = buttonsEnabled > 0 ? optionButtons[1] : null;
         nav.selectOnLeft = null;
         nav.selectOnRight = null;
         optionButtons[0].navigation = nav;
 
-        for (int i = 1; i < buttonEnabled - 1; i++)
+        for (int i = 1; i < buttonsEnabled - 1; i++)
         {
             nav.selectOnUp = optionButtons[i - 1];
             nav.selectOnDown = optionButtons[i + 1];
             optionButtons[i].navigation = nav;
         }
 
-        nav.selectOnUp = optionButtons[buttonEnabled - 2];
+        // if butt.enabled sniff it
+        if (buttonsEnabled > 1)
+            nav.selectOnUp = optionButtons[buttonsEnabled - 2];
+        else
+            nav.selectOnUp = null;
         nav.selectOnDown = optionButtons[0];
-        optionButtons[buttonEnabled - 1].navigation = nav;
+        optionButtons[buttonsEnabled - 1].navigation = nav;
     }
 }
