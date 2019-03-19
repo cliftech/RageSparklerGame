@@ -6,6 +6,7 @@ public class Level : MonoBehaviour
 {
     public string title = "enter title";
     public List<Portal> checkPoints;
+    public AudioClip backgroundMusic;
 
     public Transform LeftBound;
     public Transform TopBound;

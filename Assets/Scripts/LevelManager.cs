@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     private CameraController cameraController;
     private Player player;
     private ScreenCover screenCover;
+    private SoundManager soundManager;
 
     public GameObject zerothArea;
     public GameObject hubArea;
@@ -23,6 +24,7 @@ public class LevelManager : MonoBehaviour
         cameraController = FindObjectOfType<CameraController>();
         player = FindObjectOfType<Player>();
         screenCover = FindObjectOfType<ScreenCover>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     void Start()
@@ -64,6 +66,10 @@ public class LevelManager : MonoBehaviour
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);
         screenCover.UncoverScreen(.1f);
+        if (currentLevel.backgroundMusic != null)
+        {
+            soundManager.PlayMusic(currentLevel.backgroundMusic);
+        }
     }
 
     public void ResetLevel(int portalID)
