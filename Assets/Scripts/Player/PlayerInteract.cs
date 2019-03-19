@@ -21,7 +21,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && currentInterObj)
+        if (Input.GetKeyDown(KeyCode.E) && currentInterObj)
         {
             if (currentInterObjScript.talks)
             {
@@ -46,7 +46,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 hubChest.toolTipObject.SetActive(false);
                 equipment.toolTipObject.SetActive(false);
-                if (currentInterObj.name == "HubChest")
+                if (currentInterObj.name == "HubChest" && !hubChest.inventoryEnabled)
                 {                   
                     hubChest.inventoryEnabled = !hubChest.inventoryEnabled;
 
@@ -59,15 +59,20 @@ public class PlayerInteract : MonoBehaviour
                     }
                     else
                     {
-                        hubChest.inventoryUI.SetActive(false);
-                        player.GetComponent<PlayerMovement>().enabled = true;
-                        followCamera.GetComponent<CameraController>().enabled = true;
-                        EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
-                        hubChest.HideToolTip(hubChest.slot[0]);
-                        hubChest.FindGrey();
+                        
                     }
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) && hubChest.inventoryEnabled)
+        {
+            hubChest.inventoryUI.SetActive(false);
+            player.GetComponent<PlayerMovement>().enabled = true;
+            followCamera.GetComponent<CameraController>().enabled = true;
+            EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
+            hubChest.HideToolTip(hubChest.slot[0]);
+            hubChest.FindGrey();
+            hubChest.inventoryEnabled = false;
         }
 
         if (Input.GetButtonDown("UseHealthPotion"))
