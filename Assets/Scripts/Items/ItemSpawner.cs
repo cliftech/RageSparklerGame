@@ -7,23 +7,30 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField]
     private LootTable allDrops;
 
+    public Item itm;
 
 
-    public void Spawn(bool isDirRight)
+
+    void Start()
+    {
+        itm = GetComponent<Item>();
+    }
+
+    public void Spawn()
     {
         int chance;
-        Vector3 dropPlace;
+        float dropDirection;
         
 
         for (int i = 0; i < allDrops.GetComponent<LootTable>().lootTable.Length; ++i)
-        {
-            if (!isDirRight)
-                dropPlace = new Vector3(Random.Range(0.00f, 2.00f), 1);
-            else
-                dropPlace = new Vector3(Random.Range(-2.00f, 0.00f), 1);    
+        {  
+            dropDirection = Random.Range(-5.0f, 5.0f);
             chance = Random.Range(0, 100);
             if (chance < allDrops.GetComponent<LootTable>().lootTable[i].DropChance)
-            Instantiate(allDrops.GetComponent<LootTable>().lootTable[i].Item, this.transform.position + dropPlace, Quaternion.identity);
+            {
+                itm = Instantiate(allDrops.GetComponent<LootTable>().lootTable[i].Item, this.transform.position, Quaternion.identity);
+                itm.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
+            }
         }    
     }
 }

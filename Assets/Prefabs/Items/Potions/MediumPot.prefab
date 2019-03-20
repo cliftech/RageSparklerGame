@@ -79,7 +79,7 @@ MonoBehaviour:
   pickedUp: 0
   equipable: 1
   damage: 0
-  armour: 0
+  armor: 0
 --- !u!61 &6307795518408653471
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -89,7 +89,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1960445382552158268}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f4d0026d07f943d47b8200c59dd374b2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -115,7 +115,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1960445382552158268}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f4d0026d07f943d47b8200c59dd374b2, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0

@@ -57,10 +57,6 @@ public class PlayerInteract : MonoBehaviour
                         player.GetComponent<PlayerMovement>().enabled = false;
                         followCamera.GetComponent<CameraController>().enabled = false;
                     }
-                    else
-                    {
-                        
-                    }
                 }
             }
         }

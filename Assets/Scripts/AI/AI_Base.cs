@@ -128,7 +128,7 @@ public class AI_Base : MonoBehaviour
             c.enabled = false;
         StartCoroutine(DeathRoutine(.5f));
         animator.SetBool("Dead", true);
-        itemSpawner.Spawn(isDirRight);
+        itemSpawner.Spawn();
     }
     protected IEnumerator DeathRoutine(float time)
     {

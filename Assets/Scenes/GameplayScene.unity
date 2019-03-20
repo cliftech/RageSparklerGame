@@ -12855,6 +12855,36 @@ PrefabInstance:
       propertyPath: inter
       value: 
       objectReference: {fileID: 1576086011}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: quality
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: type
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: itemName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: ID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4a3f5ae078ad304193cb9150989c6a3, type: 3}
 --- !u!1001 &1620907992
@@ -16881,6 +16911,86 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: coinText
+      value: 
+      objectReference: {fileID: 1833895218}
+    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: healhtText
+      value: 
+      objectReference: {fileID: 1072773120}
+    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: healthText
+      value: 
+      objectReference: {fileID: 1072773120}
+    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: essenceText
+      value: 
+      objectReference: {fileID: 1833895218}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: inventoryUI
+      value: 
+      objectReference: {fileID: 1150422186}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: InvSlots
+      value: 
+      objectReference: {fileID: 1476161006}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: totalSlots
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: textBox
+      value: 
+      objectReference: {fileID: 375565533}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: toolTip
+      value: 
+      objectReference: {fileID: 375565530}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: visualText
+      value: 
+      objectReference: {fileID: 512870192}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: toolTipObject
+      value: 
+      objectReference: {fileID: 1660768895}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: visualTextObject
+      value: 
+      objectReference: {fileID: 512870192}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: textBoxObject
+      value: 
+      objectReference: {fileID: 375565533}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: slotPaddingHorizontal
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: slotPaddingVertical
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: inventory
@@ -16941,11 +17051,6 @@ PrefabInstance:
       propertyPath: slotPaddingVertical
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 1056179042876710187, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17001,11 +17106,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: levelText
-      value: 
-      objectReference: {fileID: 87990747}
     - target: {fileID: 7958124925400199662, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: inventory
@@ -17021,81 +17121,11 @@ PrefabInstance:
       propertyPath: equipment
       value: 
       objectReference: {fileID: 524262125}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
+    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
-      propertyPath: inventoryUI
+      propertyPath: levelText
       value: 
-      objectReference: {fileID: 1150422186}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: InvSlots
-      value: 
-      objectReference: {fileID: 1476161006}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: totalSlots
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: textBox
-      value: 
-      objectReference: {fileID: 375565533}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: toolTip
-      value: 
-      objectReference: {fileID: 375565530}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: visualText
-      value: 
-      objectReference: {fileID: 512870192}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: toolTipObject
-      value: 
-      objectReference: {fileID: 1660768895}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: visualTextObject
-      value: 
-      objectReference: {fileID: 512870192}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: textBoxObject
-      value: 
-      objectReference: {fileID: 375565533}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: slotPaddingHorizontal
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: slotPaddingVertical
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: coinText
-      value: 
-      objectReference: {fileID: 1833895218}
-    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: healhtText
-      value: 
-      objectReference: {fileID: 1072773120}
-    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: healthText
-      value: 
-      objectReference: {fileID: 1072773120}
-    - target: {fileID: 1056179042876710185, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: essenceText
-      value: 
-      objectReference: {fileID: 1833895218}
+      objectReference: {fileID: 87990747}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
 --- !u!1001 &1089153325757256275
@@ -17340,6 +17370,41 @@ PrefabInstance:
       propertyPath: inter
       value: 
       objectReference: {fileID: 1576086011}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: quality
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: type
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: itemName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: ID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995372768868974107, guid: e4a3f5ae078ad304193cb9150989c6a3,
+        type: 3}
+      propertyPath: description
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1995372768868974104, guid: e4a3f5ae078ad304193cb9150989c6a3,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

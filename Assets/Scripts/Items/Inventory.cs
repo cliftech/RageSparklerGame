@@ -51,23 +51,23 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI")
+        if (Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
+            inventoryEnabled = true;
             EventSystem.current.SetSelectedGameObject(slot[0]);
-            inventoryEnabled = !inventoryEnabled;
-            if (inventoryEnabled == true)
-            {
-                inventoryUI.SetActive(true);
-                player.GetComponent<PlayerMovement>().enabled = false;
-                followCamera.GetComponent<CameraController>().enabled = false;
-            }
-            else
-            {
-                inventoryUI.SetActive(false);
-                player.GetComponent<PlayerMovement>().enabled = true;
-                followCamera.GetComponent<CameraController>().enabled = true;
-                EventSystem.current.SetSelectedGameObject(plrInter.hubChest.slot[0]);
-            }
+            inventoryUI.SetActive(true);
+            player.GetComponent<PlayerMovement>().enabled = false;
+            followCamera.GetComponent<CameraController>().enabled = false;
+            toolTipObject.SetActive(false);
+        }
+        if(Input.GetKeyDown(KeyCode.Escape) && inventoryEnabled)
+        {
+            inventoryUI.SetActive(false);
+            player.GetComponent<PlayerMovement>().enabled = true;
+            followCamera.GetComponent<CameraController>().enabled = true;
+            EventSystem.current.SetSelectedGameObject(plrInter.hubChest.slot[0]);
+            inventoryEnabled = false;
+            FindGrey();
             toolTipObject.SetActive(false);
         }
     }
