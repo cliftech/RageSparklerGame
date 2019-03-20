@@ -33,10 +33,10 @@ public class PlayerInteract : MonoBehaviour
                         player.essence -= priceToLevelUp;
                         playerLevel.currentLevel++;
                         priceToLevelUp++;
-                        player.SetEssenceText();
+                        player.statusGUI.UpdateEssenceText();
                         playerLevel.SetLevelText();
                         player.SetHealthByLevel();
-                        player.SetHealthText();
+                        player.statusGUI.UpdateHealthbar();
                         interactableGUI.Hide();
                         interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
                     }

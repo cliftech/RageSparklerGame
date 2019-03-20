@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System;
 public class Player : MonoBehaviour
 {
@@ -9,8 +8,10 @@ public class Player : MonoBehaviour
     [HideInInspector]public PlayerSoundController soundController;
     [HideInInspector]public PlayerMovement playerMovement;
     [HideInInspector] public TheFirstFlash AmuletFlash;
+    [HideInInspector] public StatusGUI statusGUI;
     private PlayerLevel level;
 
+    [HideInInspector] public float activeMaxHealth;
     public float base_maxhealth = 100;
     public float health_perLevel = 20;
     public float Health { get { return health; } }
@@ -22,11 +23,8 @@ public class Player : MonoBehaviour
     public float attack2Dam = 7.5f;
     public float attack3Dam = 10;
     public float downwardAttackDam = 7.5f;
-    public Text essenceText;
-    public Text healthText;
     public int essence;
 
-    private float activeMaxHealth;
     private float health;
     //private int level;
     private string enemyWeaponTag = "EnemyWeapon";
@@ -43,6 +41,7 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         level = GetComponent<PlayerLevel>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
+        statusGUI = FindObjectOfType<StatusGUI>();
     }
     void Start()
     {
@@ -50,8 +49,8 @@ public class Player : MonoBehaviour
         playerMovement.damageContainer.SetDoKnockbackCall(() => IsCurrnetAttackKnockingBack());
         essence = 0;
         CalculateStats();
-        SetEssenceText();
-        SetHealthText();
+        statusGUI.UpdateEssenceText();
+        statusGUI.UpdateHealthbar();
         level.SetLevelText();
     }
 
@@ -79,7 +78,7 @@ public class Player : MonoBehaviour
             playerMovement.KnockBack(knockBackDirection == 1, damage);
         if (health <= 0)
             Die();
-        SetHealthText();
+        statusGUI.UpdateHealthbar();
 
         soundController.PlayGetHitSound();
     }
@@ -100,7 +99,7 @@ public class Player : MonoBehaviour
         playerMovement.animator.SetBool("Dead", true);
         StartCoroutine(ReviveAfterTime(2f));
         essence = 0;
-        SetEssenceText();
+        statusGUI.UpdateEssenceText();
     }
     private IEnumerator ReviveAfterTime(float time)
     {
@@ -116,8 +115,8 @@ public class Player : MonoBehaviour
         health = activeMaxHealth;
         playerMovement.animator.SetBool("Dead", false);
         levelManager.ResetLevel(respawnPortalID);
-        SetHealthText();
-        SetEssenceText();
+        statusGUI.UpdateHealthbar();
+        statusGUI.UpdateEssenceText();
     }
     public void SetRespawnPortal(int respawnPortalID)
     {
@@ -159,7 +158,7 @@ public class Player : MonoBehaviour
         health += healthAmount;
         if (health >= activeMaxHealth)
             health = activeMaxHealth;
-        SetHealthText();
+        statusGUI.UpdateHealthbar();
     }
 
     public bool IsCurrnetAttackKnockingBack()
@@ -178,7 +177,7 @@ public class Player : MonoBehaviour
         {
             Destroy(other.gameObject);
             essence++;
-            SetEssenceText();
+            statusGUI.UpdateEssenceText();
         }
     }
 
@@ -188,16 +187,6 @@ public class Player : MonoBehaviour
         {
             GetHit(collision.collider.GetComponent<Trap>().damagePercent * activeMaxHealth / 100, 2);
         }
-    }
-
-    public void SetEssenceText()
-    {
-        essenceText.text = "Essence: " + essence.ToString();
-    }
-
-    public void SetHealthText()
-    {
-        healthText.text = "Health: " + health.ToString() + "/" + activeMaxHealth.ToString();
     }
 
     public void FootstepEffectEvent()

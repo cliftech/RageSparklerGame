@@ -40,7 +40,7 @@ public class Smith : MonoBehaviour
             player.downwardAttackDam += 1.5f;
             player.essence -= upgradePrice;
             upgradePrice = (upgradePrice + 5) * 2;
-            player.SetEssenceText();
+            player.statusGUI.UpdateEssenceText();
             interactableGUI.Hide();
             interactableGUI.Show(interactTextToDisplay + " " + upgradePrice.ToString(), transform, new Vector2(0, 2f));
         }
