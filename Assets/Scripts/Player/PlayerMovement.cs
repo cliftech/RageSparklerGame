@@ -6,33 +6,27 @@ public class PlayerMovement : MonoBehaviour {
 
     private PlayerSoundController playerSoundController;
 
-    public float movVelocity = 5;
-    public float acceleration = 5;
-    public float jumpVel = 5;
-    public float inAirAttackUpwardVel = 1;
-    public float downwardAttackDownwardVel = 1.5f;
-    public float groundedAttackHorizontalVel = 0.5f;
-    public float slamPushVel = 2;
-    public float inAirJumpVelMult = 0.75f;
-    public float dashDistance = 3;
-    public float dashSpeed = 20;
-    public float stuckToWall_g_mult = 0.75f;
-    public float endJumpMult = 0.75f;
-    public float minDelayBetweenDashes = 0.5f;
-    public int maxJumpCount = 3;
-    public int maxMidairDashesCount = 1;
-    public float knockBackVel = 5;
-    public float invincibilityFrameTime = .5f;
-    public float spriteFlashFrequency = .05f;
-
+    private float movVelocity = 5;
+    private float acceleration = 1;
+    private float jumpVel = 10;
+    private float inAirAttackUpwardVel = 2.25f;
+    private float downwardAttackDownwardVel = 2f;
+    private float groundedAttackHorizontalVel = 2f;
+    private float slamPushVel = 3;
+    private float inAirJumpVelMult = 0.8f;
+    private float dashSpeed = 10f;
+    private float stuckToWall_g_mult = 0.5f;
+    private float endJumpMult = 0.5f;
+    private float knockBackVel = 6;
+    private float spriteFlashFrequency = .05f;
     public LayerMask groundMask;
     public LayerMask wallMask;
     public LayerMask wallStickMask;
     public LayerMask unDashableMask;
     public LayerMask slamPushableMask;
-    public string enemyLayerName;
+    private string enemyLayerName = "Enemy";
     private int enemyLayer;
-    public string enemyWeaponLayerName;
+    private string enemyWeaponLayerName = "EnemyWeapon";
     private int enemyWeaponLayer;
 
     [HideInInspector] public SpriteRenderer spriteRenderer;
@@ -43,6 +37,16 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public Player player;
     private float horizontalInput;
     private float verticalInput;
+    [Header("These will be unlocked/upgraded by progressing")]
+    public bool dashUnlocked;
+    public bool midAirDashUnlocked;
+    public bool downwardAttackUnlocked;
+    public bool wallJumpingUnlocked;
+    public int maxJumpCount = 2;
+    public float dashDistance = 3;
+    public float minDelayBetweenDashes = 0.2f;
+    public int maxMidairDashesCount = 1;
+    public float invincibilityFrameTime = 0.5f;
     [Header("states (for debuging)")]
     [SerializeField] public bool isGrounded;
     [SerializeField] private bool isDashing;
@@ -106,7 +110,7 @@ public class PlayerMovement : MonoBehaviour {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (!isGrounded && (!isStuckToWall_L && !isStuckToWall_R))
+        if (wallJumpingUnlocked && (!isGrounded && (!isStuckToWall_L && !isStuckToWall_R)))
         {
             if (CanSlideLeft() && horizontalInput < 0)
                 StickToWall(-1);
@@ -118,12 +122,15 @@ public class PlayerMovement : MonoBehaviour {
             Jump();
         else if (Input.GetButtonUp("Jump"))
             EndJump();
-        if (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking && (knockBackTimer < knockBackTime / 2))
+        if (dashUnlocked && (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking && (knockBackTimer < knockBackTime / 2f)))
         {
-            if (Input.GetButtonDown("DashLeft") && !isStuckToWall_L)
-                DashLeft();
-            if (Input.GetButtonDown("DashRight") && !isStuckToWall_R)
-                DashRight();
+            if (isGrounded || midAirDashUnlocked)
+            {
+                if (Input.GetButtonDown("DashLeft") && !isStuckToWall_L)
+                    DashLeft();
+                if (Input.GetButtonDown("DashRight") && !isStuckToWall_R)
+                    DashRight();
+            }
         }
         else if (dashTimer > 0)
         {
@@ -140,7 +147,7 @@ public class PlayerMovement : MonoBehaviour {
                 {
                     if (verticalInput >= 0)
                         AirAttack();
-                    else
+                    else if (downwardAttackUnlocked)
                         DownwardAttack();
                 }
             }
