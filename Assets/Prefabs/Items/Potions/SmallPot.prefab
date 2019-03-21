@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6626358792595125044}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.37, y: -3.48, z: 0}
+  m_LocalPosition: {x: 11.26, y: -3.48, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -50,7 +50,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -74,7 +74,7 @@ MonoBehaviour:
   type: Potions
   itemName: Small Health Potion
   description: Heals the player for 25% max hp
-  icon: {fileID: 21300000, guid: a38de2af0ebcd1d438398af9491043ac, type: 3}
+  icon: {fileID: 21300000, guid: eca58610b88601e4e87287d4f9566c0e, type: 3}
   quality: Common
   pickedUp: 0
   equipable: 1
@@ -89,22 +89,22 @@ BoxCollider2D:
   m_GameObject: {fileID: 6626358792595125044}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: f4d0026d07f943d47b8200c59dd374b2, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.05}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.08, y: 0.11}
-    newSize: {x: 0.32, y: 0.32}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.15}
+  m_Size: {x: 0.1, y: 0.12836531}
   m_EdgeRadius: 0
 --- !u!61 &1214785896300595877
 BoxCollider2D:
@@ -115,16 +115,16 @@ BoxCollider2D:
   m_GameObject: {fileID: 6626358792595125044}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: f4d0026d07f943d47b8200c59dd374b2, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.06}
+  m_Offset: {x: 0, y: 0.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.08, y: 0.11}
-    newSize: {x: 0.32, y: 0.32}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -185,12 +185,12 @@ SpriteRenderer:
   m_SortingLayerID: 1076842169
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a38de2af0ebcd1d438398af9491043ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eca58610b88601e4e87287d4f9566c0e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

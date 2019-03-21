@@ -16,7 +16,7 @@ public class ItemSpawner : MonoBehaviour
         itm = GetComponent<Item>();
     }
 
-    public void Spawn()
+    public void Spawn(bool directionLeft)
     {
         int chance;
         float dropDirection;
@@ -24,7 +24,9 @@ public class ItemSpawner : MonoBehaviour
 
         for (int i = 0; i < allDrops.GetComponent<LootTable>().lootTable.Length; ++i)
         {  
-            dropDirection = Random.Range(-5.0f, 5.0f);
+            if(directionLeft)
+             dropDirection = Random.Range(-3.0f, -1.0f);
+            else dropDirection = Random.Range(1.0f, 3.0f);
             chance = Random.Range(0, 100);
             if (chance < allDrops.GetComponent<LootTable>().lootTable[i].DropChance)
             {

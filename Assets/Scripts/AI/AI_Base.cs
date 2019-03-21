@@ -119,7 +119,7 @@ public class AI_Base : MonoBehaviour
     {
         stateAfterStaggeredCall();
     }
-    protected void SetDead()
+    protected void SetDead(bool dropItemDirRight)
     {
         state = State.Dead;
         health = 0;
@@ -128,7 +128,7 @@ public class AI_Base : MonoBehaviour
             c.enabled = false;
         StartCoroutine(DeathRoutine(.5f));
         animator.SetBool("Dead", true);
-        itemSpawner.Spawn();
+        itemSpawner.Spawn(dropItemDirRight);
     }
     protected IEnumerator DeathRoutine(float time)
     {

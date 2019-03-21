@@ -227,7 +227,7 @@ public class AI_FireGolem : AI_Base
         if (health <= 0)
         {
             if (state != State.Dead)
-                SetDead();
+                SetDead(isRight);
         }
         else
         {

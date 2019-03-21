@@ -121,6 +121,10 @@ public class Inventory : MonoBehaviour
             return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7);
         else if (itemType == "Potions")
             return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8);
+        else if (itemType == "Rings")
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9);
+        else if (itemType == "Cloaks")
+            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10);
         else
             return false;
     }
