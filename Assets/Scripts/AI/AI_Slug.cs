@@ -14,7 +14,9 @@ public class AI_Slug : AI_Base
 
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
+    private string trapTag = "Trap";
     private bool isNextAttackVomit;
+    private bool isgrounded;
 
     void Awake()
     {
@@ -35,11 +37,13 @@ public class AI_Slug : AI_Base
     }
     void Update()
     {
+        isgrounded = IsGrounded(terrainMask);
+
         switch (state)
         {
             case State.Patrol:
-                if (!DoesGroundForwardExists(isDirRight, yRayLength, terrainMask, Color.blue) ||
-                    RaycastSideways_OR(isDirRight, 5, xRayLength, terrainMask, Color.red))
+                if ((!DoesGroundForwardExists(isDirRight, yRayLength, terrainMask, Color.blue) ||
+                    RaycastSideways_OR(isDirRight, 5, xRayLength, terrainMask, Color.red)) && isgrounded)
                 {
                     ChangeDirection(!isDirRight);
                 }
@@ -186,6 +190,14 @@ public class AI_Slug : AI_Base
             var dc = other.GetComponentInParent<DamageContainer>();
             GetHit(transform.position.x < other.transform.position.x, 
                 dc.GetDamage(), dc.doKnockback());
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(trapTag) && state != State.Dead)
+        {
+            GetHit(rb.velocity.x > 0, maxHealth, false);
         }
     }
 }

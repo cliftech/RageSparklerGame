@@ -71,7 +71,6 @@ public class Player : MonoBehaviour
     public void GetHit(float damage, int knockBackDirection = 0)
     {
         health -= damage;
-        print("PC Health - " + health);
         if (knockBackDirection == 2)
             playerMovement.KnockbackUp(damage);
         else if (knockBackDirection != 0)

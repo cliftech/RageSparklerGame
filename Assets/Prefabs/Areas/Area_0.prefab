@@ -9978,40 +9978,94 @@ Tilemap:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4961985220146014906}
   m_Enabled: 1
-  m_Tiles: {}
+  m_Tiles:
+  - first: {x: 45, y: -19, z: 0}
+    second:
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
+  - first: {x: 46, y: -19, z: 0}
+    second:
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
+  - first: {x: 47, y: -19, z: 0}
+    second:
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
+  - first: {x: 48, y: -19, z: 0}
+    second:
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
+  - first: {x: 49, y: -19, z: 0}
+    second:
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
+  - first: {x: 50, y: -19, z: 0}
+    second:
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 6
+    m_Data: {fileID: 11400000, guid: c476cb75d337b7f45b5aea73e7b38a36, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 6
+    m_Data: {fileID: 21300110, guid: 758c92e39b8b3c44b86f693e3dcb4111, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 0
+  - m_RefCount: 6
     m_Data:
-      e00: 6390600
-      e01: 8.785491e-39
-      e02: NaN
-      e03: 151.83069
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
       e10: 0
-      e11: 0
-      e12: NaN
-      e13: 1e-45
-      e20: 8.78557e-39
-      e21: 1.7952778e-21
-      e22: 0
-      e23: 5.9140024
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
       e30: 0
       e31: 0
       e32: 0
-      e33: 1e-45
+      e33: 1
   m_TileColorArray:
-  - m_RefCount: 0
-    m_Data: {r: 1.8e-44, g: 1.8e-44, b: 1.8e-44, a: 1.8e-44}
+  - m_RefCount: 6
+    m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: 0, y: -7, z: 0}
-  m_Size: {x: 14, y: 7, z: 1}
+  m_Origin: {x: 0, y: -19, z: 0}
+  m_Size: {x: 51, y: 19, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -11382,11 +11436,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4758768208694449077}
     m_Modifications:
-    - target: {fileID: 7280401373980428976, guid: a6d54e2153c74e042b72bdbb18093dad,
-        type: 3}
-      propertyPath: m_Name
-      value: Amulet
-      objectReference: {fileID: 0}
     - target: {fileID: 1600482712993193942, guid: a6d54e2153c74e042b72bdbb18093dad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11441,6 +11490,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280401373980428976, guid: a6d54e2153c74e042b72bdbb18093dad,
+        type: 3}
+      propertyPath: m_Name
+      value: Amulet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6d54e2153c74e042b72bdbb18093dad, type: 3}
