@@ -51,6 +51,7 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
+        InvSlots.SetActive(true);
         if (Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
             inventoryEnabled = true;
