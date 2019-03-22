@@ -5,8 +5,8 @@ using System;
 public class Player : MonoBehaviour
 {
     private LevelManager levelManager;
-    [HideInInspector]public PlayerSoundController soundController;
-    [HideInInspector]public PlayerMovement playerMovement;
+    [HideInInspector] public PlayerSoundController soundController;
+    [HideInInspector] public PlayerMovement playerMovement;
     [HideInInspector] public TheFirstFlash AmuletFlash;
     [HideInInspector] public StatusGUI statusGUI;
     private PlayerLevel level;
@@ -188,6 +188,48 @@ public class Player : MonoBehaviour
             GetHit(collision.collider.GetComponent<Trap>().damagePercent * activeMaxHealth / 100, 2);
         }
     }
+
+    #region Upgrading skills
+    public void UnlockDash()
+    {
+        playerMovement.dashUnlocked = true;
+    }
+
+    public void UnlockMidAirDash()
+    {
+        playerMovement.midAirDashUnlocked = true;
+    }
+
+    public void UnlockDownwardAttack()
+    {
+        playerMovement.downwardAttackUnlocked = true;
+    }
+
+    public void UpgradeAirJumpCount(int airJumpCount)
+    {
+        playerMovement.maxJumpCount = airJumpCount + 1;
+    }
+
+    public void UpgradeDashDistance(float distance)
+    {
+        playerMovement.dashDistance = distance;
+    }
+
+    public void UpgradeDelayBetweenDashed(float delay)
+    {
+        playerMovement.minDelayBetweenDashes = delay;
+    }
+
+    public void UpgradeMaxMidAirDashCount(int count)
+    {
+        playerMovement.maxMidairDashesCount = count;
+    }
+
+    public void UpgradeInvincibilityFrame(float frameTime)
+    {
+        playerMovement.invincibilityFrameTime = frameTime;
+    }
+    #endregion
 
     public void FootstepEffectEvent()
     {
