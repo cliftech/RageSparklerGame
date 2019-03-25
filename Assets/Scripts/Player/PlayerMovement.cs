@@ -56,6 +56,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private bool isStuckToWall_R;
     [SerializeField] private bool isKnockedBack;
     [SerializeField] public bool isInvulnerable;
+    [SerializeField] public bool isDisabled;
     private bool hasSlowedDownFromSticking;
     private Vector2 dashPos;
     private float gravityScale;
@@ -107,8 +108,11 @@ public class PlayerMovement : MonoBehaviour {
             Land();
         isGrounded = newGrounded;
 
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        if (!isDisabled)
+        {
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
+        }
 
         if (wallJumpingUnlocked && (!isGrounded && (!isStuckToWall_L && !isStuckToWall_R)))
         {
@@ -118,11 +122,11 @@ public class PlayerMovement : MonoBehaviour {
                 StickToWall(1);
         }
 
-        if (Input.GetButtonDown("Jump") && !isDownwardAttacking && jumpCounter < maxJumpCount - 1 && !isDashing)
+        if (Input.GetButtonDown("Jump") && !isDownwardAttacking && jumpCounter < maxJumpCount - 1 && !isDashing &&!isDisabled)
             Jump();
         else if (Input.GetButtonUp("Jump"))
             EndJump();
-        if (dashUnlocked && (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking && (knockBackTimer < knockBackTime / 2f)))
+        if (dashUnlocked && (!isDashing && dashTimer == 0 && midairDashCounter < maxMidairDashesCount && !isDownwardAttacking && (knockBackTimer < knockBackTime / 2f)) && !isDisabled)
         {
             if (isGrounded || midAirDashUnlocked)
             {
@@ -138,7 +142,7 @@ public class PlayerMovement : MonoBehaviour {
             if (dashTimer <= 0)
                 dashTimer = 0;
         }
-        if (((isGrounded && attackComboCount < 3) || (!isGrounded && attackComboCount < 2)) && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R && !isKnockedBack)
+        if (((isGrounded && attackComboCount < 3) || (!isGrounded && attackComboCount < 2)) && !isDisabled && attackCooldownTimer <= 0 && !isDashing && !isDownwardAttacking && ! isStuckToWall_L && ! isStuckToWall_R && !isKnockedBack)
         {
             if (Input.GetButtonDown("Attack")) {
                 if (isGrounded)
@@ -508,6 +512,13 @@ public class PlayerMovement : MonoBehaviour {
     {
         isKnockedBack = false;
         knockBackTimer = 0;
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        isDisabled = !enabled;
+        horizontalInput = 0;
+        verticalInput = 0;
     }
 
     void SetDirFacing(bool isRight)

@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     private Vector3 Offset;
     private Vector3 ExtraOffset;
     private float MaxExtra = 2.5f;
+    private bool isDisabled;
     Camera Camera;
 
     // Start is called before the first frame update
@@ -27,7 +28,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!PlayerCharacter.isDead)
+        if (!PlayerCharacter.isDead && !isDisabled)
         {
             if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
             {
@@ -48,6 +49,11 @@ public class CameraController : MonoBehaviour
             Mathf.Clamp(position.y, BottomBound.position.y + Camera.orthographicSize, TopBound.position.y - Camera.orthographicSize),
             position.z);
         transform.position = position;
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        isDisabled = !enabled;
     }
 
     public void SetBounds(Transform LeftBound, Transform TopBound, Transform RightBound, Transform BottomBound)

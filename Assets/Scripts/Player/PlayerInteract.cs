@@ -52,8 +52,8 @@ public class PlayerInteract : MonoBehaviour
                     {
                         EventSystem.current.SetSelectedGameObject(hubChest.slot[0]);
                         hubChest.inventoryUI.SetActive(true);
-                        player.GetComponent<PlayerMovement>().enabled = false;
-                        followCamera.GetComponent<CameraController>().enabled = false;
+                        player.playerMovement.SetEnabled(false);
+                        followCamera.SetEnabled(false);
                     }
                 }
             }
@@ -61,8 +61,8 @@ public class PlayerInteract : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && hubChest.inventoryEnabled)
         {
             hubChest.inventoryUI.SetActive(false);
-            player.GetComponent<PlayerMovement>().enabled = true;
-            followCamera.GetComponent<CameraController>().enabled = true;
+            player.playerMovement.SetEnabled(true);
+            followCamera.SetEnabled(true);
             EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
             hubChest.HideToolTip(hubChest.slot[0]);
             hubChest.FindGrey();

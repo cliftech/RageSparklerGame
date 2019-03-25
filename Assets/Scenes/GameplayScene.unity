@@ -17246,7 +17246,8 @@ PrefabInstance:
       propertyPath: maxJumpCount
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
 --- !u!1001 &1089153325757256275
 PrefabInstance:
