@@ -17,5 +17,5 @@ public class Item : MonoBehaviour
 
     public float damage;
     public float armor;
-
+    public float health;
 }

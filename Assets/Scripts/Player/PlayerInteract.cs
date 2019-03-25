@@ -20,7 +20,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && currentInterObj)
+        if (Input.GetButtonDown("Interact") && currentInterObj)
         {
             if (currentInterObjScript.talks)
             {
@@ -58,7 +58,7 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape) && hubChest.inventoryEnabled)
+        if (Input.GetButtonDown("Close") && hubChest.inventoryEnabled)
         {
             hubChest.inventoryUI.SetActive(false);
             player.playerMovement.SetEnabled(true);
@@ -99,22 +99,23 @@ public class PlayerInteract : MonoBehaviour
     }
 
     //swap player inventory item with hub chest inventory item
-    public void swap(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemQuality, string itemName, Sprite itemIcon)
+    public void swap(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemQuality, string itemName, Sprite itemIcon, float damage, float armor, float health)
     {
         GameObject which = equipment.FindItemByType(itemType);
         if(!which.GetComponent<Slot>().empty)
         {
             hubChest.RemoveItem(itemID);
             hubChest.AddItemToHubChest(which.GetComponent<Slot>().item, which.GetComponent<Slot>().ID, which.GetComponent<Slot>().type, which.GetComponent<Slot>().description,
-               which.GetComponent<Slot>().itemName, which.GetComponent<Slot>().quality, which.GetComponent<Slot>().icon);
+               which.GetComponent<Slot>().itemName, which.GetComponent<Slot>().quality, which.GetComponent<Slot>().icon, which.GetComponent<Slot>().damage,
+               which.GetComponent<Slot>().armor, which.GetComponent<Slot>().health);
 
             equipment.RemoveItem(itemType);
-            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality);
+            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
         }
         else
         {
             hubChest.RemoveItem(itemID);
-            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality);
+            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
         }           
     }
 
@@ -135,10 +136,10 @@ public class PlayerInteract : MonoBehaviour
                 bool Equipped = false;
                 if (item.equipable)
                 {
-                    Equipped = equipment.Equip(currentInterObj, item.ID, item.type, item.description, item.itemName, item.icon, item.quality);
+                    Equipped = equipment.Equip(currentInterObj, item.ID, item.type, item.description, item.itemName, item.icon, item.quality, item.damage, item.armor, item.health);
                 }
                 if (Equipped == false)
-                hubChest.AddItemToHubChest(currentInterObj, item.ID, item.type, item.description, item.itemName, item.quality, item.icon);
+                hubChest.AddItemToHubChest(currentInterObj, item.ID, item.type, item.description, item.itemName, item.quality, item.icon, item.damage, item.armor, item.health);
             }
         }
     }

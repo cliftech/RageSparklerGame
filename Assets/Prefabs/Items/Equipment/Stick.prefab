@@ -77,8 +77,9 @@ MonoBehaviour:
   quality: Common
   pickedUp: 0
   equipable: 1
-  damage: 0
+  damage: 0.5
   armor: 0
+  health: 0
 --- !u!61 &3005029407476772883
 BoxCollider2D:
   m_ObjectHideFlags: 0

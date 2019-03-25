@@ -51,7 +51,7 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
+        if (Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
             inventoryEnabled = true;
             EventSystem.current.SetSelectedGameObject(slot[0]);
@@ -101,35 +101,35 @@ public class Inventory : MonoBehaviour
         tmpslot.selected = false;
     }
 
-    public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality)
+    public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, float damage, float armor, float health)
     {
         if (itemType == "Helmet")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 0);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 0, damage, armor, health);
         else if (itemType == "Amulet")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 1);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 1, damage, armor, health);
         else if (itemType == "BodyArmor")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 2);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 2, damage, armor, health);
         else if (itemType == "Weapon")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 3);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 3, damage, armor, health);
         else if (itemType == "LegArmor")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 4);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 4, damage, armor, health);
         else if (itemType == "Boots")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 5);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 5, damage, armor, health);
         else if (itemType == "Gloves")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 6);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 6, damage, armor, health);
         else if (itemType == "SecondaryWeapon")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7, damage, armor, health);
         else if (itemType == "Potions")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8, damage, armor, health);
         else if (itemType == "Rings")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9, damage, armor, health);
         else if (itemType == "Cloaks")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10, damage, armor, health);
         else
             return false;
     }
 
-    public bool AddItemToPlayerInv(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, int i)
+    public bool AddItemToPlayerInv(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, int i, float damage, float armor, float health)
     {
         if (slot[i].GetComponent<Slot>().empty)
         {
@@ -142,6 +142,9 @@ public class Inventory : MonoBehaviour
             slot[i].GetComponent<Slot>().item = itemObj;
             slot[i].GetComponent<Slot>().quality = quality;
             slot[i].GetComponent<Slot>().itemName = itemName;
+            slot[i].GetComponent<Slot>().damage = damage;
+            slot[i].GetComponent<Slot>().armor = armor;
+            slot[i].GetComponent<Slot>().health = health;
 
             itemObj.transform.parent = slot[i].transform;
             itemObj.SetActive(false);
@@ -153,7 +156,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void AddItemToHubChest(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, string quality, Sprite itemIcon)
+    public void AddItemToHubChest(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, string quality, Sprite itemIcon, float damage, float armor, float health)
     {
         for (int i = 0; i < totalSlots; i++)
         {
@@ -168,6 +171,9 @@ public class Inventory : MonoBehaviour
                 slot[i].GetComponent<Slot>().item = itemObj;
                 slot[i].GetComponent<Slot>().itemName = itemName;
                 slot[i].GetComponent<Slot>().quality = quality;
+                slot[i].GetComponent<Slot>().damage = damage;
+                slot[i].GetComponent<Slot>().armor = armor;
+                slot[i].GetComponent<Slot>().health = health;
 
                 itemObj.transform.parent = slot[i].transform;
                 itemObj.SetActive(false);
@@ -216,6 +222,9 @@ public class Inventory : MonoBehaviour
         slot[i].GetComponent<Slot>().empty = true;
         slot[i].GetComponent<Slot>().quality = "";
         slot[i].GetComponent<Slot>().itemName = "";
+        slot[i].GetComponent<Slot>().damage = 0;
+        slot[i].GetComponent<Slot>().armor = 0;
+        slot[i].GetComponent<Slot>().health = 0;
     }
     public GameObject FindItemByType(string itemType)
     {

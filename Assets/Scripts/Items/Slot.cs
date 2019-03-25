@@ -24,6 +24,7 @@ public class Slot : MonoBehaviour
 
     public float damage;
     public float armor;
+    public float health;
 
     public void UpdateSlot()
     {
@@ -39,9 +40,9 @@ public class Slot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L) && selected && !empty)
+        if (Input.GetButtonDown("Swap") && selected && !empty)
         {
-            inter.swap(item, ID, type, description, quality, itemName, icon);
+            inter.swap(item, ID, type, description, quality, itemName, icon, damage, armor, health);
         }
     }
 
@@ -74,9 +75,13 @@ public class Slot : MonoBehaviour
         {
             stats += "\n+" + damage.ToString() + " Damage";
         }
-        if (damage > 0)
+        if (armor > 0)
         {
-            stats += "\n+" + armor.ToString() + " Damage";
+            stats += "\n+" + armor.ToString() + " Armor";
+        }
+        if (health > 0)
+        {
+            stats += "\n+" + health.ToString() + " Health";
         }
         return string.Format("<color=" + color + "><size=16>{0}</size></color><size=14><i><color=lime>" + newLine + "{1}</color></i>{2}</size>", itemName, description, stats);
     }
