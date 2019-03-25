@@ -37,22 +37,11 @@ public class Slot : MonoBehaviour
 
     }
 
-    public void Swapas()
-    {
-        if(!empty)
-            inter.swap(item, ID, type, description, quality, itemName, icon);
-    }
-
-    void Awake()
-    {
-        button = GetComponent<Button>();
-    }
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L) && selected)
+        if (Input.GetKeyDown(KeyCode.L) && selected && !empty)
         {
-            button.onClick.Invoke();
+            inter.swap(item, ID, type, description, quality, itemName, icon);
         }
     }
 

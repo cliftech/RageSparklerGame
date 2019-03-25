@@ -105,7 +105,7 @@ public class PlayerInteract : MonoBehaviour
         if(!which.GetComponent<Slot>().empty)
         {
             hubChest.RemoveItem(itemID);
-            hubChest.AddItem(which.GetComponent<Slot>().item, which.GetComponent<Slot>().ID, which.GetComponent<Slot>().type, which.GetComponent<Slot>().description,
+            hubChest.AddItemToHubChest(which.GetComponent<Slot>().item, which.GetComponent<Slot>().ID, which.GetComponent<Slot>().type, which.GetComponent<Slot>().description,
                which.GetComponent<Slot>().itemName, which.GetComponent<Slot>().quality, which.GetComponent<Slot>().icon);
 
             equipment.RemoveItem(itemType);
@@ -138,7 +138,7 @@ public class PlayerInteract : MonoBehaviour
                     Equipped = equipment.Equip(currentInterObj, item.ID, item.type, item.description, item.itemName, item.icon, item.quality);
                 }
                 if (Equipped == false)
-                hubChest.AddItem(currentInterObj, item.ID, item.type, item.description, item.itemName, item.quality, item.icon);
+                hubChest.AddItemToHubChest(currentInterObj, item.ID, item.type, item.description, item.itemName, item.quality, item.icon);
             }
         }
     }
@@ -155,8 +155,8 @@ public class PlayerInteract : MonoBehaviour
                 equipment.toolTipObject.SetActive(false);
                 hubChest.toolTipObject.SetActive(false);
             }
-            player.GetComponent<PlayerMovement>().enabled = true;
-            followCamera.GetComponent<CameraController>().enabled = true;
+            player.playerMovement.SetEnabled(true);
+            followCamera.SetEnabled(true);
         }
     }
 }

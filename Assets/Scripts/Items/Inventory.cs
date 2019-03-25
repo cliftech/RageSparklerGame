@@ -51,7 +51,6 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        InvSlots.SetActive(true);
         if (Input.GetKeyDown(KeyCode.I) && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
             inventoryEnabled = true;
@@ -105,32 +104,32 @@ public class Inventory : MonoBehaviour
     public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality)
     {
         if (itemType == "Helmet")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 0);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 0);
         else if (itemType == "Amulet")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 1);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 1);
         else if (itemType == "BodyArmor")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 2);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 2);
         else if (itemType == "Weapon")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 3);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 3);
         else if (itemType == "LegArmor")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 4);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 4);
         else if (itemType == "Boots")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 5);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 5);
         else if (itemType == "Gloves")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 6);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 6);
         else if (itemType == "SecondaryWeapon")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7);
         else if (itemType == "Potions")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8);
         else if (itemType == "Rings")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9);
         else if (itemType == "Cloaks")
-            return add(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10);
+            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10);
         else
             return false;
     }
 
-    public bool add(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, int i)
+    public bool AddItemToPlayerInv(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, int i)
     {
         if (slot[i].GetComponent<Slot>().empty)
         {
@@ -154,7 +153,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void AddItem(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, string quality, Sprite itemIcon)
+    public void AddItemToHubChest(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, string quality, Sprite itemIcon)
     {
         for (int i = 0; i < totalSlots; i++)
         {
