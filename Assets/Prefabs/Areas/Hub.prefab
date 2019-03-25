@@ -56,7 +56,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: MAIN HALL
   checkPoints: []
-  backgroundMusic: {fileID: 8300000, guid: 551358c5382715f44aa1b3a78ab822af, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 403ff69679d901a4c850804031f79b28, type: 3}
   LeftBound: {fileID: 4834831764220320518}
   TopBound: {fileID: 5092929418807708500}
   RightBound: {fileID: 8660013231822849972}
@@ -7151,11 +7151,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4833971093930179215}
     m_Modifications:
-    - target: {fileID: 2938279793214235361, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
-        type: 3}
-      propertyPath: m_Name
-      value: HubChest
-      objectReference: {fileID: 0}
     - target: {fileID: 759698702757371723, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7211,6 +7206,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2938279793214235361, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
+        type: 3}
+      propertyPath: m_Name
+      value: HubChest
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 636070314481226814, guid: 9c9ff3f4ac699b94387c3546f8f66c8d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9c9ff3f4ac699b94387c3546f8f66c8d, type: 3}
@@ -7227,16 +7227,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4833971093930179215}
     m_Modifications:
-    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
-        type: 3}
-      propertyPath: m_Name
-      value: SmithNPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
-        type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
     - target: {fileID: 6223562338534363477, guid: d1c7b8baca16b6c48bb7e1575078eac2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7291,6 +7281,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
+        type: 3}
+      propertyPath: m_Name
+      value: SmithNPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223562338534363475, guid: d1c7b8baca16b6c48bb7e1575078eac2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6223562339915942528, guid: d1c7b8baca16b6c48bb7e1575078eac2,
         type: 3}
@@ -7349,11 +7349,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4833971093930179215}
     m_Modifications:
-    - target: {fileID: 6539332257522436034, guid: 086e2c64885a186488f9a648fb4114f9,
-        type: 3}
-      propertyPath: m_Name
-      value: LevelUpNPC
-      objectReference: {fileID: 0}
     - target: {fileID: 6539332257522436038, guid: 086e2c64885a186488f9a648fb4114f9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7418,6 +7413,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1.1293676
+      objectReference: {fileID: 0}
+    - target: {fileID: 6539332257522436034, guid: 086e2c64885a186488f9a648fb4114f9,
+        type: 3}
+      propertyPath: m_Name
+      value: LevelUpNPC
       objectReference: {fileID: 0}
     - target: {fileID: 6539332257522436036, guid: 086e2c64885a186488f9a648fb4114f9,
         type: 3}
@@ -9943,11 +9943,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4833971093930179215}
     m_Modifications:
-    - target: {fileID: 1960445382552158268, guid: e7b7d2cd6f8c71a409f5f715eb977819,
-        type: 3}
-      propertyPath: m_Name
-      value: MediumPot
-      objectReference: {fileID: 0}
     - target: {fileID: 7497304006689150298, guid: e7b7d2cd6f8c71a409f5f715eb977819,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10002,6 +9997,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960445382552158268, guid: e7b7d2cd6f8c71a409f5f715eb977819,
+        type: 3}
+      propertyPath: m_Name
+      value: MediumPot
       objectReference: {fileID: 0}
     - target: {fileID: 5772103789928413613, guid: e7b7d2cd6f8c71a409f5f715eb977819,
         type: 3}

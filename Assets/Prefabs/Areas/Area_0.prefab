@@ -9894,7 +9894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: RUINS OF ARTHON
   checkPoints: []
-  backgroundMusic: {fileID: 0}
+  backgroundMusic: {fileID: 8300000, guid: 551358c5382715f44aa1b3a78ab822af, type: 3}
   LeftBound: {fileID: 1111016147240097840}
   TopBound: {fileID: 3924416357840461247}
   RightBound: {fileID: 4150318469776834041}
@@ -11382,11 +11382,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4758768208694449077}
     m_Modifications:
-    - target: {fileID: 7280401373980428976, guid: a6d54e2153c74e042b72bdbb18093dad,
-        type: 3}
-      propertyPath: m_Name
-      value: Amulet
-      objectReference: {fileID: 0}
     - target: {fileID: 1600482712993193942, guid: a6d54e2153c74e042b72bdbb18093dad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11441,6 +11436,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280401373980428976, guid: a6d54e2153c74e042b72bdbb18093dad,
+        type: 3}
+      propertyPath: m_Name
+      value: Amulet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6d54e2153c74e042b72bdbb18093dad, type: 3}
