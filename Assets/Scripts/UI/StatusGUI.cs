@@ -7,6 +7,7 @@ public class StatusGUI : MonoBehaviour
 {
     public Image healthBarFill;
     public Text essenceText;
+    public Text levelText;
     private Player player;
     void Awake()
     {
@@ -20,5 +21,8 @@ public class StatusGUI : MonoBehaviour
     {
         essenceText.text = player.essence.ToString();
     }
-
+    public void UpdateLevelText()
+    {
+        levelText.text = player.level.ToString();
+    }
 }

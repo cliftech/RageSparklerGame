@@ -12,7 +12,6 @@ public class PlayerInteract : MonoBehaviour
     public Inventory hubChest;
     public Inventory equipment;
 
-    private PlayerLevel playerLevel;
     private InteractableGUI interactableGUI;
     private Player player;
     private CameraController followCamera;
@@ -31,10 +30,9 @@ public class PlayerInteract : MonoBehaviour
                     {                
                         if(player.essence > 0)
                         player.essence -= priceToLevelUp;
-                        playerLevel.currentLevel++;
+                        player.LevelUp();
                         priceToLevelUp++;
                         player.statusGUI.UpdateEssenceText();
-                        playerLevel.SetLevelText();
                         player.SetHealthByLevel();
                         player.statusGUI.UpdateHealthbar();
                         interactableGUI.Hide();
@@ -97,7 +95,6 @@ public class PlayerInteract : MonoBehaviour
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
         hpPot = GetComponent<HealthPotions>();
         interactableGUI = FindObjectOfType<InteractableGUI>();
-        playerLevel = GetComponent<PlayerLevel>();
         priceToLevelUp = 0;
     }
 

@@ -9,13 +9,12 @@ public class Player : MonoBehaviour
     [HideInInspector] public PlayerMovement playerMovement;
     [HideInInspector] public TheFirstFlash AmuletFlash;
     [HideInInspector] public StatusGUI statusGUI;
-    private PlayerLevel level;
 
+    [HideInInspector] public int level;
     [HideInInspector] public float activeMaxHealth;
     public float base_maxhealth = 100;
     public float health_perLevel = 20;
     public float Health { get { return health; } }
-    public int Level { get { return level.currentLevel; } }
 
     public List<int> Checkpoints;
 
@@ -39,7 +38,6 @@ public class Player : MonoBehaviour
         levelManager = FindObjectOfType<LevelManager>();
         soundController = GetComponentInChildren<PlayerSoundController>();
         playerMovement = GetComponent<PlayerMovement>();
-        level = GetComponent<PlayerLevel>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
         statusGUI = FindObjectOfType<StatusGUI>();
     }
@@ -48,10 +46,11 @@ public class Player : MonoBehaviour
         playerMovement.damageContainer.SetDamageCall(() => GetDamage());
         playerMovement.damageContainer.SetDoKnockbackCall(() => IsCurrnetAttackKnockingBack());
         essence = 0;
+        level = 1;
         CalculateStats();
         statusGUI.UpdateEssenceText();
         statusGUI.UpdateHealthbar();
-        level.SetLevelText();
+        statusGUI.UpdateLevelText();
     }
 
     void Update()
@@ -121,7 +120,11 @@ public class Player : MonoBehaviour
     {
         this.respawnPortalID = respawnPortalID;
     }
-
+    public void LevelUp()
+    {
+        level++;
+        statusGUI.UpdateLevelText();
+    }
     private void CalculateStats()
     {
         //activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
@@ -131,7 +134,7 @@ public class Player : MonoBehaviour
 
     public void SetHealthByLevel()
     {
-        activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
+        activeMaxHealth = base_maxhealth + level * health_perLevel;
         health = activeMaxHealth;
     }
     public float GetDamage()
