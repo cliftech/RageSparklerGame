@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -117,6 +118,28 @@ public class PlayerInteract : MonoBehaviour
             hubChest.RemoveItem(itemID);
             equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
         }           
+    }
+
+    public void CompareToolTips(GameObject slotas, Text visualText, Text textBox, GameObject toolTip)
+    {
+        Slot tmpslot = slotas.GetComponent<Slot>();
+        Slot tmp2 = equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
+        Transform panel = tmp2.transform.GetChild(0);
+        tmp2.selected = true;
+        panel.GetComponent<Image>().color = Color.grey;
+
+        if (!tmp2.empty)
+        {
+            visualText.text = tmp2.GetToolTip();
+            textBox.text = visualText.text;
+
+            toolTip.SetActive(true);
+
+            float xPos = tmp2.transform.position.x - equipment.slotPaddingHorizontal - 15;
+            float yPos = tmp2.transform.position.y - tmp2.GetComponent<RectTransform>().sizeDelta.y - equipment.slotPaddingVertical;
+
+            toolTip.transform.position = new Vector2(xPos, yPos);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

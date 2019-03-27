@@ -7,16 +7,24 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     private static GameObject toolTip;
+    private static GameObject compareToolTip;
     private static Text textBox;
     private static Text visualText;
+    private static Text compareTextBox;
+    private static Text compareVisualText;
+
     private Player player;
     private PlayerInteract plrInter;
     private CameraController followCamera;
 
     public Slot slotC;
+
     public GameObject toolTipObject;
     public Text textBoxObject;
     public Text visualTextObject;
+    public GameObject compareToolTipObject;
+    public Text compareTextBoxObject;
+    public Text compareVisualTextObject;
 
     public GameObject inventoryUI;
     public GameObject InvSlots;
@@ -34,6 +42,9 @@ public class Inventory : MonoBehaviour
         visualText = visualTextObject;
         textBox = textBoxObject;
         toolTip = toolTipObject;
+        compareToolTip = compareToolTipObject;
+        compareTextBox = compareTextBoxObject;
+        compareVisualText = compareVisualTextObject;
         slot = new GameObject[totalSlots];
         plrInter = GetComponent<PlayerInteract>();
         player = GetComponent<Player>();
@@ -59,6 +70,7 @@ public class Inventory : MonoBehaviour
             player.playerMovement.SetEnabled(false);
             followCamera.SetEnabled(false);
             toolTipObject.SetActive(false);
+            compareToolTipObject.SetActive(false);
         }
         if(Input.GetKeyDown(KeyCode.Escape) && inventoryEnabled)
         {
@@ -69,6 +81,7 @@ public class Inventory : MonoBehaviour
             inventoryEnabled = false;
             FindGrey();
             toolTipObject.SetActive(false);
+            compareToolTipObject.SetActive(false);
         }
     }
 
@@ -92,6 +105,12 @@ public class Inventory : MonoBehaviour
             toolTip.transform.position = new Vector2(xPos, yPos);
         }
     }
+
+    public void CompareToolTips(GameObject slot)
+    {
+        plrInter.CompareToolTips(slot, compareVisualText, compareTextBox, compareToolTip);
+    }
+
     public void HideToolTip(GameObject slot)
     {
         Slot tmpslot = slot.GetComponent<Slot>();
