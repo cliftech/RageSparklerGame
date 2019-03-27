@@ -86,12 +86,12 @@ public class PlayerMovement : MonoBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageContainer = GetComponent<DamageContainer>();
         player = GetComponent<Player>();
+        gravityScale = rb.gravityScale;
     }
     void Start()
     {
         yRaylength = coll.size.y / 2 + 0.05f;
         xRaylength = coll.size.x / 2 + 0.1f;
-        gravityScale = rb.gravityScale;
         accel = acceleration;
         isDirRight = true;
         enemyWeaponLayer = LayerMask.NameToLayer(enemyWeaponLayerName);
@@ -375,7 +375,7 @@ public class PlayerMovement : MonoBehaviour {
 
         player.soundController.PlayDashSound();
     }
-    void StopDashing()
+    public void StopDashing()
     {
         if(isDashing)
             dashTimer = minDelayBetweenDashes;
