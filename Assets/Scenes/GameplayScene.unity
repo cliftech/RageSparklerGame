@@ -8742,7 +8742,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25.4}
+  m_AnchoredPosition: {x: 0, y: -25.400024}
   m_SizeDelta: {x: 305.51, y: 84.42999}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &979541585
@@ -18707,26 +18707,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1056179042876710191, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: maxJumpCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: levelText
-      value: 
-      objectReference: {fileID: 87990747}
     - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: toolTipObject
       value: 
       objectReference: {fileID: 1660768895}
-    - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: totalSlots
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: textBoxObject
@@ -18747,8 +18732,7 @@ PrefabInstance:
       propertyPath: InvSlots
       value: 
       objectReference: {fileID: 522046645}
-    m_RemovedComponents:
-    - {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
 --- !u!1001 &1089153325757256275
 PrefabInstance:

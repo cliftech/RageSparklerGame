@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI_FireGolem : AI_Base
+public class AI_Ghoul : AI_Base
 {
+    public float maxAggroRange = 10;
     public LayerMask terrainMask;
     public LayerMask playerMask;
     public float attackRange;
     public float attackDamage;
-    [Range(0, 1)] public float doubleAttackChance;
-    public float doubleAttackRange;
-    public float doubleAttackDamage;
     public float maxJumpRange, minJumpRange;
     public float jumpDamage;
     public float jumpVelocity;
     public float minYJumpDist;
-    public float maxYDiff;
     private float maxYJumpDist;
     public float attackImmobalizeTime = .5f;
     public float landImmobalizedTime = .5f;
@@ -34,9 +31,25 @@ public class AI_FireGolem : AI_Base
 
     void Start()
     {
+        // stats ----------------------------------------
+        //movVelocity = 5;
+        //aggroRange = 4;
+        //knockBackVelocity = 5;
+        //staggerVelocity = 2;
+        //terrainMask = 1 << LayerMask.NameToLayer("Terrain");
+        //playerMask = 1 << LayerMask.NameToLayer("Player");
+        //attackRange = 1.1f;
+        //maxJumpRange = 7;
+        //minJumpRange = 1;
+        //jumpVelocity = 8;
+        //minYJumpDist = 2;
+        //maxYDiff = 5;
+        //attackImmobalizeTime = .5f;
+        //landImmobalizedTime = .5f;           
+        //-----------------------------------------------
+
         damageContainer.SetDamageCall(() => attackDamage);
         health = maxHealth;
-        isNextDoubleAttack = Random.value < doubleAttackChance;
         SetIdle();
         maxYJumpDist = jumpVelocity * .5f;
 
@@ -51,12 +64,17 @@ public class AI_FireGolem : AI_Base
         switch (state)
         {
             case State.Aggro:
-                bool inLineWithPlayer = RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
-                                        RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask);
+                bool inLineWithPlayer = RaycastToPlayer(isDirRight, maxAggroRange, playerTag, playerMask, terrainMask) ||
+                                        RaycastToPlayer(!isDirRight, maxAggroRange, playerTag, playerMask, terrainMask);
                 float dist = Vector2.Distance(transform.position, target.position);
                 bool goundInFrontExists = DoesGroundForwardExists(isDirRight, yRayLength, terrainMask);
                 float yDiff = target.position.y - transform.position.y;
 
+                if (dist + .1f > maxAggroRange)
+                {
+                    SetIdle();
+                    break;
+                }
                 if (!goundInFrontExists && isGrounded && yDiff >= -coll.bounds.extents.y)
                     AttackJump();
                 else if (isGrounded && RaycastSideways_OR(isDirRight, 3, xRayLength, terrainMask))
@@ -76,24 +94,15 @@ public class AI_FireGolem : AI_Base
                             ChangeDirection(true);
                     }
 
-                    if (!isNextDoubleAttack && Vector2.Distance(target.position, transform.position) < attackRange)
+                    if (Vector2.Distance(target.position, transform.position) < attackRange)
                         AttackSingle();
-                    else if (isNextDoubleAttack && Vector2.Distance(target.position, transform.position) < doubleAttackRange)
-                        AttackDouble();
                 }
                 else // player is either higher or lower
                 {
-                    if (yDiff > maxYDiff)
-                        SetIdle();
-                    else
-                    {
                         if (isGrounded && yDiff >= minYJumpDist && yDiff < maxYJumpDist && dist >= minJumpRange && dist < maxJumpRange) // player is higher - perform jump to it
                             AttackJump();
-                        else if (isNextDoubleAttack && dist < doubleAttackRange)
-                            AttackDouble();
-                        else if (!isNextDoubleAttack && dist < attackRange)
+                        else if (dist < attackRange)
                             AttackSingle();
-                    }
                 }
                 break;
             case State.Attacking:
@@ -109,7 +118,6 @@ public class AI_FireGolem : AI_Base
                         RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
                     {
                         SetAggro();
-                        aggroRange *= 5;
                     }
                 }
                 break;
@@ -143,21 +151,14 @@ public class AI_FireGolem : AI_Base
 
         SetJumping(jumpVel * jumpVelocity);
         ChangeDirection(jumpVel.x > 0);
-        isNextDoubleAttack = Random.value < doubleAttackChance;
         minJumpTimer = minJumpInterval;
     }
     void AttackSingle()
     {
         damageContainer.SetDamageCall(() => attackDamage);
         SetAttack1();
-        isNextDoubleAttack = Random.value < doubleAttackChance;
     }
-    void AttackDouble()
-    {
-        damageContainer.SetDamageCall(() => doubleAttackDamage);
-        SetAttack2();
-        isNextDoubleAttack = Random.value < doubleAttackChance;
-    }
+
     void EndAttack()    // ovverides AI_Base.EndAttack() on animation events
     {
         StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
@@ -207,8 +208,9 @@ public class AI_FireGolem : AI_Base
                     float yDiff = target.position.y - transform.position.y;
                     bool islookingAtTarget = (transform.position.x > target.position.x && !isDirRight) ||
                                              (transform.position.x < target.position.x && isDirRight);
+                    bool isTargetInLineOfSight = Mathf.Abs(yDiff) < 0.5f;
 
-                    if (isWallBlockingTopOfCollider(isDirRight, terrainMask) && isWallBlockingBottomOfCollider(isDirRight, terrainMask))
+                    if (isTargetInLineOfSight && isWallBlockingTopOfCollider(isDirRight, terrainMask) && isWallBlockingBottomOfCollider(isDirRight, terrainMask))
                     {
                         SetFalling();
                     }

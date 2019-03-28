@@ -497,16 +497,16 @@ GameObject:
   m_Component:
   - component: {fileID: 1056179042876710187}
   - component: {fileID: 1056179042876710188}
-  - component: {fileID: 1056179042876710189}
   - component: {fileID: 1056179042876710190}
   - component: {fileID: 1056179042876710191}
-  - component: {fileID: 7236081369271385233}
   - component: {fileID: 7958124925400199662}
   - component: {fileID: 1412240953855950337}
   - component: {fileID: 454859859997555492}
   - component: {fileID: 1056179042876710185}
   - component: {fileID: 1056179042876710186}
   - component: {fileID: 143479156}
+  - component: {fileID: 480756717}
+  - component: {fileID: 480756720}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -568,7 +568,7 @@ SpriteRenderer:
   m_SortingLayerID: 629335217
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4aebe3c8bbcc49649b1a57483897997c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9cdc3eaf0a291b48ae928829c00b060, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -579,22 +579,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &1056179042876710189
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056179042876710176}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.09}
-  m_Size: {x: 0.42, y: 0.91}
-  m_Direction: 0
 --- !u!50 &1056179042876710190
 Rigidbody2D:
   serializedVersion: 4
@@ -646,14 +630,15 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
-  coll: {fileID: 0}
+  capsColl: {fileID: 0}
+  boxColl: {fileID: 0}
   damageContainer: {fileID: 0}
   player: {fileID: 0}
   dashUnlocked: 1
   midAirDashUnlocked: 1
   downwardAttackUnlocked: 1
   wallJumpingUnlocked: 1
-  maxJumpCount: 5
+  maxJumpCount: 2
   dashDistance: 3
   minDelayBetweenDashes: 0.2
   maxMidairDashesCount: 1
@@ -666,22 +651,8 @@ MonoBehaviour:
   isStuckToWall_R: 0
   isKnockedBack: 0
   isInvulnerable: 0
+  isDisabled: 0
   currentAttackNum: 0
---- !u!114 &7236081369271385233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056179042876710176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ca59683eda2c3647a406d7fc4787fff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelText: {fileID: 0}
-  currentLevel: 0
-  xpToLevelUp: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
 --- !u!114 &7958124925400199662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,7 +712,7 @@ MonoBehaviour:
   InvSlots: {fileID: 0}
   inventoryEnabled: 0
   slot: []
-  totalSlots: 9
+  totalSlots: 11
   slotPaddingHorizontal: 10
   slotPaddingVertical: 10
 --- !u!114 &1056179042876710185
@@ -760,6 +731,7 @@ MonoBehaviour:
   playerMovement: {fileID: 0}
   AmuletFlash: {fileID: 0}
   statusGUI: {fileID: 0}
+  level: 0
   activeMaxHealth: 0
   base_maxhealth: 100
   health_perLevel: 20
@@ -801,3 +773,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f04df802fc6deaf488b845cd7f90d434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &480756717
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.45129326}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.5625, y: 1.15625}
+    newSize: {x: 1.5625, y: 1.15625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.16603523}
+  m_EdgeRadius: 0
+--- !u!70 &480756720
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.13411546}
+  m_Size: {x: 0.35, y: 0.8285916}
+  m_Direction: 0

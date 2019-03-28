@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fire Golem Idle
+  m_Name: Ghould Awake
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,20 +20,22 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: a8fd31ecb4d99a4498b8a162d31cc5de, type: 3}
-    - time: 0.25
-      value: {fileID: 21300000, guid: 4c32e11ac3ef7b0468886e5c4866eed2, type: 3}
+      value: {fileID: 21300000, guid: c25f02de798271248a5bc1479070a0a5, type: 3}
+    - time: 0.1
+      value: {fileID: 21300000, guid: 8018678d0ac3759438b4aca0785a1931, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: 467ae9ba43d8b32429cfda5a031aee28, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: e39f3af956d0b9d42b551b41dfe66de7, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: 1ab4ff20100fef44ca562013e73a7fd7, type: 3}
     - time: 0.5
-      value: {fileID: 21300000, guid: 06c634625058cf749b57bcd3fa847fa3, type: 3}
-    - time: 0.75
-      value: {fileID: 21300000, guid: eea4d6fc55ac4b842a16c08a52c08bfe, type: 3}
-    - time: 1
-      value: {fileID: 21300000, guid: a95adf76685294941bc0ac948dc408df, type: 3}
+      value: {fileID: 21300000, guid: 392893a2393a95d458e75385439ee7fb, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 4
+  m_SampleRate: 10
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -48,22 +50,23 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: a8fd31ecb4d99a4498b8a162d31cc5de, type: 3}
-    - {fileID: 21300000, guid: 4c32e11ac3ef7b0468886e5c4866eed2, type: 3}
-    - {fileID: 21300000, guid: 06c634625058cf749b57bcd3fa847fa3, type: 3}
-    - {fileID: 21300000, guid: eea4d6fc55ac4b842a16c08a52c08bfe, type: 3}
-    - {fileID: 21300000, guid: a95adf76685294941bc0ac948dc408df, type: 3}
+    - {fileID: 21300000, guid: c25f02de798271248a5bc1479070a0a5, type: 3}
+    - {fileID: 21300000, guid: 8018678d0ac3759438b4aca0785a1931, type: 3}
+    - {fileID: 21300000, guid: 467ae9ba43d8b32429cfda5a031aee28, type: 3}
+    - {fileID: 21300000, guid: e39f3af956d0b9d42b551b41dfe66de7, type: 3}
+    - {fileID: 21300000, guid: 1ab4ff20100fef44ca562013e73a7fd7, type: 3}
+    - {fileID: 21300000, guid: 392893a2393a95d458e75385439ee7fb, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.25
+    m_StopTime: 0.6
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -77,4 +80,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.6
+    functionName: FullyAwakened
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
