@@ -46,29 +46,36 @@ public class PlayerInteract : MonoBehaviour
                 hubChest.toolTipObject.SetActive(false);
                 equipment.toolTipObject.SetActive(false);
                 if (currentInterObj.name == "HubChest" && !hubChest.inventoryEnabled)
-                {                   
+                {
+                    equipment.invsOpen++;
                     hubChest.inventoryEnabled = !hubChest.inventoryEnabled;
-
-                    if (hubChest.inventoryEnabled)
+                    EventSystem.current.SetSelectedGameObject(hubChest.slot[0]);
+                    hubChest.inventoryUI.SetActive(true);
+                    player.playerMovement.SetEnabled(false);
+                    followCamera.SetEnabled(false);
+                    hubChest.ShowToolTip(hubChest.slot[0]);
+                    hubChest.CompareToolTips(hubChest.slot[0]);
+                }
+                else if (currentInterObj.name == "HubChest" && hubChest.inventoryEnabled)
+                {
+                    hubChest.inventoryUI.SetActive(false);
+                    equipment.invsOpen--;
+                    if (equipment.invsOpen == 0)
                     {
-                        EventSystem.current.SetSelectedGameObject(hubChest.slot[0]);
-                        hubChest.inventoryUI.SetActive(true);
-                        player.playerMovement.SetEnabled(false);
-                        followCamera.SetEnabled(false);
+                        player.playerMovement.SetEnabled(true);
+                        followCamera.SetEnabled(true);
                     }
+                    EventSystem.current.SetSelectedGameObject(equipment.slot[0]);                    
+                    hubChest.HideToolTip(hubChest.slot[0]);
+                    hubChest.HideCompareToolTips();
+                    hubChest.FindGrey();
+                    hubChest.inventoryEnabled = false;
+                    if(equipment.inventoryEnabled)
+                    equipment.ShowToolTip(equipment.slot[0]);
                 }
             }
-        }
-        if (Input.GetButtonDown("Close") && hubChest.inventoryEnabled)
-        {
-            hubChest.inventoryUI.SetActive(false);
-            player.playerMovement.SetEnabled(true);
-            followCamera.SetEnabled(true);
-            EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
-            hubChest.HideToolTip(hubChest.slot[0]);
-            hubChest.FindGrey();
-            hubChest.inventoryEnabled = false;
-        }
+            
+        }    
 
         if (Input.GetButtonDown("UseHealthPotion"))
         {
@@ -100,7 +107,7 @@ public class PlayerInteract : MonoBehaviour
     }
 
     //swap player inventory item with hub chest inventory item
-    public void swap(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemQuality, string itemName, Sprite itemIcon, float damage, float armor, float health)
+    public void swap(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemQuality, string itemName, Sprite itemIcon, float damage, float armor, float health, int whichSlot)
     {
         GameObject which = equipment.FindItemByType(itemType);
         if(!which.GetComponent<Slot>().empty)
@@ -112,34 +119,41 @@ public class PlayerInteract : MonoBehaviour
 
             equipment.RemoveItem(itemType);
             equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
+            hubChest.ShowToolTip(hubChest.slot[whichSlot]);
+            hubChest.CompareToolTips(hubChest.slot[whichSlot]);
         }
         else
         {
             hubChest.RemoveItem(itemID);
             equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
-        }           
+        }
     }
 
-    public void CompareToolTips(GameObject slotas, Text visualText, Text textBox, GameObject toolTip)
+    public void CompareToolTips(GameObject slot, Text visualText, Text textBox, GameObject cmpToolTip, GameObject toolTip)
     {
-        Slot tmpslot = slotas.GetComponent<Slot>();
-        Slot tmp2 = equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
-        Transform panel = tmp2.transform.GetChild(0);
-        tmp2.selected = true;
-        panel.GetComponent<Image>().color = Color.grey;
-
-        if (!tmp2.empty)
+        Slot tmpslot = slot.GetComponent<Slot>();
+        Slot tmp2;
+        if (!tmpslot.empty)
         {
-            visualText.text = tmp2.GetToolTip();
-            textBox.text = visualText.text;
+            tmp2 = equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
+            if (!tmp2.empty)
+            {
+                visualText.text = tmp2.GetToolTip(true);
+                textBox.text = visualText.text;
 
-            toolTip.SetActive(true);
+                float offset = toolTip.transform.Find("TextBox").GetComponent<RectTransform>().rect.height - toolTip.transform.Find("TextBox").Find("BackGround").GetComponent<RectTransform>().offsetMin.y;
+                float xPos = slot.transform.position.x - hubChest.slotPaddingHorizontal - 35;
+                float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - hubChest.slotPaddingVertical - 15;
 
-            float xPos = tmp2.transform.position.x - equipment.slotPaddingHorizontal - 15;
-            float yPos = tmp2.transform.position.y - tmp2.GetComponent<RectTransform>().sizeDelta.y - equipment.slotPaddingVertical;
-
-            toolTip.transform.position = new Vector2(xPos, yPos);
+                cmpToolTip.transform.position = new Vector2(xPos, yPos);
+                cmpToolTip.transform.GetComponent<RectTransform>().localPosition = new Vector3(toolTip.transform.GetComponent<RectTransform>().localPosition.x, toolTip.transform.GetComponent<RectTransform>().localPosition.y - offset - 2);
+                cmpToolTip.SetActive(true);
+            }
         }
+    }
+    public void HideCompareToolTips(GameObject toolTip)
+    {
+        toolTip.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -172,15 +186,28 @@ public class PlayerInteract : MonoBehaviour
         {
             if (other.gameObject == currentInterObj)
             {
+                if(other.gameObject.name == "HubChest")
+                {
+                    if(hubChest.inventoryEnabled)
+                        equipment.invsOpen--;
+                    if (equipment.invsOpen == 0)
+                    {
+                        player.playerMovement.SetEnabled(true);
+                        followCamera.SetEnabled(true);
+                    }
+                }
                 currentInterObj = null;
                 hubChest.inventoryEnabled = false;
                 hubChest.inventoryUI.SetActive(false);
                 interactableGUI.Hide();
                 equipment.toolTipObject.SetActive(false);
                 hubChest.toolTipObject.SetActive(false);
-            }
-            player.playerMovement.SetEnabled(true);
-            followCamera.SetEnabled(true);
+                if (equipment.inventoryEnabled)
+                {
+                    EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
+                    equipment.ShowToolTip(equipment.slot[0]);
+                }
+            }           
         }
     }
 }

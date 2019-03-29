@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 90
-  type: Rings
+  type: Ring
   itemName: Basic Ring
   description: 
   icon: {fileID: 21300000, guid: c3cc53557c1b092489a6e2a05e1cae37, type: 3}

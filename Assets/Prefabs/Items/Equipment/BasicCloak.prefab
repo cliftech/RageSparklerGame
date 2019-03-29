@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 100
-  type: Cloaks
+  type: Cape
   itemName: Basic Cloak
   description: 
   icon: {fileID: 21300000, guid: 94a0626f4044aa34daf959326d71f3e3, type: 3}

@@ -32,6 +32,7 @@ public class Inventory : MonoBehaviour
 
     public GameObject[] slot;
     public int totalSlots;
+    public int invsOpen;
 
     public float slotPaddingHorizontal;
     public float slotPaddingVertical;
@@ -50,11 +51,12 @@ public class Inventory : MonoBehaviour
         player = GetComponent<Player>();
         slotC = GetComponent<Slot>();
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        invsOpen = 0;
 
         for (int i = 0; i < totalSlots; i++)
         {
             slot[i] = InvSlots.transform.GetChild(i).gameObject;
-
+            slot[i].GetComponent<Slot>().whichSlot = i;
             if (slot[i].GetComponent<Slot>().item == null)
                 slot[i].GetComponent<Slot>().empty = true;
         }
@@ -71,17 +73,28 @@ public class Inventory : MonoBehaviour
             followCamera.SetEnabled(false);
             toolTipObject.SetActive(false);
             compareToolTipObject.SetActive(false);
+            ShowToolTip(slot[0]);
+            invsOpen++;
         }
-        if(Input.GetKeyDown(KeyCode.Escape) && inventoryEnabled)
+        else if(Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && inventoryEnabled)
         {
             inventoryUI.SetActive(false);
-            player.playerMovement.SetEnabled(true);
-            followCamera.SetEnabled(true);
+            invsOpen--;
+            if (invsOpen == 0)
+            {
+                player.playerMovement.SetEnabled(true);
+                followCamera.SetEnabled(true);
+            }
             EventSystem.current.SetSelectedGameObject(plrInter.hubChest.slot[0]);
             inventoryEnabled = false;
             FindGrey();
             toolTipObject.SetActive(false);
             compareToolTipObject.SetActive(false);
+            if (plrInter.hubChest.inventoryEnabled)
+            {
+                ShowToolTip(plrInter.hubChest.slot[0]);
+                CompareToolTips(plrInter.hubChest.slot[0]);
+            }              
         }
     }
 
@@ -94,7 +107,7 @@ public class Inventory : MonoBehaviour
 
         if (!tmpslot.empty)
         {
-            visualText.text = tmpslot.GetToolTip();
+            visualText.text = tmpslot.GetToolTip(false);
             textBox.text = visualText.text;
 
             toolTip.SetActive(true);
@@ -108,7 +121,7 @@ public class Inventory : MonoBehaviour
 
     public void CompareToolTips(GameObject slot)
     {
-        plrInter.CompareToolTips(slot, compareVisualText, compareTextBox, compareToolTip);
+        plrInter.CompareToolTips(slot, compareVisualText, compareTextBox, compareToolTip, toolTip);
     }
 
     public void HideToolTip(GameObject slot)
@@ -117,7 +130,11 @@ public class Inventory : MonoBehaviour
         Transform panel = tmpslot.transform.GetChild(0);
         panel.GetComponent<Image>().color = Color.white;
         toolTip.SetActive(false);
-        tmpslot.selected = false;
+        tmpslot.selected = false;       
+    }
+    public void HideCompareToolTips()
+    {
+        plrInter.HideCompareToolTips(compareToolTip);
     }
 
     public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, float damage, float armor, float health)
@@ -140,9 +157,9 @@ public class Inventory : MonoBehaviour
             return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7, damage, armor, health);
         else if (itemType == "Potions")
             return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8, damage, armor, health);
-        else if (itemType == "Rings")
+        else if (itemType == "Ring")
             return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9, damage, armor, health);
-        else if (itemType == "Cloaks")
+        else if (itemType == "Cape")
             return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10, damage, armor, health);
         else
             return false;

@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
-    private Navigation navigation;
-    private Button button;
-
     public bool selected = false;
     public GameObject item;
     public bool empty;
@@ -19,6 +16,7 @@ public class Slot : MonoBehaviour
     public Sprite icon;
     public Sprite defaultIcon;
     public Transform slotIcon;
+    public int whichSlot;
 
     public PlayerInteract inter;
 
@@ -40,9 +38,9 @@ public class Slot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Swap") && selected && !empty)
-        {
-            inter.swap(item, ID, type, description, quality, itemName, icon, damage, armor, health);
+        if (Input.GetButtonDown("Swap") && selected && !empty && gameObject.name.StartsWith("Slot"))
+        { 
+            inter.swap(item, ID, type, description, quality, itemName, icon, damage, armor, health, whichSlot);
         }
     }
 
@@ -51,11 +49,15 @@ public class Slot : MonoBehaviour
         slotIcon = transform.GetChild(0);
     }
 
-    public string GetToolTip()
+    public string GetToolTip(bool compare)
     {
+        string comparison = string.Empty;
         string stats = string.Empty;
         string color = string.Empty;
         string newLine = string.Empty;
+
+        if (compare)
+            comparison = "Currently equiped:\n";
 
         if (description != string.Empty)
         {
@@ -83,6 +85,6 @@ public class Slot : MonoBehaviour
         {
             stats += "\n+" + health.ToString() + " Health";
         }
-        return string.Format("<color=" + color + "><size=16>{0}</size></color><size=14><i><color=lime>" + newLine + "{1}</color></i>{2}</size>", itemName, description, stats);
+        return string.Format("<color=black><size=10>" + comparison + "</size></color><color=" + color + "><size=16>{0}</size></color><size=14>{1}<i><color=lime>" + newLine + "{2}</color></i></size>", itemName, stats, description);
     }
 }
