@@ -32,7 +32,8 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody2D rb;
-    [HideInInspector] public CapsuleCollider2D coll;
+    [HideInInspector] public CapsuleCollider2D capsColl;
+    [HideInInspector] public BoxCollider2D boxColl;
     [HideInInspector] public DamageContainer damageContainer;
     [HideInInspector] public Player player;
     private float horizontalInput;
@@ -82,16 +83,17 @@ public class PlayerMovement : MonoBehaviour {
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        coll = GetComponent<CapsuleCollider2D>();
+        capsColl = GetComponent<CapsuleCollider2D>();
+        boxColl = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageContainer = GetComponent<DamageContainer>();
         player = GetComponent<Player>();
+        gravityScale = rb.gravityScale;
     }
     void Start()
     {
-        yRaylength = coll.size.y / 2 + 0.05f;
-        xRaylength = coll.size.x / 2 + 0.1f;
-        gravityScale = rb.gravityScale;
+        yRaylength = capsColl.bounds.size.y / 2 + 0.05f;
+        xRaylength = capsColl.bounds.size.x / 2 + 0.1f;
         accel = acceleration;
         isDirRight = true;
         enemyWeaponLayer = LayerMask.NameToLayer(enemyWeaponLayerName);
@@ -219,7 +221,7 @@ public class PlayerMovement : MonoBehaviour {
             }
             else
             {
-                if (!IsGroundInFrontExists())
+                if (!DoesGroundInFrontExists())
                     rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
             }
             //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
@@ -265,7 +267,7 @@ public class PlayerMovement : MonoBehaviour {
     public void SlideForwardDuringAttack()
     {
         currentAttackNum++;
-        if (IsGroundInFrontExists())
+        if (DoesGroundInFrontExists())
             rb.velocity = new Vector2((isDirRight ? 1 : -1) * groundedAttackHorizontalVel, rb.velocity.y);
     }
     //called in animator events
@@ -314,9 +316,9 @@ public class PlayerMovement : MonoBehaviour {
     /// </summary>
     void PushRigidBodies()
     {
-        Vector2 origin = coll.bounds.center;
-        origin.y = coll.bounds.min.y - 0.25f;
-        float pushDistance = coll.size.x / 1.9f;
+        Vector2 origin = capsColl.bounds.center;
+        origin.y = capsColl.bounds.min.y - 0.25f;
+        float pushDistance = capsColl.size.x / 1.9f;
         Debug.DrawLine(origin + Vector2.right * pushDistance, origin - Vector2.right * pushDistance, Color.red, 0.1f);
         RaycastHit2D[] hits = Physics2D.LinecastAll(origin - Vector2.right * pushDistance, origin + Vector2.right * pushDistance, slamPushableMask);
         foreach (RaycastHit2D hit in hits)
@@ -340,10 +342,10 @@ public class PlayerMovement : MonoBehaviour {
     }
     void Dash(int direction)
     {
-        Vector2 origin = coll.bounds.center;
+        Vector2 origin = capsColl.bounds.center;
         int numOfRays = 5;
-        float yIncrament = coll.size.y / numOfRays;
-        origin.y -= coll.size.y / 2f;
+        float yIncrament = capsColl.size.y / numOfRays;
+        origin.y -= capsColl.size.y / 2f;
 
         Vector2 defaultPos = Vector3.right * direction * dashDistance + transform.position;
         dashPos = defaultPos;
@@ -354,7 +356,7 @@ public class PlayerMovement : MonoBehaviour {
             Vector2 hitPos = defaultPos;
             if (hit)
             {
-                hitPos = new Vector2(hit.point.x - (direction * coll.size.x / 2f), transform.position.y);
+                hitPos = new Vector2(hit.point.x - (direction * capsColl.size.x / 2f), transform.position.y);
                 dashPos = Vector2.Distance(transform.position, hitPos) < Vector2.Distance(transform.position, dashPos) ?
                     hitPos : dashPos;
             }
@@ -375,7 +377,7 @@ public class PlayerMovement : MonoBehaviour {
 
         player.soundController.PlayDashSound();
     }
-    void StopDashing()
+    public void StopDashing()
     {
         if(isDashing)
             dashTimer = minDelayBetweenDashes;
@@ -446,7 +448,7 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(origin, Vector2.right * direction * xRaylength, Color.yellow, 0.075f);
         RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, wallStickMask);
         if (hit)
-            transform.position = hit.point + (Vector2.right * coll.size.x / 2f * -direction);
+            transform.position = hit.point + (Vector2.right * capsColl.size.x / 2f * -direction);
     }
     void UnstickFromWall()
     {
@@ -547,15 +549,17 @@ public class PlayerMovement : MonoBehaviour {
 
         // add enemy layer from undashable
         unDashableMask = unDashableMask | (1 << enemyLayer);
-        isInvulnerable = false; 
+        isInvulnerable = false;
+        capsColl.enabled = false;
+        capsColl.enabled = true;
     }
 
     bool IsGrounded()
     {
-        Vector2 origin = coll.bounds.center;
-        float xOffset = coll.bounds.size.x / 3f;
-        origin.x = coll.bounds.min.x + xOffset / 2f;
-        for (int i = 0; i < 3; i++)
+        Vector2 origin = capsColl.bounds.center;
+        float xOffset = boxColl.bounds.size.x / 2.85f;
+        origin.x -= xOffset * 3 / 2;
+        for (int i = 0; i < 4; i++)
         {
             Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.blue, 0.075f);
             if (Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask))
@@ -564,11 +568,11 @@ public class PlayerMovement : MonoBehaviour {
         }
         return false;
     }
-    bool IsGroundInFrontExists()
+    bool DoesGroundInFrontExists()
     {
-        Vector2 origin = coll.bounds.center;
-        origin.y = coll.bounds.min.y;
-        origin.x += (isDirRight ? 1 : -1) * coll.bounds.extents.x;
+        Vector2 origin = capsColl.bounds.center;
+        origin.y = capsColl.bounds.min.y;
+        origin.x += (isDirRight ? 1 : -1) * capsColl.bounds.extents.x;
 
         Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.cyan, 0.075f);
         return (Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask));
@@ -596,13 +600,13 @@ public class PlayerMovement : MonoBehaviour {
 
     bool RaycastSideways_OR(int direction, int perpRayCount, Color debugColor, LayerMask mask)
     {
-        Vector2 origin = coll.bounds.center;
+        Vector2 origin = capsColl.bounds.center;
         if (perpRayCount == 1)
         {
             Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
             return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask);
         }
-        float yOffset = coll.size.y / perpRayCount;
+        float yOffset = (capsColl.size.y - 0.05f) / perpRayCount;
         origin.y -= yOffset * perpRayCount / 2;
         for (int i = 0; i < perpRayCount + 1; i++)
         {
@@ -616,14 +620,14 @@ public class PlayerMovement : MonoBehaviour {
 
     bool RaycastSideways_AND(int direction, int perpRayCount, Color debugColor, LayerMask mask)
     {
-        Vector2 origin = coll.bounds.center;
+        Vector2 origin = capsColl.bounds.center;
         if (perpRayCount == 1)
         {
             Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
             return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask);
         }
 
-        float yOffset = coll.size.y / perpRayCount;
+        float yOffset = capsColl.size.y / perpRayCount;
         origin.y -= yOffset * perpRayCount / 4;
         for (int i = 0; i < perpRayCount; i++)
         {

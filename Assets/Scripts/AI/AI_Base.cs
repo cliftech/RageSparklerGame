@@ -183,7 +183,7 @@ public class AI_Base : MonoBehaviour
         transform.position = new Vector3(transform.position.x + posOffset, transform.position.y, transform.position.z);
         isDirRight = toRight;
     }
-    protected bool RaycastToPlayer(bool isRight, float distance, string playerTag, LayerMask playerMask, LayerMask wallMask, Color debugColor)
+    protected bool RaycastToPlayer(bool isRight, float distance, string playerTag, LayerMask playerMask, LayerMask terrainMask)
     {
         int direction;
         if (isRight)
@@ -195,13 +195,13 @@ public class AI_Base : MonoBehaviour
             direction = -1;
         }
         Vector2 origin = coll.bounds.center;
-        Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
-        RaycastHit2D hit = Physics2D.BoxCast(origin, coll.bounds.size * .75f, 0, new Vector2(direction, 0), distance, playerMask | wallMask);
+        Debug.DrawRay(origin, Vector2.right * direction * distance, Color.blue, 0.075f);
+        RaycastHit2D hit = Physics2D.BoxCast(origin, coll.bounds.size * .75f, 0, new Vector2(direction, 0), distance, playerMask | terrainMask);
         if (!hit)
             return false;
         return hit.collider.CompareTag(playerTag);
     }
-    protected bool RaycastSideways_OR(bool isRight, int perpRayCount, float distance, LayerMask mask, Color debugColor)
+    protected bool RaycastSideways_OR(bool isRight, int perpRayCount, float distance, LayerMask terrainmask)
     {
         int direction;
         if (isRight)
@@ -216,21 +216,21 @@ public class AI_Base : MonoBehaviour
         origin.x += coll.bounds.extents.x * direction;
         if (perpRayCount == 1)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
-            return Physics2D.Raycast(origin, Vector2.right * direction, distance, mask);
+            Debug.DrawRay(origin, Vector2.right * direction * distance, Color.red, 0.075f);
+            return Physics2D.Raycast(origin, Vector2.right * direction, distance, terrainmask);
         }
         float yOffset = coll.size.y / perpRayCount;
         origin.y -= yOffset * perpRayCount / 2;
         for (int i = 0; i < perpRayCount + 1; i++)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
-            if (Physics2D.Raycast(origin, Vector2.right * direction, distance, mask))
+            Debug.DrawRay(origin, Vector2.right * direction * distance, Color.red, 0.075f);
+            if (Physics2D.Raycast(origin, Vector2.right * direction, distance, terrainmask))
                 return true;
             origin.y += yOffset;
         }
         return false;
     }
-    protected bool DoesGroundForwardExists(bool isRight, float distance, LayerMask mask, Color debugColor)
+    protected bool DoesGroundForwardExists(bool isRight, float distance, LayerMask mask)
     {
         int direction;
         if (isRight)
@@ -240,10 +240,10 @@ public class AI_Base : MonoBehaviour
         Vector2 origin = coll.bounds.center;
         origin.y = coll.bounds.min.y + 0.01f;
         origin.x += coll.bounds.extents.x * direction;
-        Debug.DrawRay(origin, Vector2.down * distance, debugColor, 0.075f);
+        Debug.DrawRay(origin, Vector2.down * distance, Color.cyan, 0.075f);
         return Physics2D.Raycast(origin, Vector2.down, distance, mask);
     }
-    protected bool IsGrounded(LayerMask groundMask)
+    protected bool IsGrounded(LayerMask terrainMask)
     {
         Vector2 origin = coll.bounds.center;
         origin.y = coll.bounds.min.y - 0.01f;
@@ -252,10 +252,31 @@ public class AI_Base : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Debug.DrawRay(origin, -Vector2.up * yRayLength, Color.cyan, 0.075f);
-            if (Physics2D.Raycast(origin, -Vector2.up, yRayLength, groundMask))
+            if (Physics2D.Raycast(origin, -Vector2.up, yRayLength, terrainMask))
                 return true;
             origin.x += xOffset;
         }
         return false;
+    }
+
+    protected bool isWallBlockingTopOfCollider(bool isRight, LayerMask terrainMask)
+    {
+        int direction = isRight ? 1 : -1;
+
+        Vector2 origin = coll.bounds.center;
+        origin.y = coll.bounds.max.y;
+        origin.x += coll.bounds.extents.x * direction;
+        Debug.DrawRay(origin, Vector2.right * direction * (xRayLength + coll.bounds.extents.x), Color.magenta, 0.075f);
+        return Physics2D.Raycast(origin, Vector2.right * direction, xRayLength + coll.bounds.extents.x, terrainMask);
+    }
+    protected bool isWallBlockingBottomOfCollider(bool isRight, LayerMask terrainMask)
+    {
+        int direction = isRight ? 1 : -1;
+
+        Vector2 origin = coll.bounds.center;
+        origin.y = coll.bounds.min.y;
+        origin.x += coll.bounds.extents.x * direction;
+        Debug.DrawRay(origin, Vector2.right * direction * (xRayLength + coll.bounds.extents.x), Color.magenta, 0.075f);
+        return Physics2D.Raycast(origin, Vector2.right * direction, xRayLength + coll.bounds.extents.x, terrainMask);
     }
 }

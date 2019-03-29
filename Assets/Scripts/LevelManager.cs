@@ -40,6 +40,7 @@ public class LevelManager : MonoBehaviour
     public void LoadLevel(GameObject level, int potalId = -1)
     {
         currentLevelPrefab = level;
+        player.playerMovement.StopDashing();
         if (currentLevel != null)
             screenCover.CoverScreen(.1f, () => LoadLevel(potalId));
         else
@@ -71,6 +72,7 @@ public class LevelManager : MonoBehaviour
             soundManager.PlayMusic(currentLevel.backgroundMusic);
         }
         player.AmuletFlash.SetAmuletFlash(currentLevel.DoesAmuletFlash, currentLevel.LevelEnd);
+
     }
 
     public void ResetLevel(int portalID)

@@ -42,14 +42,14 @@ public class AI_Slug : AI_Base
         switch (state)
         {
             case State.Patrol:
-                if ((!DoesGroundForwardExists(isDirRight, yRayLength, terrainMask, Color.blue) ||
-                    RaycastSideways_OR(isDirRight, 5, xRayLength, terrainMask, Color.red)) && isgrounded)
+                if ((!DoesGroundForwardExists(isDirRight, yRayLength, terrainMask) ||
+                    RaycastSideways_OR(isDirRight, 5, xRayLength, terrainMask)) && isgrounded)
                 {
                     ChangeDirection(!isDirRight);
                 }
                 if (Vector2.Distance(transform.position, target.position) < aggroRange)
                 {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask, Color.blue))
+                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask))
                     {
                         SetAggro();
                     }
@@ -88,7 +88,7 @@ public class AI_Slug : AI_Base
                         isNextAttackVomit = Random.value < vomitAttackChance;
                     }
                 }
-                if (!RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask, Color.blue))
+                if (!RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask))
                 {
                     SetPatrol();
                 }
@@ -139,7 +139,7 @@ public class AI_Slug : AI_Base
                     {
                         direction = Vector2.left;
                     }
-                    if (!IsGrounded(terrainMask) || !DoesGroundForwardExists(isDirRight, yRayLength, terrainMask, Color.blue))
+                    if (!IsGrounded(terrainMask) || !DoesGroundForwardExists(isDirRight, yRayLength, terrainMask))
                     {
                         rb.velocity = new Vector2(0, rb.velocity.y);
                     }
