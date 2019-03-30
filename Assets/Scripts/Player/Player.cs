@@ -175,6 +175,14 @@ public class Player : MonoBehaviour
             GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
 
+        if (other.CompareTag("Projectile") && !isDead && !playerMovement.isInvulnerable)
+        {
+            Projectile p = other.transform.GetComponentInParent<Projectile>();
+            GetHit(p.GetDamage(),
+                other.transform.position.x > transform.position.x ? 1 : -1);
+            p.Explode();
+        }
+
         if (other.gameObject.CompareTag("Pick Up"))
         {
             Destroy(other.gameObject);

@@ -11810,7 +11810,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25.4}
+  m_AnchoredPosition: {x: 0, y: -25.400024}
   m_SizeDelta: {x: 305.51, y: 84.42999}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &979541585
@@ -22301,11 +22301,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: toolTipObject
@@ -22346,6 +22341,11 @@ PrefabInstance:
       propertyPath: compareToolTipObject
       value: 
       objectReference: {fileID: 1060149345}
+    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1056179042876710187, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22406,11 +22406,11 @@ PrefabInstance:
       propertyPath: maxJumpCount
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
+    - target: {fileID: 1056179042876710191, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
-      propertyPath: levelText
-      value: 
-      objectReference: {fileID: 87990747}
+      propertyPath: invincibilityFrameTime
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: toolTipObject
@@ -22456,6 +22456,11 @@ PrefabInstance:
       propertyPath: compareTextBoxObject
       value: 
       objectReference: {fileID: 1295099697}
+    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: levelText
+      value: 
+      objectReference: {fileID: 87990747}
     m_RemovedComponents:
     - {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
@@ -22529,7 +22534,7 @@ PrefabInstance:
     - target: {fileID: 1089153324245350884, guid: f41238ca9fd492e4d9bf6e916af41d47,
         type: 3}
       propertyPath: onStartLoadType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f41238ca9fd492e4d9bf6e916af41d47, type: 3}

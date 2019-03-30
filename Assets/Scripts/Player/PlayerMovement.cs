@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour {
     private float gravityScale;
     private float accel;
     private bool isDirRight;
-    private float knockBackTime = 0.2f;
+    private float knockBackTime = 0.5f;
     private float knockBackTimer;
     private float attackCooldownTime = .2f;
     private float attackCooldownTimer;
@@ -221,7 +221,8 @@ public class PlayerMovement : MonoBehaviour {
             }
             else
             {
-                if (!DoesGroundInFrontExists())
+                Vector2 origin = capsColl.bounds.center;
+                if (!DoesGroundInFrontExists() || Physics2D.Raycast(origin, Vector2.right * (isDirRight ? 1 : -1), xRaylength, unDashableMask))
                     rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
             }
             //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
@@ -267,7 +268,9 @@ public class PlayerMovement : MonoBehaviour {
     public void SlideForwardDuringAttack()
     {
         currentAttackNum++;
-        if (DoesGroundInFrontExists())
+
+        Vector2 origin = capsColl.bounds.center;
+        //if (DoesGroundInFrontExists() && !Physics2D.Raycast(origin, Vector2.right * (isDirRight ? 1 : -1), xRaylength, unDashableMask))
             rb.velocity = new Vector2((isDirRight ? 1 : -1) * groundedAttackHorizontalVel, rb.velocity.y);
     }
     //called in animator events

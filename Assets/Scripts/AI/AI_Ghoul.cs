@@ -48,7 +48,7 @@ public class AI_Ghoul : AI_Base
         //landImmobalizedTime = .5f;           
         //-----------------------------------------------
 
-        damageContainer.SetDamageCall(() => attackDamage);
+        damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
         SetIdle();
         maxYJumpDist = jumpVelocity * .5f;
@@ -76,7 +76,9 @@ public class AI_Ghoul : AI_Base
                     break;
                 }
                 if (!goundInFrontExists && isGrounded && yDiff >= -coll.bounds.extents.y)
+                {
                     AttackJump();
+                }
                 else if (isGrounded && RaycastSideways_OR(isDirRight, 3, xRayLength, terrainMask))
                 {
                     AttackJump();
@@ -99,10 +101,10 @@ public class AI_Ghoul : AI_Base
                 }
                 else // player is either higher or lower
                 {
-                        if (isGrounded && yDiff >= minYJumpDist && yDiff < maxYJumpDist && dist >= minJumpRange && dist < maxJumpRange) // player is higher - perform jump to it
-                            AttackJump();
-                        else if (dist < attackRange)
-                            AttackSingle();
+                    if (isGrounded && yDiff >= minYJumpDist && yDiff < maxYJumpDist && dist >= minJumpRange && dist < maxJumpRange) // player is higher - perform jump to it
+                        AttackJump();
+                    else if (dist < attackRange)
+                        AttackSingle();
                 }
                 break;
             case State.Attacking:

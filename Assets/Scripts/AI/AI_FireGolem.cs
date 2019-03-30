@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class AI_FireGolem : AI_Base
 {
-    public LayerMask terrainMask;
-    public LayerMask playerMask;
-    public float attackRange;
     public float attackDamage;
     [Range(0, 1)] public float doubleAttackChance;
-    public float doubleAttackRange;
     public float doubleAttackDamage;
-    public float maxJumpRange, minJumpRange;
     public float jumpDamage;
-    public float jumpVelocity;
-    public float minYJumpDist;
-    public float maxYDiff;
+
+    private LayerMask terrainMask;
+    private LayerMask playerMask;
+    private float attackRange;
+    private float doubleAttackRange;
+    private float maxJumpRange;
+    private float minJumpRange;
+    private float jumpVelocity;
+    private float minYJumpDist;
+    private float maxYDiff;
     private float maxYJumpDist;
-    public float attackImmobalizeTime = .5f;
-    public float landImmobalizedTime = .5f;
+    private float landImmobalizedTime;
 
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
     private bool isNextDoubleAttack;
     private bool isGrounded;
-    private float minJumpInterval = .5f;
+    private float minJumpInterval;
     private float minJumpTimer;
 
     void Awake()
@@ -34,11 +35,29 @@ public class AI_FireGolem : AI_Base
 
     void Start()
     {
-        damageContainer.SetDamageCall(() => attackDamage);
+        // stats ----------------------------------------
+        movVelocity = 0;
+        aggroRange = 5;
+        attackRange = 1.5f;
+        doubleAttackRange = 1.5f;
+        maxJumpRange = 10f;
+        minJumpRange = 2.5f;
+        jumpVelocity = 10f;
+        minYJumpDist = 1;
+        maxYDiff = 5;
+        knockBackVelocity = 1;
+        staggerVelocity = 0.5f;
+        terrainMask = 1 << LayerMask.NameToLayer("Terrain");
+        playerMask = 1 << LayerMask.NameToLayer("Player");
+        landImmobalizedTime = .5f;
+        minJumpInterval = .5f;
+        maxYJumpDist = jumpVelocity * .5f;
+        //-----------------------------------------------
+
+        damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
         isNextDoubleAttack = Random.value < doubleAttackChance;
         SetIdle();
-        maxYJumpDist = jumpVelocity * .5f;
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterKnockbackCall = () => SetAwakening();
@@ -127,13 +146,17 @@ public class AI_FireGolem : AI_Base
             case State.Falling:
                 minJumpTimer -= Time.deltaTime;
                 if (isGrounded && minJumpTimer <= 0)
+                {
+                    damageContainer.SetDamageCall(() => touchDamage);
                     SetAggro();
+                }
                 break;
         }
         animator.SetBool("Is Grounded", isGrounded);
         animator.SetFloat("Vertical Velocity", rb.velocity.y);
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
+
     void AttackJump()
     {
         Vector2 distToTarget = target.position - transform.position;
@@ -160,6 +183,7 @@ public class AI_FireGolem : AI_Base
     }
     void EndAttack()    // ovverides AI_Base.EndAttack() on animation events
     {
+        damageContainer.SetDamageCall(() => touchDamage);
         StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
     }
     IEnumerator SetImmobilizeFor(float time)

@@ -30,12 +30,14 @@ public class AI_Base : MonoBehaviour
     protected Action stateAfterAttackCall;
     protected Action stateAfterAwake;
 
-    public float movVelocity;
-    public float aggroRange;
-    public float maxHealth;
-    public float knockBackVelocity;
-    public float staggerVelocity;
-    public Color deadColor;
+    protected float movVelocity;
+    protected float aggroRange;
+    protected Color deadColor = new Color(255, 255, 255, 255);
+    protected float knockBackVelocity = 3;
+    protected float staggerVelocity = 2;
+
+    public float maxHealth = 100;
+    public float touchDamage = 10;
 
 
     protected void Initialize()
@@ -171,7 +173,9 @@ public class AI_Base : MonoBehaviour
     }
     protected void ChangeDirection(bool toRight)
     {
-        float posOffset = coll.bounds.center.x - transform.position.x;
+        if (isDirRight == toRight)
+            return;
+        Vector3 posOffset = new Vector3(coll.bounds.center.x - transform.position.x, 0, 0);
         if (toRight)
         {
             transform.localScale = new Vector2(-originalScale.x, transform.localScale.y);
@@ -180,7 +184,7 @@ public class AI_Base : MonoBehaviour
         {
             transform.localScale = new Vector2(originalScale.x, transform.localScale.y);
         }
-        transform.position = new Vector3(transform.position.x + posOffset, transform.position.y, transform.position.z);
+        transform.position += posOffset * 2;
         isDirRight = toRight;
     }
     protected bool RaycastToPlayer(bool isRight, float distance, string playerTag, LayerMask playerMask, LayerMask terrainMask)
@@ -230,7 +234,7 @@ public class AI_Base : MonoBehaviour
         }
         return false;
     }
-    protected bool DoesGroundForwardExists(bool isRight, float distance, LayerMask mask)
+    protected bool DoesGroundForwardExists(bool isRight, float distance, LayerMask mask, float xOffset = 0)
     {
         int direction;
         if (isRight)
@@ -238,8 +242,8 @@ public class AI_Base : MonoBehaviour
         else
             direction = -1;
         Vector2 origin = coll.bounds.center;
-        origin.y = coll.bounds.min.y + 0.01f;
-        origin.x += coll.bounds.extents.x * direction;
+        origin.y = coll.bounds.min.y - 0.01f;
+        origin.x += coll.bounds.extents.x * (direction + xOffset);
         Debug.DrawRay(origin, Vector2.down * distance, Color.cyan, 0.075f);
         return Physics2D.Raycast(origin, Vector2.down, distance, mask);
     }

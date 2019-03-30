@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class AI_Slug : AI_Base
 {
-    public LayerMask terrainMask;
-    public LayerMask playerMask;
-    public float attackRange;
+
     public float attackDamage;
     [Range(0, 1)] public float vomitAttackChance;
-    public float vomitAttackRange;
     public float vomitAttackDamage;
+
+    private LayerMask terrainMask;
+    private LayerMask playerMask;
+    private float attackRange;
+    private float vomitAttackRange;
 
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
@@ -25,16 +27,28 @@ public class AI_Slug : AI_Base
 
     void Start()
     {
-        damageContainer.SetDamageCall(() => attackDamage);
+        // stats ----------------------------------------
+        movVelocity = 1.5f;
+        aggroRange = 5;
+        attackRange = .85f;
+        vomitAttackRange = 1f;
+        knockBackVelocity = 1;
+        staggerVelocity = 0.5f;
+        terrainMask = 1 << LayerMask.NameToLayer("Terrain");
+        playerMask = 1 << LayerMask.NameToLayer("Player");
+        //-----------------------------------------------
+
+        damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
         isNextAttackVomit = Random.value < vomitAttackChance;
         SetPatrol();
 
-        stateAfterAttackCall = () => SetAggro();
+        stateAfterAttackCall = () => AttackEnded();
         stateAfterKnockbackCall = () => SetAwakening();
         stateAfterStaggeredCall = () => SetAggro();
         stateAfterAwake = () => SetAggro();
     }
+
     void Update()
     {
         isgrounded = IsGrounded(terrainMask);
@@ -166,6 +180,12 @@ public class AI_Slug : AI_Base
                 break;
         }
     }
+    void AttackEnded()
+    {
+        damageContainer.SetDamageCall(() => touchDamage);
+        SetAggro();
+    }
+
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
         health -= damage;
