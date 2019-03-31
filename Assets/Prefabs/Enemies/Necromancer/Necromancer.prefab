@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &632950701884413314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 247793280402564025}
+  m_Layer: 0
+  m_Name: SummonSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &247793280402564025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632950701884413314}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.288, y: -0.264, z: 0.020998836}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 4557084565404321767}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2576661442923058277
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,6 +115,7 @@ Transform:
   - {fileID: 2498396448696210689}
   - {fileID: 2955905549741798394}
   - {fileID: 8866829654079731470}
+  - {fileID: 247793280402564025}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -253,8 +284,12 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6631407245268388319, guid: dd33523801fcd324ca14e275e166f378,
     type: 3}
   projectileSpawnPoint: {fileID: 8866829654079731470}
-  projectileSpeed: 10
+  projectileSpeed: 6
   projectileDamage: 10
+  summonPrefab: {fileID: 699006727062655807, guid: 5d386ee6f8414834ca5efd351b52722d,
+    type: 3}
+  summonSpawnPoint: {fileID: 247793280402564025}
+  maxSummonCount: 1
 --- !u!1 &3808103472628671044
 GameObject:
   m_ObjectHideFlags: 0

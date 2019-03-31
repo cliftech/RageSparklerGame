@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class AI_Ghoul : AI_Base
 {
-    public float maxAggroRange = 10;
-    public LayerMask terrainMask;
-    public LayerMask playerMask;
-    public float attackRange;
     public float attackDamage;
-    public float maxJumpRange, minJumpRange;
     public float jumpDamage;
-    public float jumpVelocity;
-    public float minYJumpDist;
+
+    private float maxAggroRange;
+    private LayerMask terrainMask;
+    private LayerMask playerMask;
+    private float attackRange;
+    private float maxJumpRange;
+    private float minJumpRange;
+    private float jumpVelocity;
+    private float minYJumpDist;
     private float maxYJumpDist;
-    public float attackImmobalizeTime = .5f;
-    public float landImmobalizedTime = .5f;
+    private float attackImmobalizeTime = .5f;
+    private float landImmobalizedTime = .5f;
 
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
@@ -32,20 +34,20 @@ public class AI_Ghoul : AI_Base
     void Start()
     {
         // stats ----------------------------------------
-        //movVelocity = 5;
-        //aggroRange = 4;
-        //knockBackVelocity = 5;
-        //staggerVelocity = 2;
-        //terrainMask = 1 << LayerMask.NameToLayer("Terrain");
-        //playerMask = 1 << LayerMask.NameToLayer("Player");
-        //attackRange = 1.1f;
-        //maxJumpRange = 7;
-        //minJumpRange = 1;
-        //jumpVelocity = 8;
-        //minYJumpDist = 2;
-        //maxYDiff = 5;
-        //attackImmobalizeTime = .5f;
-        //landImmobalizedTime = .5f;           
+        movVelocity = 5;
+        aggroRange = 4;
+        maxAggroRange = 10;
+        knockBackVelocity = 5;
+        staggerVelocity = 2;
+        terrainMask = 1 << LayerMask.NameToLayer("Terrain");
+        playerMask = 1 << LayerMask.NameToLayer("Player");
+        attackRange = 1f;
+        maxJumpRange = 7;
+        minJumpRange = 3;
+        jumpVelocity = 8;
+        minYJumpDist = 2;
+        attackImmobalizeTime = .5f;
+        landImmobalizedTime = .5f;
         //-----------------------------------------------
 
         damageContainer.SetDamageCall(() => touchDamage);

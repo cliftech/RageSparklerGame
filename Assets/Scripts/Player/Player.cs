@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
             Projectile p = other.transform.GetComponentInParent<Projectile>();
             GetHit(p.GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
-            p.Explode();
+            //p.Explode();
         }
 
         if (other.gameObject.CompareTag("Pick Up"))

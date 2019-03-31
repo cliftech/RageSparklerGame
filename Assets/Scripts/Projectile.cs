@@ -43,7 +43,7 @@ public class Projectile : MonoBehaviour
         float rot_z = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z - degreeOffset);
 
-        if (Vector2.Distance(transform.position, targetPos) < 0.2f)
+        if (Vector2.Distance(transform.position, targetPos) < 0.25f)
         {
             Explode();
         }
@@ -61,5 +61,10 @@ public class Projectile : MonoBehaviour
     public float GetDamage()
     {
         return damage;
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        print(other.name);
+        Explode();
     }
 }

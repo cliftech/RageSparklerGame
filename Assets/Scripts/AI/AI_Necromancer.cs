@@ -8,6 +8,10 @@ public class AI_Necromancer : AI_Base
     public Transform projectileSpawnPoint;
     public float projectileSpeed, projectileDamage;
 
+    public GameObject summonPrefab;
+    public Transform summonSpawnPoint;
+    public int maxSummonCount;
+
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
     private LayerMask terrainMask;
@@ -17,11 +21,14 @@ public class AI_Necromancer : AI_Base
     private float retreatRange;
     private float minRetreatTime;
     private float maxRetreatTime;
-    private bool isNextDoubleAttack;
     private float minTimeToLandTime;
+    private float minProjAttackTime;
+    private float maxProjAttackTime;
+    private int currentSummonCount;
 
     private float retreatTimer;
-    private float minTimeToLandTimer;
+    private float landTimer;
+    private float projAttackTimer;
     private bool isGrounded;
 
     void Awake()
@@ -33,8 +40,8 @@ public class AI_Necromancer : AI_Base
     {
         // stats ----------------------------------------
         movVelocity = 0;
-        aggroRange = 3;
-        maxAggroRange = 5;
+        aggroRange = 6;
+        maxAggroRange = 10;
         retreatRange = 2f;
         minRetreatTime = 1.5f;
         maxRetreatTime = 3f;
@@ -42,8 +49,10 @@ public class AI_Necromancer : AI_Base
         staggerVelocity = 2;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
         playerMask = 1 << LayerMask.NameToLayer("Player");
-        landImmobalizedTime = .5f;
-        minTimeToLandTime = .5f;
+        landImmobalizedTime = .25f;
+        minTimeToLandTime = .25f;
+        minProjAttackTime = 2f;
+        maxProjAttackTime = 4f;
         //-----------------------------------------------
 
         damageContainer.SetDamageCall(() => touchDamage);
@@ -60,6 +69,10 @@ public class AI_Necromancer : AI_Base
         isGrounded = IsGrounded(terrainMask);
         if (retreatTimer > 0)
             retreatTimer -= Time.deltaTime;
+        if (projAttackTimer > 0)
+            projAttackTimer -= Time.deltaTime;
+        if(landTimer > 0)
+            landTimer -= Time.deltaTime;
 
         switch (state)
         {
@@ -91,7 +104,14 @@ public class AI_Necromancer : AI_Base
                         ChangeDirection(true);
                 }
 
-                StartShootingProjectile();
+                if (currentSummonCount < maxSummonCount)
+                {
+                    SummonSummon();
+                    break;
+                }
+
+                if(projAttackTimer <= 0)
+                    StartShootingProjectile();
 
                 break;
             case State.Attacking:
@@ -115,15 +135,13 @@ public class AI_Necromancer : AI_Base
             case State.Awakening:
                 break;
             case State.Jumping:
-                minTimeToLandTimer -= Time.deltaTime;
-                if (isGrounded && minTimeToLandTimer <= 0)
+                if (isGrounded && landTimer <= 0)
                     StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
                 break;
             case State.Immobilized:
                 break;
             case State.Falling:
-                minTimeToLandTimer -= Time.deltaTime;
-                if (isGrounded && minTimeToLandTimer <= 0)
+                if (isGrounded && landTimer <= 0)
                     SetAggro();
                 break;
         }
@@ -137,19 +155,36 @@ public class AI_Necromancer : AI_Base
         ChangeDirection(coll.bounds.center.x < target.position.x);
         Vector2 jumpVel = new Vector2(isDirRight ? -3 : 3, 2f);
         SetJumping(jumpVel);
-        minTimeToLandTimer = minTimeToLandTime;
+        landTimer = minTimeToLandTime;
         retreatTimer = Random.Range(minRetreatTime, maxRetreatTime);
     }
 
     void StartShootingProjectile()
     {
+        projAttackTimer = Random.Range(minProjAttackTime, maxProjAttackTime);
         SetAttack1();
     }
     void ShootProjectileEvent()
     {
-        Instantiate(projectilePrefab).GetComponent<Projectile>()
+        Instantiate(projectilePrefab, transform.parent).GetComponent<Projectile>()
             .Set(projectileSpawnPoint.position, new Vector2(coll.bounds.center.x < target.position.x ? 1 : -1, 0),
             "EnemyWeapon", target.position, projectileSpeed, projectileDamage);
+    }
+
+    void SummonSummon()
+    {
+        SetAttack2();
+    }
+
+    void SummonSummonEvent()
+    {
+        projAttackTimer = maxProjAttackTime;
+        Instantiate(summonPrefab, summonSpawnPoint.position, Quaternion.identity, transform.parent).GetComponent<AI_Base>().SetSummon(() => SummonDiedCalledBySummon());
+        currentSummonCount++;
+    }
+    void SummonDiedCalledBySummon()
+    {
+        currentSummonCount--;
     }
 
     void EndAttack()    // ovverides AI_Base.EndAttack() on animation events
@@ -201,6 +236,10 @@ public class AI_Necromancer : AI_Base
                 break;
             case State.Falling:
                 break;
+            case State.Staggered:
+                if (isGrounded && landTimer <= 0)
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                break;
         }
     }
     protected void GetHit(bool isRight, float damage, bool doKnockback)
@@ -214,10 +253,8 @@ public class AI_Necromancer : AI_Base
         }
         else
         {
-            if (!doKnockback)
-                SetStaggered(isRight);
-            else
-                SetKnockedBack(isRight);
+            SetStaggered(isRight);
+            landTimer = minTimeToLandTime;
         }
     }
     void OnTriggerEnter2D(Collider2D other)

@@ -39,6 +39,9 @@ public class AI_Base : MonoBehaviour
     public float maxHealth = 100;
     public float touchDamage = 10;
 
+    protected bool isSummon = false;
+    protected Action summonDiedAction;
+
 
     protected void Initialize()
     {
@@ -131,6 +134,10 @@ public class AI_Base : MonoBehaviour
         StartCoroutine(DeathRoutine(.5f));
         animator.SetBool("Dead", true);
         itemSpawner.Spawn(dropItemDirRight);
+        if (isSummon)
+        {
+            summonDiedAction.Invoke();
+        }
     }
     protected IEnumerator DeathRoutine(float time)
     {
@@ -171,6 +178,12 @@ public class AI_Base : MonoBehaviour
     {
         state = State.Falling;
     }
+    public void SetSummon(Action summonDiedAction)
+    {
+        this.summonDiedAction = summonDiedAction;
+        isSummon = true;
+    }
+
     protected void ChangeDirection(bool toRight)
     {
         if (isDirRight == toRight)
