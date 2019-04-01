@@ -12,9 +12,10 @@ public class Inventory : MonoBehaviour
     private static Text visualText;
     private static Text compareTextBox;
     private static Text compareVisualText;
+    private static PlayerInteract plrInter;
 
     private Player player;
-    private PlayerInteract plrInter;
+
     private CameraController followCamera;
 
     public Slot slotC;
@@ -25,6 +26,7 @@ public class Inventory : MonoBehaviour
     public GameObject compareToolTipObject;
     public Text compareTextBoxObject;
     public Text compareVisualTextObject;
+    public PlayerInteract plrInterObject;
 
     public GameObject inventoryUI;
     public GameObject InvSlots;
@@ -47,7 +49,7 @@ public class Inventory : MonoBehaviour
         compareTextBox = compareTextBoxObject;
         compareVisualText = compareVisualTextObject;
         slot = new GameObject[totalSlots];
-        plrInter = GetComponent<PlayerInteract>();
+        plrInter = plrInterObject;
         player = GetComponent<Player>();
         slotC = GetComponent<Slot>();
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -101,12 +103,16 @@ public class Inventory : MonoBehaviour
     public void ShowToolTip(GameObject slot)
     {
         Slot tmpslot = slot.GetComponent<Slot>();
+        Slot equipped;
         Transform panel = tmpslot.transform.GetChild(0);
         tmpslot.selected = true;
         panel.GetComponent<Image>().color = Color.grey;
 
         if (!tmpslot.empty)
         {
+            equipped = plrInter.equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
+            if (!equipped.empty)
+                tmpslot.CompareItems(equipped);
             visualText.text = tmpslot.GetToolTip(false);
             textBox.text = visualText.text;
 

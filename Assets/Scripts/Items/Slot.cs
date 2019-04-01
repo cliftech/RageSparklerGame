@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
+    private string diffDmg;
+    private string diffArm;
+    private string diffHp;
+
     public bool selected = false;
     public GameObject item;
     public bool empty;
@@ -47,6 +51,32 @@ public class Slot : MonoBehaviour
     void Start()
     {
         slotIcon = transform.GetChild(0);
+        diffDmg = string.Empty;
+        diffArm = string.Empty;
+        diffHp = string.Empty;
+    }
+
+    public void CompareItems(Slot compare)
+    {
+        diffDmg = string.Empty;
+        diffArm = string.Empty;
+        diffHp = string.Empty;
+
+
+        if (damage > compare.damage)
+            diffDmg = string.Format("<color=lime> (+{0})</color>", (damage - compare.damage).ToString());
+        else if (damage < compare.damage)
+            diffDmg = string.Format("<color=red> ({0})</color>", (damage - compare.damage).ToString());
+
+        if (armor > compare.armor)
+            diffArm = string.Format("<color=lime> (+{0})</color>", (armor - compare.armor).ToString());
+        else if (armor < compare.armor)
+            diffArm = string.Format("<color=red> ({0})</color>", (armor - compare.armor).ToString());
+
+        if (health > compare.health)
+            diffHp = string.Format("<color=lime> (+{0})</color>", (health - compare.health).ToString());
+        else if (health < compare.health)
+            diffHp = string.Format("<color=red> ({0})</color>", (health - compare.health).ToString());
     }
 
     public string GetToolTip(bool compare)
@@ -75,15 +105,15 @@ public class Slot : MonoBehaviour
 
         if (damage > 0)
         {
-            stats += "\n+" + damage.ToString() + " Damage";
+            stats += "\n+" + damage.ToString() + " Damage" + diffDmg;
         }
         if (armor > 0)
         {
-            stats += "\n+" + armor.ToString() + " Armor";
+            stats += "\n+" + armor.ToString() + " Armor" + diffArm;
         }
         if (health > 0)
         {
-            stats += "\n+" + health.ToString() + " Health";
+            stats += "\n+" + health.ToString() + " Health" + diffHp;
         }
         return string.Format("<color=black><size=10>" + comparison + "</size></color><color=" + color + "><size=16>{0}</size></color><size=14>{1}<i><color=lime>" + newLine + "{2}</color></i></size>", itemName, stats, description);
     }

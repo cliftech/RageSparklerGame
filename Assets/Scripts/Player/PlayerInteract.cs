@@ -138,6 +138,7 @@ public class PlayerInteract : MonoBehaviour
             tmp2 = equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
             if (!tmp2.empty)
             {
+                tmp2.CompareItems(tmpslot);
                 visualText.text = tmp2.GetToolTip(true);
                 textBox.text = visualText.text;
 
@@ -146,7 +147,7 @@ public class PlayerInteract : MonoBehaviour
                 float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - hubChest.slotPaddingVertical - 15;
 
                 cmpToolTip.transform.position = new Vector2(xPos, yPos);
-                cmpToolTip.transform.GetComponent<RectTransform>().localPosition = new Vector3(toolTip.transform.GetComponent<RectTransform>().localPosition.x, toolTip.transform.GetComponent<RectTransform>().localPosition.y - offset - 2);
+                cmpToolTip.transform.GetComponent<RectTransform>().localPosition = new Vector3(toolTip.transform.GetComponent<RectTransform>().localPosition.x, toolTip.transform.GetComponent<RectTransform>().localPosition.y - offset);
                 cmpToolTip.SetActive(true);
             }
         }
