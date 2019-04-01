@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour {
     public LayerMask wallStickMask;
     public LayerMask unDashableMask;
     public LayerMask slamPushableMask;
+    public LayerMask unslideableWhileAttackingMask;
     private string enemyLayerName = "Enemy";
     private int enemyLayer;
     private string enemyWeaponLayerName = "EnemyWeapon";
@@ -222,10 +223,9 @@ public class PlayerMovement : MonoBehaviour {
             else
             {
                 Vector2 origin = capsColl.bounds.center;
-                if (!DoesGroundInFrontExists() || Physics2D.Raycast(origin, Vector2.right * (isDirRight ? 1 : -1), xRaylength, unDashableMask))
+                if (!DoesGroundInFrontExists() || RaycastSideways_OR((isDirRight ? 1 : -1), 3, Color.red, unslideableWhileAttackingMask))
                     rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
             }
-            //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
             attackCooldownTimer -= Time.fixedDeltaTime;
         }
         else if (isDownwardAttacking)

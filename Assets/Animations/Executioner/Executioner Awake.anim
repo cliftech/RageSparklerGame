@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Executioner Die
+  m_Name: Executioner Awake
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,23 +20,17 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 3d311f45bf7125f46824afb89245d62d, type: 3}
-    - time: 0.1
-      value: {fileID: 21300000, guid: 4ab74555cd4600541a763e02c9d0fbe2, type: 3}
-    - time: 0.2
-      value: {fileID: 21300000, guid: a988b37ca74c6314ba9cb78d8e7245cf, type: 3}
-    - time: 0.3
-      value: {fileID: 21300000, guid: f4568a1ec9cff1a429a7a7dcfb63fece, type: 3}
-    - time: 0.4
-      value: {fileID: 21300000, guid: 2586d022495efeb44a1412b2086813c4, type: 3}
-    - time: 0.5
-      value: {fileID: 21300000, guid: 4807b6d21eb433f46b9aae8d47274888, type: 3}
-    - time: 0.6
-      value: {fileID: 21300000, guid: 2441edb011971394989b074ecf8fa2d4, type: 3}
-    - time: 0.7
       value: {fileID: 21300000, guid: 8a985261484aa2043834acb4fc2c6231, type: 3}
-    - time: 0.8
-      value: {fileID: 21300000, guid: 9534514627635e84fa221f526d8549d9, type: 3}
+    - time: 0.1
+      value: {fileID: 21300000, guid: 2441edb011971394989b074ecf8fa2d4, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: 4807b6d21eb433f46b9aae8d47274888, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: 2586d022495efeb44a1412b2086813c4, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: f4568a1ec9cff1a429a7a7dcfb63fece, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: a988b37ca74c6314ba9cb78d8e7245cf, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -56,21 +50,18 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 3d311f45bf7125f46824afb89245d62d, type: 3}
-    - {fileID: 21300000, guid: 4ab74555cd4600541a763e02c9d0fbe2, type: 3}
-    - {fileID: 21300000, guid: a988b37ca74c6314ba9cb78d8e7245cf, type: 3}
-    - {fileID: 21300000, guid: f4568a1ec9cff1a429a7a7dcfb63fece, type: 3}
-    - {fileID: 21300000, guid: 2586d022495efeb44a1412b2086813c4, type: 3}
-    - {fileID: 21300000, guid: 4807b6d21eb433f46b9aae8d47274888, type: 3}
-    - {fileID: 21300000, guid: 2441edb011971394989b074ecf8fa2d4, type: 3}
     - {fileID: 21300000, guid: 8a985261484aa2043834acb4fc2c6231, type: 3}
-    - {fileID: 21300000, guid: 9534514627635e84fa221f526d8549d9, type: 3}
+    - {fileID: 21300000, guid: 2441edb011971394989b074ecf8fa2d4, type: 3}
+    - {fileID: 21300000, guid: 4807b6d21eb433f46b9aae8d47274888, type: 3}
+    - {fileID: 21300000, guid: 2586d022495efeb44a1412b2086813c4, type: 3}
+    - {fileID: 21300000, guid: f4568a1ec9cff1a429a7a7dcfb63fece, type: 3}
+    - {fileID: 21300000, guid: a988b37ca74c6314ba9cb78d8e7245cf, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.9
+    m_StopTime: 0.6
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -91,7 +82,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.6
-    functionName: FullyKnockedDown
+    functionName: FullyAwakened
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

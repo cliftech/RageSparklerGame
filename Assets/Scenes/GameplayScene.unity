@@ -7064,8 +7064,6 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
-  - component: {fileID: 519420034}
-  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7150,73 +7148,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &519420033
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!95 &519420034
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 95488e659b732c1498479721ed64b09d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &522046645
 GameObject:
   m_ObjectHideFlags: 0
@@ -22301,46 +22232,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: toolTipObject
-      value: 
-      objectReference: {fileID: 1660768895}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: textBoxObject
-      value: 
-      objectReference: {fileID: 375565533}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: visualTextObject
-      value: 
-      objectReference: {fileID: 512870192}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: inventoryUI
-      value: 
-      objectReference: {fileID: 7916851819499384909}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: InvSlots
-      value: 
-      objectReference: {fileID: 1158498221480648315}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: compareVisualTextObject
-      value: 
-      objectReference: {fileID: 1699407292}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: compareTextBoxObject
-      value: 
-      objectReference: {fileID: 1295099697}
-    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: compareToolTipObject
-      value: 
-      objectReference: {fileID: 1060149345}
     - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_Name
@@ -22401,6 +22292,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: toolTipObject
+      value: 
+      objectReference: {fileID: 1660768895}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: textBoxObject
+      value: 
+      objectReference: {fileID: 375565533}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: visualTextObject
+      value: 
+      objectReference: {fileID: 512870192}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: inventoryUI
+      value: 
+      objectReference: {fileID: 7916851819499384909}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: InvSlots
+      value: 
+      objectReference: {fileID: 1158498221480648315}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: compareVisualTextObject
+      value: 
+      objectReference: {fileID: 1699407292}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: compareTextBoxObject
+      value: 
+      objectReference: {fileID: 1295099697}
+    - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: compareToolTipObject
+      value: 
+      objectReference: {fileID: 1060149345}
     - target: {fileID: 1056179042876710191, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: maxJumpCount
@@ -22410,6 +22341,16 @@ PrefabInstance:
         type: 3}
       propertyPath: invincibilityFrameTime
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056179042876710191, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: enemyWeaponMask.m_Bits
+      value: 4096
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056179042876710191, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: unslideableWhileAttackingMask.m_Bits
+      value: 6656
       objectReference: {fileID: 0}
     - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
@@ -22461,6 +22402,21 @@ PrefabInstance:
       propertyPath: levelText
       value: 
       objectReference: {fileID: 87990747}
+    - target: {fileID: 1056179041340908425, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.07391977
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056179041340908425, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056179041340908425, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.5933185
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8e19d10d787e598449b793ee124a129b, type: 3}

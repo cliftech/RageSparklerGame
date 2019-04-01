@@ -36,7 +36,7 @@ public class AI_FireGolem : AI_Base
     void Start()
     {
         // stats ----------------------------------------
-        movVelocity = 0;
+        movVelocity = 3;
         aggroRange = 5;
         attackRange = 1.5f;
         doubleAttackRange = 1.5f;

@@ -14,7 +14,7 @@ public class AI_Base : MonoBehaviour
     protected Collider2D[] bodyWeaponColliders;
     protected ItemSpawner itemSpawner;
 
-    public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling, Staggered };
+    public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling, Staggered, Charging, Stunned };
     [Header ("for debugging")][SerializeField] protected State state;
 
     protected bool isDirRight;
