@@ -627,6 +627,9 @@ MonoBehaviour:
   slamPushableMask:
     serializedVersion: 2
     m_Bits: 8192
+  unslideableWhileAttackingMask:
+    serializedVersion: 2
+    m_Bits: 0
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
@@ -669,6 +672,8 @@ MonoBehaviour:
   currentInterObjScript: {fileID: 0}
   hubChest: {fileID: 1412240953855950337}
   equipment: {fileID: 454859859997555492}
+  essStorage: {fileID: 8999056510628753628, guid: ad2bc2739179b194d8703be053bbe53f,
+    type: 3}
 --- !u!114 &1412240953855950337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,11 +690,16 @@ MonoBehaviour:
   toolTipObject: {fileID: 0}
   textBoxObject: {fileID: 0}
   visualTextObject: {fileID: 0}
+  compareToolTipObject: {fileID: 0}
+  compareTextBoxObject: {fileID: 0}
+  compareVisualTextObject: {fileID: 0}
+  plrInterObject: {fileID: 0}
   inventoryUI: {fileID: 0}
   InvSlots: {fileID: 0}
   inventoryEnabled: 0
   slot: []
   totalSlots: 100
+  invsOpen: 0
   slotPaddingHorizontal: 2
   slotPaddingVertical: 2
 --- !u!114 &454859859997555492
@@ -708,11 +718,16 @@ MonoBehaviour:
   toolTipObject: {fileID: 0}
   textBoxObject: {fileID: 0}
   visualTextObject: {fileID: 0}
+  compareToolTipObject: {fileID: 0}
+  compareTextBoxObject: {fileID: 0}
+  compareVisualTextObject: {fileID: 0}
+  plrInterObject: {fileID: 0}
   inventoryUI: {fileID: 0}
   InvSlots: {fileID: 0}
   inventoryEnabled: 0
   slot: []
   totalSlots: 11
+  invsOpen: 0
   slotPaddingHorizontal: 10
   slotPaddingVertical: 10
 --- !u!114 &1056179042876710185
