@@ -10626,7 +10626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -182.40002, y: -14.142059}
+  m_AnchoredPosition: {x: -182.40002, y: -14.142029}
   m_SizeDelta: {x: -477.79, y: -264.35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1150422188
@@ -21638,17 +21638,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7958124925400199662, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: essStorageObj
-      value: 
-      objectReference: {fileID: 8999056510628753628, guid: ad2bc2739179b194d8703be053bbe53f,
-        type: 3}
     - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: toolTipObject
@@ -21694,6 +21683,11 @@ PrefabInstance:
       propertyPath: plrInterObject
       value: 
       objectReference: {fileID: 1576086011}
+    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1056179042876710187, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21769,6 +21763,12 @@ PrefabInstance:
       propertyPath: unslideableWhileAttackingMask.m_Bits
       value: 6656
       objectReference: {fileID: 0}
+    - target: {fileID: 7958124925400199662, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: essStorageObj
+      value: 
+      objectReference: {fileID: 8999056510628753628, guid: ad2bc2739179b194d8703be053bbe53f,
+        type: 3}
     - target: {fileID: 454859859997555492, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: toolTipObject
@@ -21819,11 +21819,6 @@ PrefabInstance:
       propertyPath: plrInterObject
       value: 
       objectReference: {fileID: 1576086011}
-    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: levelText
-      value: 
-      objectReference: {fileID: 87990747}
     - target: {fileID: 1056179041340908425, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_Offset.x
@@ -21839,6 +21834,11 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 1.5933185
       objectReference: {fileID: 0}
+    - target: {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: levelText
+      value: 
+      objectReference: {fileID: 87990747}
     m_RemovedComponents:
     - {fileID: 7236081369271385233, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8e19d10d787e598449b793ee124a129b, type: 3}

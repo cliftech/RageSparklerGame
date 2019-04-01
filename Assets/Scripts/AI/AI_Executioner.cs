@@ -7,7 +7,17 @@ public class AI_Executioner : AI_Base
     public GameObject shockwavePrefab;
     public float attackDamage;
     public float shockwaveDamage;
+    public string displayName = "Executioner";
+    public AudioClip music;
+    public AudioClip attackHitGroundSound;
+    public AudioClip jumpSound;
+    public AudioClip landSound;
+    public AudioClip getHitSound;
+    public AudioClip footStepSound;
 
+    private AI_Soundmanager sound;
+    private SoundManager soundManager;
+    private AreaNotificationText notificationText;
     private LayerMask terrainMask;
     private LayerMask playerMask;
     private string playerTag = "Player";
@@ -41,9 +51,13 @@ public class AI_Executioner : AI_Base
     private float tendencyToChargeAttack;
     private float tendencyToJumpAttack;
 
+    private bool hasBeenAggroed;
 
     void Awake()
     {
+        sound = GetComponent<AI_Soundmanager>();
+        soundManager = GameObject.FindObjectOfType<SoundManager>();
+        notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
         Initialize();
     }
 
@@ -139,6 +153,12 @@ public class AI_Executioner : AI_Base
             case State.Idle:
                 if (Vector2.Distance(transform.position, target.position) < aggroRange)
                 {
+                    if (!hasBeenAggroed)
+                    {
+                        notificationText.ShowNotification(displayName);
+                        soundManager.PlayBossMusic(music);
+                        hasBeenAggroed = true;
+                    }
                     if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
                         RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
                     {
@@ -162,8 +182,8 @@ public class AI_Executioner : AI_Base
                 minJumpTimer -= Time.deltaTime;
                 if (isGrounded && minJumpTimer <= 0)
                 {
-                    damageContainer.SetDamageCall(() => touchDamage);
-                    SetAggro();
+                    if (isGrounded && minJumpTimer <= 0)
+                        Land();
                 }
                 break;
             case State.Charging:
@@ -231,6 +251,7 @@ public class AI_Executioner : AI_Base
         Instantiate(shockwavePrefab, transform.parent).GetComponent<Shockwave>().Set(shockwaveOrigin, 3f, Vector2.left, shockwaveDamage);
 
         StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
+        sound.PlayOneShot(landSound);
     }
     void AttackSingle()
     {
@@ -393,12 +414,14 @@ public class AI_Executioner : AI_Base
     }
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
+        if (state == State.Dead)
+            return;
         health -= damage;
         print(name + " Health: " + health);
         if (health <= 0)
         {
-            if (state != State.Dead)
-                SetDead(isRight);
+            SetDead(isRight);
+            soundManager.StopPlayingBossMusic();
         }
         else
         {
@@ -412,6 +435,7 @@ public class AI_Executioner : AI_Base
                 SetStaggered(isRight);
             }
         }
+        sound.PlayOneShot(getHitSound);
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -421,5 +445,16 @@ public class AI_Executioner : AI_Base
             GetHit(transform.position.x < other.transform.position.x,
                 dc.GetDamage(), dc.doKnockback());
         }
+    }
+
+    // sound events
+    void PlayFootstep()
+    {
+        sound.PlayOneShot(footStepSound);
+    }
+
+    void PlayAttackEffect()
+    {
+        sound.PlayOneShot(attackHitGroundSound);
     }
 }

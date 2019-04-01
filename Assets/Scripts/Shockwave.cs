@@ -13,9 +13,12 @@ public class Shockwave : MonoBehaviour
     private float timer;
     private Vector3 direction;
 
+    public AudioClip soundLoop;
+    private AudioSource audioSource;
 
     public void Set(Vector2 position, float time, Vector2 direction, float damage, float speed = 10)
     {
+        audioSource = GetComponent<AudioSource>();
         trail = GetComponent<ParticleSystem>();
         shockwave = GetComponentInChildren<ParticleSystem>();
         damageContainer = GetComponent<DamageContainer>();
@@ -34,6 +37,9 @@ public class Shockwave : MonoBehaviour
 
         trail.Play();
         shockwave.Play();
+        audioSource.clip = soundLoop;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 
     void Update()
@@ -44,9 +50,10 @@ public class Shockwave : MonoBehaviour
         {
             trail.Stop();
             shockwave.Stop();
-            Destroy(gameObject, 1f);
+            audioSource.Stop();
             this.enabled = false;
             collider.enabled = false;
+            Destroy(gameObject, 1f);
         }
     }
 
