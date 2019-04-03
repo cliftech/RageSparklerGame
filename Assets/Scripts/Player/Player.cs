@@ -57,7 +57,8 @@ public class Player : MonoBehaviour
         playerMovement.damageContainer.SetDoKnockbackCall(() => IsCurrnetAttackKnockingBack());
         essence = 0;
         level = 1;
-        CalculateStats();
+        SetItemStats();
+        health = activeMaxHealth;
         statusGUI.UpdateEssenceText();
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateLevelText();
@@ -95,7 +96,7 @@ public class Player : MonoBehaviour
     public void SetItemStats()
     {
         Armor = 0;
-        activeMaxHealth = base_maxhealth;
+        activeMaxHealth = base_maxhealth + level * health_perLevel;
         attack1Dam = 5;
         attack2Dam = 7.5f;
         attack3Dam = 10;
@@ -110,10 +111,6 @@ public class Player : MonoBehaviour
             downwardAttackDam += equipment.slot[i].GetComponent<Slot>().damage * 1.5f;
         }
         statusGUI.UpdateInventoryStats();
-    }
-    public void SetInventoryStatText()
-    {
-
     }
 
     public void SetInteractAction(Action action)
@@ -159,18 +156,6 @@ public class Player : MonoBehaviour
     {
         level++;
         statusGUI.UpdateLevelText();
-    }
-    private void CalculateStats()
-    {
-        //activeMaxHealth = base_maxhealth + level.currentLevel * health_perLevel;
-        //health = activeMaxHealth;
-        SetHealthByLevel();
-    }
-
-    public void SetHealthByLevel()
-    {
-        activeMaxHealth = base_maxhealth + level * health_perLevel;
-        health = activeMaxHealth;
     }
     public float GetDamage()
     {

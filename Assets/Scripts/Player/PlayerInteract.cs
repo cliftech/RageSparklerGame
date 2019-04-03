@@ -51,7 +51,7 @@ public class PlayerInteract : MonoBehaviour
                         player.LevelUp();
                         priceToLevelUp++;
                         player.statusGUI.UpdateEssenceText();
-                        player.SetHealthByLevel();
+                        player.SetItemStats();
                         player.statusGUI.UpdateHealthbar();
                         interactableGUI.Hide();
                         interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
