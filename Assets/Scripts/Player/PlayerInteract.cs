@@ -136,6 +136,7 @@ public class PlayerInteract : MonoBehaviour
 
             equipment.RemoveItem(itemType);
             equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
+            player.SetItemStats();
             hubChest.ShowToolTip(hubChest.slot[whichSlot]);
             hubChest.CompareToolTips(hubChest.slot[whichSlot]);
         }
@@ -193,6 +194,7 @@ public class PlayerInteract : MonoBehaviour
                 if (item.equipable)
                 {
                     Equipped = equipment.Equip(currentInterObj, item.ID, item.type, item.description, item.itemName, item.icon, item.quality, item.damage, item.armor, item.health);
+                    player.SetItemStats();
                 }
                 if (Equipped == false)
                 hubChest.AddItemToHubChest(currentInterObj, item.ID, item.type, item.description, item.itemName, item.quality, item.icon, item.damage, item.armor, item.health);
@@ -221,6 +223,7 @@ public class PlayerInteract : MonoBehaviour
                 interactableGUI.Hide();
                 equipment.toolTipObject.SetActive(false);
                 hubChest.toolTipObject.SetActive(false);
+                hubChest.HideCompareToolTips();
                 if (equipment.inventoryEnabled)
                 {
                     EventSystem.current.SetSelectedGameObject(equipment.slot[0]);

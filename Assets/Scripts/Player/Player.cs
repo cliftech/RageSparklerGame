@@ -4,7 +4,9 @@ using UnityEngine;
 using System;
 public class Player : MonoBehaviour
 {
+    private PlayerInteract plrInter;
     private LevelManager levelManager;
+    private Inventory equipment;
     [HideInInspector] public PlayerSoundController soundController;
     [HideInInspector] public PlayerMovement playerMovement;
     [HideInInspector] public TheFirstFlash AmuletFlash;
@@ -15,6 +17,7 @@ public class Player : MonoBehaviour
     public float base_maxhealth = 100;
     public float health_perLevel = 20;
     public float Health { get { return health; } }
+    public float Armor = 0;
 
     public List<int> Checkpoints;
 
@@ -35,11 +38,18 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        plrInter = FindObjectOfType<PlayerInteract>();
         levelManager = FindObjectOfType<LevelManager>();
         soundController = GetComponentInChildren<PlayerSoundController>();
         playerMovement = GetComponent<PlayerMovement>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
         statusGUI = FindObjectOfType<StatusGUI>();
+        Inventory[] equipments = GetComponents<Inventory>();
+        for (int i = 0; i < equipments.Length; i++)
+        {
+            if (equipments[i].inventoryUI.name == "EquipmentUI")
+                equipment = equipments[i];
+        }
     }
     void Start()
     {
@@ -51,6 +61,7 @@ public class Player : MonoBehaviour
         statusGUI.UpdateEssenceText();
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateLevelText();
+        statusGUI.UpdateInventoryStats();
     }
 
     void Update()
@@ -69,7 +80,8 @@ public class Player : MonoBehaviour
     /// <param name="knockBackDirection">set to 1 if attack came from right of PC, -1 if from left, leave 0 if no knockback</param>
     public void GetHit(float damage, int knockBackDirection = 0)
     {
-        health -= damage;
+        float damageReduction = 1 - (0.052f * Armor)/(0.9f+0.048f * Armor);    
+        health -= damage * damageReduction;
         if (knockBackDirection == 2)
             playerMovement.KnockbackUp(damage);
         else if (knockBackDirection != 0)
@@ -77,8 +89,31 @@ public class Player : MonoBehaviour
         if (health <= 0)
             Die();
         statusGUI.UpdateHealthbar();
+        soundController.PlayGetHitSound();       
+    }
 
-        soundController.PlayGetHitSound();
+    public void SetItemStats()
+    {
+        Armor = 0;
+        activeMaxHealth = base_maxhealth;
+        attack1Dam = 5;
+        attack2Dam = 7.5f;
+        attack3Dam = 10;
+        downwardAttackDam = 7.5f;
+        for (int i = 0; i < equipment.slot.Length; i++)
+        {
+            activeMaxHealth += equipment.slot[i].GetComponent<Slot>().health;
+            Armor += equipment.slot[i].GetComponent<Slot>().armor;
+            attack1Dam += equipment.slot[i].GetComponent<Slot>().damage;
+            attack2Dam += equipment.slot[i].GetComponent<Slot>().damage * 1.5f;
+            attack3Dam += equipment.slot[i].GetComponent<Slot>().damage * 2;
+            downwardAttackDam += equipment.slot[i].GetComponent<Slot>().damage * 1.5f;
+        }
+        statusGUI.UpdateInventoryStats();
+    }
+    public void SetInventoryStatText()
+    {
+
     }
 
     public void SetInteractAction(Action action)
