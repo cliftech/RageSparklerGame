@@ -123,17 +123,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 100
+  maxHealth: 500
   touchDamage: 10
   shockwavePrefab: {fileID: 338336856533553160, guid: 26f2e2fc73c2e794d9adb33a05f729a7,
     type: 3}
   forceFieldPrefab: {fileID: 6358075853700584762, guid: 1518204cf7e1c544996ed7837d4f1657,
     type: 3}
   attackDamage: 10
-  shockwaveDamage: 10
+  shockwaveDamage: 20
+  stronkAttackDamage: 50
   displayName: Executioner
   music: {fileID: 8300000, guid: 03e8efd285824fb48be0528694c9b1f6, type: 3}
   attackHitGroundSound: {fileID: 8300000, guid: cb1e9e3818c66194a94b707012583441,
+    type: 3}
+  stronkAttackHitGroundSound: {fileID: 8300000, guid: cb1e9e3818c66194a94b707012583441,
     type: 3}
   jumpSound: {fileID: 8300000, guid: ee118a813ae520f4b8cd5841717b1967, type: 3}
   landSound: {fileID: 8300000, guid: 6c4b42b652f416b4eb9a528ee0c1ca11, type: 3}

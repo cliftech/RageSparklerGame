@@ -8,9 +8,11 @@ public class AI_Executioner : AI_Base
     public GameObject forceFieldPrefab;
     public float attackDamage;
     public float shockwaveDamage;
+    public float stronkAttackDamage;
     public string displayName = "Executioner";
     public AudioClip music;
     public AudioClip attackHitGroundSound;
+    public AudioClip stronkAttackHitGroundSound;
     public AudioClip jumpSound;
     public AudioClip landSound;
     public AudioClip getHitSound;
@@ -21,11 +23,15 @@ public class AI_Executioner : AI_Base
     private AI_Soundmanager sound;
     private SoundManager soundManager;
     private AreaNotificationText notificationText;
+    private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
 
+    private float stronkAttackRange;
+    private float stronkAttackImmobilizedTime;
+    private float stronkAttackWindUpTime;
     private float attackRange;
     private float attackImmobilizedTime;
 
@@ -53,12 +59,6 @@ public class AI_Executioner : AI_Base
     private float staggerCounter;
     private int maxStaggerCount;
 
-    enum AttackType { NormalAttack, ChargeAttack, JumpAttack }
-    AttackType nextAttack;
-    private float tendencyToNormalAttack;
-    private float tendencyToChargeAttack;
-    private float tendencyToJumpAttack;
-
     private bool hasBeenAggroed;
 
     void Awake()
@@ -66,6 +66,7 @@ public class AI_Executioner : AI_Base
         sound = GetComponent<AI_Soundmanager>();
         soundManager = GameObject.FindObjectOfType<SoundManager>();
         notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
+        bossHealthbar = GameObject.FindObjectOfType<EnemyBossHealthbar>();
         Initialize();
     }
 
@@ -74,9 +75,6 @@ public class AI_Executioner : AI_Base
         // stats ----------------------------------------
         movVelocity = 5;
         aggroRange = 10;
-        attackRange = 2.5f;
-        maxJumpRange = 10f;
-        minJumpRange = 2.5f;
         knockBackVelocity = 1;
         staggerVelocity = 0.5f;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
@@ -84,14 +82,22 @@ public class AI_Executioner : AI_Base
         landImmobalizedTime = 2f;
         minJumpInterval = .5f;
 
-        jumpWindUpTime = 0.75f;
+        stronkAttackRange = 3;
+        stronkAttackImmobilizedTime = 1f;
+        stronkAttackWindUpTime = 0.75f;
+        attackRange = 2.5f;
         attackImmobilizedTime = 0.5f;
 
-        maxChargeRange = 5;
-        minChargeRange = attackRange * 1.2f;
+        jumpWindUpTime = 0.75f;
+
+        maxChargeRange = 6;
+        minChargeRange = stronkAttackRange * 1.2f;
         chargeWindUpTime = .75f;
         maxChargeTime = 3f;
         wallStunTime = 1.5f;
+        
+        maxJumpRange = 10f;
+        minJumpRange = 5f;
 
         shoutTime = 1f;
         maxShoutRange = 1.5f;
@@ -99,16 +105,6 @@ public class AI_Executioner : AI_Base
 
         staggerFalloff = 1;
         maxStaggerCount = 3;
-
-        //these have to be in ascending order, if not change this.DetermineNextAttack method
-        // these have to add up to one
-        tendencyToNormalAttack = 0.1f;
-        tendencyToJumpAttack = 0.3f;
-        tendencyToChargeAttack = 0.6f;
-        //-----------------------------------------------
-
-        tendencyToJumpAttack += tendencyToNormalAttack;
-        tendencyToChargeAttack += tendencyToJumpAttack;
 
         damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
@@ -152,7 +148,9 @@ public class AI_Executioner : AI_Base
                         else if (dist < maxJumpRange && dist > minJumpRange)
                             AttackJump();
                         else if (dist < attackRange)
-                            AttackSingle();
+                            AttackNormal();
+                        else if (dist < stronkAttackRange)
+                            AttackStronk();
                     }
                     else if (dist < maxJumpRange && dist > minJumpRange)
                         AttackJump();
@@ -174,6 +172,9 @@ public class AI_Executioner : AI_Base
                     {
                         notificationText.ShowNotification(displayName);
                         soundManager.PlayBossMusic(music);
+                        ChangeDirection(coll.bounds.center.x < target.position.x);
+                        ShoutAttack();
+                        bossHealthbar.Show();
                         hasBeenAggroed = true;
                     }
                     if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
@@ -229,16 +230,6 @@ public class AI_Executioner : AI_Base
         animator.SetFloat("Vertical Velocity", rb.velocity.y);
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
-    void DetermineNextAttack()
-    {
-        float r = Random.value;
-        if (r < tendencyToNormalAttack)
-            nextAttack = AttackType.NormalAttack;
-        else if (r >= tendencyToNormalAttack && r < tendencyToJumpAttack)
-            nextAttack = AttackType.JumpAttack;
-        else
-            nextAttack = AttackType.ChargeAttack;
-    }
     void ShoutAttack()
     {
         StartCoroutine(ShoutFor(shoutTime));
@@ -272,7 +263,6 @@ public class AI_Executioner : AI_Base
         state = State.Jumping;
         rb.velocity = jumpVel * 10;
         minJumpTimer = minJumpInterval;
-        DetermineNextAttack();
     }
     void Land()
     {
@@ -284,12 +274,25 @@ public class AI_Executioner : AI_Base
         StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
         sound.PlayOneShot(landSound);
     }
-    void AttackSingle()
+    void AttackStronk()
+    {
+        StartCoroutine(StronkAttackWindUp(stronkAttackWindUpTime));
+    }
+    IEnumerator StronkAttackWindUp(float time)
+    {
+        animator.SetBool("StronkAttackWindUp", true);
+        ChangeDirection(coll.bounds.center.x < target.position.x);
+        SetImmobilized();
+        yield return new WaitForSecondsRealtime(time);
+        damageContainer.SetDamageCall(() => stronkAttackDamage);
+        animator.SetBool("StronkAttackWindUp", false);
+        SetAttack2();
+    }
+    void AttackNormal()
     {
         ChangeDirection(coll.bounds.center.x < target.position.x);
         damageContainer.SetDamageCall(() => attackDamage);
         SetAttack1();
-        DetermineNextAttack();
     }
     void ChargeStart()
     {
@@ -304,12 +307,11 @@ public class AI_Executioner : AI_Base
         chargeTimer = maxChargeTime;
         animator.SetBool("Charging", true);
         state = State.Charging;
-        DetermineNextAttack();
     }
     void EndCharge(bool attack, bool stun)
     {
         if (attack)
-            AttackSingle();
+            AttackNormal();
         else if (stun)
         {
             sound.PlayOneShot(slamIntoWallSound);
@@ -353,30 +355,9 @@ public class AI_Executioner : AI_Base
         {
             case State.Aggro:
                 {
-                    switch (nextAttack)
-                    {
-                        case AttackType.NormalAttack:
-                            {
-                                bool b = target.position.x < coll.bounds.center.x;
-                                if (isDirRight != b)
-                                    ChangeDirection(!b);
-                            }
-                            break;
-                        case AttackType.ChargeAttack:
-                            {
-                                bool b = target.position.x < coll.bounds.center.x;
-                                if (isDirRight != b)
-                                    ChangeDirection(!b);
-                            }
-                            break;
-                        case AttackType.JumpAttack:
-                            {
-                                bool b = target.position.x < coll.bounds.center.x;
-                                if (isDirRight != b)
-                                    ChangeDirection(!b);
-                            }
-                            break;
-                    }
+                    bool b = target.position.x < coll.bounds.center.x;
+                    if (isDirRight != b)
+                        ChangeDirection(!b);
 
                     Vector2 direction;
                     if (isDirRight)
@@ -460,6 +441,7 @@ public class AI_Executioner : AI_Base
             animator.SetBool("Charging", false);
             animator.SetBool("Stunned", false);
             soundManager.StopPlayingBossMusic();
+            bossHealthbar.Hide();
         }
         else
         {
@@ -473,6 +455,7 @@ public class AI_Executioner : AI_Base
                 SetStaggered(isRight);
             }
         }
+        bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -494,5 +477,9 @@ public class AI_Executioner : AI_Base
     void PlayAttackEffect()
     {
         sound.PlayOneShot(attackHitGroundSound);
+    }
+    void PlayStronkAttackEffect()
+    {
+        sound.PlayOneShot(stronkAttackHitGroundSound);
     }
 }

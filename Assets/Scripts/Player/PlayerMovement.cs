@@ -566,11 +566,11 @@ public class PlayerMovement : MonoBehaviour {
     bool IsGrounded()
     {
         Vector2 origin = capsColl.bounds.center;
-        float xOffset = capsColl.bounds.size.x / 2.85f;
-        origin.x -= xOffset * 3 / 2;
+        float xOffset = capsColl.bounds.size.x / 3.05f;
+        origin.x -= xOffset * 3/2;
         for (int i = 0; i < 4; i++)
         {
-            Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.blue, 0.075f);
+            Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.magenta, 0.075f);
             if (Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask))
                 return true;
             origin.x += xOffset;
@@ -580,12 +580,15 @@ public class PlayerMovement : MonoBehaviour {
     bool IsOnCorner()
     {
         Vector2 origin = capsColl.bounds.center;
-        float xOffset = capsColl.bounds.size.x / 2.85f;
+        float xOffset = capsColl.bounds.extents.x / 1.05f;
         bool centerRay = Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask);
+        Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.blue, 0.075f);
         origin.x -= xOffset;
         bool leftRay = Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask);
+        Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.blue, 0.075f);
         origin.x += xOffset * 2;
         bool rightRay = Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask);
+        Debug.DrawRay(origin, -Vector2.up * yRaylength, Color.blue, 0.075f);
 
         if (!centerRay && (leftRay || rightRay))
             return true;
