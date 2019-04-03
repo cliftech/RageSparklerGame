@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
                 return attack3Dam;
         }
         Debug.LogError("current attack number is nor recognized: " + playerMovement.currentAttackNum);
-        return -1;
+        return attack1Dam;
     }
 
     public void AddHealth(float healthAmount)

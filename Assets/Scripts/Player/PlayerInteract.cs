@@ -159,6 +159,7 @@ public class PlayerInteract : MonoBehaviour
                 visualText.text = tmp2.GetToolTip(true);
                 textBox.text = visualText.text;
 
+                Canvas.ForceUpdateCanvases();
                 float offset = toolTip.transform.Find("TextBox").GetComponent<RectTransform>().rect.height - toolTip.transform.Find("TextBox").Find("BackGround").GetComponent<RectTransform>().offsetMin.y;
                 float xPos = slot.transform.position.x - hubChest.slotPaddingHorizontal - 35;
                 float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - hubChest.slotPaddingVertical - 15;

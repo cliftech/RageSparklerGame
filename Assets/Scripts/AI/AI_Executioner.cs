@@ -5,6 +5,7 @@ using UnityEngine;
 public class AI_Executioner : AI_Base
 {
     public GameObject shockwavePrefab;
+    public GameObject forceFieldPrefab;
     public float attackDamage;
     public float shockwaveDamage;
     public string displayName = "Executioner";
@@ -14,6 +15,8 @@ public class AI_Executioner : AI_Base
     public AudioClip landSound;
     public AudioClip getHitSound;
     public AudioClip footStepSound;
+    public AudioClip shoutLoopSound;
+    public AudioClip slamIntoWallSound;
 
     private AI_Soundmanager sound;
     private SoundManager soundManager;
@@ -41,6 +44,11 @@ public class AI_Executioner : AI_Base
     private float chargeTimer;
     private float wallStunTime;
 
+    private float maxShoutRange;
+    private float shoutTime;
+    private float shoutCounter;
+    private int maxShoutCount;
+
     private float staggerFalloff;
     private float staggerCounter;
     private int maxStaggerCount;
@@ -66,7 +74,7 @@ public class AI_Executioner : AI_Base
         // stats ----------------------------------------
         movVelocity = 5;
         aggroRange = 10;
-        attackRange = 2;
+        attackRange = 2.5f;
         maxJumpRange = 10f;
         minJumpRange = 2.5f;
         knockBackVelocity = 1;
@@ -84,6 +92,10 @@ public class AI_Executioner : AI_Base
         chargeWindUpTime = .75f;
         maxChargeTime = 3f;
         wallStunTime = 1.5f;
+
+        shoutTime = 1f;
+        maxShoutRange = 1.5f;
+        maxShoutCount = 2;
 
         staggerFalloff = 1;
         maxStaggerCount = 3;
@@ -114,6 +126,9 @@ public class AI_Executioner : AI_Base
         if (staggerCounter > 0)
             staggerCounter -= Time.deltaTime * staggerFalloff;
 
+        if (shoutCounter > 0)
+            shoutCounter -= Time.deltaTime;
+
         switch (state)
         {
             case State.Aggro:
@@ -130,7 +145,9 @@ public class AI_Executioner : AI_Base
 
                     if (yDiff < 1) // player on the same level as enemy
                     {
-                        if (dist < maxChargeRange && dist > minChargeRange)
+                        if (dist < maxShoutRange && shoutCounter + 1 <= maxShoutCount)
+                            ShoutAttack();
+                        else if (dist < maxChargeRange && dist > minChargeRange)
                             ChargeStart();
                         else if (dist < maxJumpRange && dist > minJumpRange)
                             AttackJump();
@@ -222,7 +239,21 @@ public class AI_Executioner : AI_Base
         else
             nextAttack = AttackType.ChargeAttack;
     }
-
+    void ShoutAttack()
+    {
+        StartCoroutine(ShoutFor(shoutTime));
+    }
+    IEnumerator ShoutFor(float time)
+    {
+        shoutCounter += 2;
+        animator.SetBool("Shout", true);
+        Instantiate(forceFieldPrefab, transform.parent).GetComponent<ForceField>().Set(coll.bounds.center, 3, time);
+        SetImmobilized();
+        sound.PlayFor(shoutLoopSound, time, 0.1f);
+        yield return new WaitForSecondsRealtime(time);
+        animator.SetBool("Shout", false);
+        SetAggro();
+    }
     void AttackJump()
     {
         ChangeDirection(coll.bounds.center.x < target.position.x);
@@ -280,7 +311,10 @@ public class AI_Executioner : AI_Base
         if (attack)
             AttackSingle();
         else if (stun)
+        {
+            sound.PlayOneShot(slamIntoWallSound);
             StartCoroutine(Stunned(wallStunTime, () => SetAggro()));
+        }
         else
             SetAggro();
         animator.SetBool("Charging", false);
@@ -421,6 +455,10 @@ public class AI_Executioner : AI_Base
         if (health <= 0)
         {
             SetDead(isRight);
+            StopAllCoroutines();
+            animator.SetBool("Shout", false);
+            animator.SetBool("Charging", false);
+            animator.SetBool("Stunned", false);
             soundManager.StopPlayingBossMusic();
         }
         else

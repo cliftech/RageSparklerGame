@@ -127,6 +127,8 @@ MonoBehaviour:
   touchDamage: 10
   shockwavePrefab: {fileID: 338336856533553160, guid: 26f2e2fc73c2e794d9adb33a05f729a7,
     type: 3}
+  forceFieldPrefab: {fileID: 6358075853700584762, guid: 1518204cf7e1c544996ed7837d4f1657,
+    type: 3}
   attackDamage: 10
   shockwaveDamage: 10
   displayName: Executioner
@@ -137,6 +139,8 @@ MonoBehaviour:
   landSound: {fileID: 8300000, guid: 6c4b42b652f416b4eb9a528ee0c1ca11, type: 3}
   getHitSound: {fileID: 8300000, guid: 1d0ef7fa12cc0f64f8a7a228802fd5f3, type: 3}
   footStepSound: {fileID: 8300000, guid: d6ad0d0de935eae43929adcd95de9fd8, type: 3}
+  shoutLoopSound: {fileID: 8300000, guid: d2ca1ff6ad7f9604099afed58a73cce3, type: 3}
+  slamIntoWallSound: {fileID: 8300000, guid: d634ed10489e3e64e8f1f57b6b4f28bc, type: 3}
 --- !u!50 &1764307118717987907
 Rigidbody2D:
   serializedVersion: 4
@@ -230,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oneShotAudioSource: {fileID: 404440135348036170}
-  footstepSource: {fileID: 3567198816849693112}
+  loopAudioSource: {fileID: 3567198816849693112}
 --- !u!82 &404440135348036170
 AudioSource:
   m_ObjectHideFlags: 0
@@ -343,7 +347,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

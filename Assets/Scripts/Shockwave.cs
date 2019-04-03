@@ -20,7 +20,7 @@ public class Shockwave : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         trail = GetComponent<ParticleSystem>();
-        shockwave = GetComponentInChildren<ParticleSystem>();
+        shockwave = transform.Find("ShockwaveSpikes").GetComponent<ParticleSystem>();
         damageContainer = GetComponent<DamageContainer>();
         collider = GetComponentInChildren<Collider2D>();
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
