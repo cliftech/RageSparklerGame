@@ -34,7 +34,6 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public CapsuleCollider2D capsColl;
-    [HideInInspector] public BoxCollider2D boxColl;
     [HideInInspector] public DamageContainer damageContainer;
     [HideInInspector] public Player player;
     private float horizontalInput;
@@ -85,7 +84,6 @@ public class PlayerMovement : MonoBehaviour {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         capsColl = GetComponent<CapsuleCollider2D>();
-        boxColl = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageContainer = GetComponent<DamageContainer>();
         player = GetComponent<Player>();
@@ -159,7 +157,7 @@ public class PlayerMovement : MonoBehaviour {
                 }
             }
         }
-
+        
         if (isKnockedBack)
         {
             knockBackTimer -= Time.fixedDeltaTime;
@@ -252,6 +250,14 @@ public class PlayerMovement : MonoBehaviour {
         }
         if(acceleration < accel)
             acceleration = Mathf.MoveTowards(acceleration, accel, Time.fixedDeltaTime);
+
+        if (!isStuckToWall_L && !isStuckToWall_R && !isDashing && !isAttacking && !isDownwardAttacking && !isKnockedBack)
+        {
+            if (IsOnCorner())
+                rb.gravityScale = 0;
+            else
+                rb.gravityScale = gravityScale;
+        }
     }
 
     #region attacking
@@ -560,7 +566,7 @@ public class PlayerMovement : MonoBehaviour {
     bool IsGrounded()
     {
         Vector2 origin = capsColl.bounds.center;
-        float xOffset = boxColl.bounds.size.x / 2.85f;
+        float xOffset = capsColl.bounds.size.x / 2.85f;
         origin.x -= xOffset * 3 / 2;
         for (int i = 0; i < 4; i++)
         {
@@ -569,6 +575,20 @@ public class PlayerMovement : MonoBehaviour {
                 return true;
             origin.x += xOffset;
         }
+        return false;
+    }
+    bool IsOnCorner()
+    {
+        Vector2 origin = capsColl.bounds.center;
+        float xOffset = capsColl.bounds.size.x / 2.85f;
+        bool centerRay = Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask);
+        origin.x -= xOffset;
+        bool leftRay = Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask);
+        origin.x += xOffset * 2;
+        bool rightRay = Physics2D.Raycast(origin, -Vector2.up, yRaylength, groundMask);
+
+        if (!centerRay && (leftRay || rightRay))
+            return true;
         return false;
     }
     bool DoesGroundInFrontExists()

@@ -120,7 +120,6 @@ public class Inventory : MonoBehaviour
             Canvas.ForceUpdateCanvases();
             float xPos = slot.transform.position.x - slotPaddingHorizontal - 35;
             float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - slotPaddingVertical - 15;
-            print(slot.transform.position.x + ", " + slot.transform.position.y);
             toolTip.transform.position = new Vector2(xPos, yPos);
         }
     }
