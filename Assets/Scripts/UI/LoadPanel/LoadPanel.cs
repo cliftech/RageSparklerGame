@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class LoadPanel : MonoBehaviour
 {
+    private MainMenuManager mainMenuManager;
+
     public RectTransform canvasRect;
     public LoadProfileSlot profileSlot;
     private RectTransform rect;
@@ -16,6 +18,7 @@ public class LoadPanel : MonoBehaviour
 
     private void Awake()
     {
+        mainMenuManager = GameObject.FindObjectOfType<MainMenuManager>();
         rect = GetComponent<RectTransform>();
     }
     private void Start()
@@ -42,13 +45,9 @@ public class LoadPanel : MonoBehaviour
         //print(p);
     }
 
-    public void LoadSlot(SaveProfile profile)
-    {
-        print("loading: " + profile);
-    }
-
     public void Show()
     {
+        this.gameObject.SetActive(true);
         int slotCount = SaveManager.profileCount;
         if (slotCount <= 0)
             return;
@@ -76,5 +75,11 @@ public class LoadPanel : MonoBehaviour
     {
         rect.position = hiddenPos;
         isShowing = false;
+        this.gameObject.SetActive(false);
+    }
+
+    public void LoadSlot(SaveProfile profile)
+    {
+        mainMenuManager.LoadGame(profile.id);
     }
 }

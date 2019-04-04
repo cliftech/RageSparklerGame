@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public float Health { get { return health; } }
     public float Armor = 0;
 
-    public List<int> Checkpoints;
+    [HideInInspector] public List<int> checkpoints;
 
     public float attack1Dam = 5;
     public float attack2Dam = 7.5f;
@@ -36,7 +36,11 @@ public class Player : MonoBehaviour
     private int respawnPortalID;
 
     [HideInInspector] public bool isDead;
-    private SaveProfile currentProfile;
+    [HideInInspector] public int currentProfileID;
+    [HideInInspector] public float timePlayed;
+    [HideInInspector] private Vector3 lastPosInHub;
+    [HideInInspector] public int numberOfDeaths;
+    [HideInInspector] public bool hubUnloked;
 
     void Awake()
     {
@@ -76,6 +80,7 @@ public class Player : MonoBehaviour
             if (interactAction != null)
                 interactAction.Invoke();
         }
+        timePlayed += Time.deltaTime;
     }
 
     /// <summary>
@@ -204,7 +209,6 @@ public class Player : MonoBehaviour
             Projectile p = other.transform.GetComponentInParent<Projectile>();
             GetHit(p.GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
-            //p.Explode();
         }
 
         if (other.gameObject.CompareTag("Pick Up"))
@@ -223,15 +227,49 @@ public class Player : MonoBehaviour
         }
     }
 
-    public SaveProfile UpdateCurrentProfile()
+    public SaveProfile GetCurrentProfile()
     {
-        SaveProfile p = new SaveProfile(currentProfile.id, level, essence, currentProfile.timePlayed, equipment.GetItemIds(), hubChest.GetItemIds());
-        currentProfile = p;
+        Vector3 playerHubPos = GetPosInHub();
+        SaveProfile p = new SaveProfile(currentProfileID, level, essence, timePlayed, numberOfDeaths, equipment.GetItemIds(), hubChest.GetItemIds(), 
+                                        checkpoints, playerHubPos.x, playerHubPos.y, hubUnloked,
+                                                         playerMovement.dashUnlocked, playerMovement.midAirDashUnlocked,
+                                                         playerMovement.downwardAttackUnlocked, playerMovement.wallJumpingUnlocked,
+                                                         playerMovement.maxJumpCount, playerMovement.dashDistance,
+                                                         playerMovement.minDelayBetweenDashes, playerMovement.maxMidairDashesCount,
+                                                         playerMovement.invincibilityFrameTime);
         return p;
     }
-    public void SetCurrentSaveProfile(SaveProfile profile)
+    public void LoadFromProfile(SaveProfile profile, bool overideSavedHubPosition)
     {
-        currentProfile = profile;
+        currentProfileID = profile.id;
+        timePlayed = profile.id;
+        lastPosInHub = new Vector3(profile.xPosInHub, profile.yPosInHub, 0);
+        hubUnloked = profile.hubUnloked;
+        checkpoints = profile.checkpoints;
+        numberOfDeaths = profile.numberOfDeaths;
+        if (!overideSavedHubPosition)
+            transform.position = lastPosInHub;
+
+        playerMovement.dashUnlocked = profile.dashUnlocked;
+        playerMovement.midAirDashUnlocked = profile.midAirDashUnlocked;
+        playerMovement.downwardAttackUnlocked = profile.downwardAttackUnlocked;
+        playerMovement.wallJumpingUnlocked = profile.wallJumpingUnlocked;
+        playerMovement.maxJumpCount = profile.maxJumpCount;
+        playerMovement.dashDistance = profile.dashDistance;
+        playerMovement.minDelayBetweenDashes = profile.minDelayBetweenDashes;
+        playerMovement.maxMidairDashesCount = profile.maxMidairDashesCount;
+        playerMovement.invincibilityFrameTime = profile.invincibilityFrameTime;
+    }
+
+    public Vector3 GetPosInHub()
+    {
+        if (levelManager.isCurrLevelHub)
+            return transform.position;
+        return lastPosInHub;
+    }
+    public void SavePosAsLastInHub()
+    {
+        lastPosInHub = transform.position;
     }
 
     #region Upgrading skills

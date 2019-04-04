@@ -48,6 +48,8 @@ MonoBehaviour:
     type: 3}
   hubArea: {fileID: 316683854749628759, guid: 656eca0976f1f0f4b9b39f6c4168bf31, type: 3}
   onStartLoadType: 1
+  overideSavedHubPosition: 0
+  isBuildVersion: 0
 --- !u!114 &1089153325757256277
 MonoBehaviour:
   m_ObjectHideFlags: 0

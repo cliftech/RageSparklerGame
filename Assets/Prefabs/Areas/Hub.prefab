@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f13eaecce2a7b45bedab3f50f02a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isHub: 1
   title: MAIN HALL
   checkPoints: []
   backgroundMusic: {fileID: 8300000, guid: 403ff69679d901a4c850804031f79b28, type: 3}
@@ -10570,12 +10571,12 @@ PrefabInstance:
       propertyPath: description
       value: Heals the player for 50% max hp
       objectReference: {fileID: 0}
-    - target: {fileID: 5772103789928413613, guid: e7b7d2cd6f8c71a409f5f715eb977819,
+    - target: {fileID: 6307795518408653471, guid: e7b7d2cd6f8c71a409f5f715eb977819,
         type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 6307795518408653471, guid: e7b7d2cd6f8c71a409f5f715eb977819,
+    - target: {fileID: 5772103789928413613, guid: e7b7d2cd6f8c71a409f5f715eb977819,
         type: 3}
       propertyPath: m_Material
       value: 

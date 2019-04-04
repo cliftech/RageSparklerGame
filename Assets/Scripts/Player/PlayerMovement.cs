@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public Player player;
     private float horizontalInput;
     private float verticalInput;
-    [Header("These will be unlocked/upgraded by progressing")]
+    [Header("These will be unlocked/upgraded by progressing through the game")]
     public bool dashUnlocked;
     public bool midAirDashUnlocked;
     public bool downwardAttackUnlocked;

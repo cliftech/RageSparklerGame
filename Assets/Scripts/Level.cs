@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+    public bool isHub = false;
     public string title = "enter title";
     public List<Portal> checkPoints;
     public AudioClip backgroundMusic;

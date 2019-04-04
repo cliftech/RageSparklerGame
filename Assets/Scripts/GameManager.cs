@@ -15,9 +15,16 @@ public class GameManager : MonoBehaviour
     public GameObject hubArea;
     public enum OnStartLoadType { loadArea0, loadHub }
     public OnStartLoadType onStartLoadType = OnStartLoadType.loadHub;
+    public bool overideSavedHubPosition = false;
+    [Header("Set for build versions of the game")]
+    public bool isBuildVersion;
 
     private GameObject currentLevelPrefab;
     private Level currentLevel;
+    public bool isCurrLevelHub { get { return currentLevel != null && currentLevel.isHub; } }
+
+    private Coroutine gameSavingAfterIntervalRoutine;
+
     void Awake()
     {
         areaNotificationText = FindObjectOfType<AreaNotificationText>();
@@ -29,23 +36,56 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (SaveManager.profileCount <= 0)
+        int profileToLoad = PlayerPrefs.GetInt("SaveProfileToLoad", 0);
+        print(profileToLoad);
+        if (SaveManager.profileCount == 0 || profileToLoad >= SaveManager.profileCount)
         {
-            player.SetCurrentSaveProfile(new SaveProfile(SaveManager.profileCount, 1, 0, 0, player.equipment.GetItemIds(), player.hubChest.GetItemIds()));
-            SaveGame();
+            // creating a new game save profile
+            Vector3 playerHubPos = (onStartLoadType == OnStartLoadType.loadArea0 ? zerothArea : hubArea).GetComponent<Level>().spawnPoint.position;
+            player.LoadFromProfile(new SaveProfile(profileToLoad, 1, 0, 0, 0, player.equipment.GetItemIds(), player.hubChest.GetItemIds(),
+                                                         player.checkpoints, playerHubPos.x, playerHubPos.y, false,
+                                                         player.playerMovement.dashUnlocked, player.playerMovement.midAirDashUnlocked,
+                                                         player.playerMovement.downwardAttackUnlocked, player.playerMovement.wallJumpingUnlocked,
+                                                         player.playerMovement.maxJumpCount, player.playerMovement.dashDistance,
+                                                         player.playerMovement.minDelayBetweenDashes, player.playerMovement.maxMidairDashesCount,
+                                                         player.playerMovement.invincibilityFrameTime), false);
+            SaveGame(true);
         }
 
-        if (onStartLoadType == OnStartLoadType.loadArea0)
-            LoadLevel(zerothArea);
-        else if(onStartLoadType == OnStartLoadType.loadHub)
-            LoadLevel(hubArea);
+        LoadGame(profileToLoad);
 
-        LoadGame();
+        if (!isBuildVersion)
+        {
+            if (onStartLoadType == OnStartLoadType.loadArea0)
+                LoadLevel(zerothArea);
+            else if (onStartLoadType == OnStartLoadType.loadHub)
+                LoadLevel(hubArea);
+        }
+        else
+        {
+            if(!player.hubUnloked)
+                LoadLevel(zerothArea);
+            else
+                LoadLevel(hubArea);
+        }
     }
 
-    public void SaveGame()
+    private IEnumerator SaveGameAfterInterval(float interval)
     {
-        SaveManager.SaveProfile(player.UpdateCurrentProfile());
+        yield return new WaitForSecondsRealtime(interval);
+        SaveGame(true);
+        gameSavingAfterIntervalRoutine = null;
+    }
+
+    public void SaveGame(bool force = false)
+    {
+        if (!force)
+        {
+            if (gameSavingAfterIntervalRoutine == null)
+                gameSavingAfterIntervalRoutine = StartCoroutine(SaveGameAfterInterval(0.5f));
+        }
+        else
+            SaveManager.SaveProfile(player.GetCurrentProfile());
     }
 
     public void LoadGame(int profileID = -1)
@@ -55,12 +95,13 @@ public class GameManager : MonoBehaviour
         SaveProfile profile = SaveManager.LoadProfile(profileID);
 
         //print(profile);
-        player.SetCurrentSaveProfile(profile);
+        player.LoadFromProfile(profile, overideSavedHubPosition);
         player.equipment.LoadByIds(profile.itemsInInventory);
         player.hubChest.LoadByIds(profile.itemsInHubChest);
         player.SetItemStats();
         player.statusGUI.UpdateInventoryStats();
     }
+
 
     #region loading levels
     // loading levels in 3 steps --- cover screen -> load level -> uncover screen
@@ -84,13 +125,15 @@ public class GameManager : MonoBehaviour
         Vector2 pos;
         if (portalID == -1)
         {
-             pos = currentLevel.spawnPoint.position;
+            pos = currentLevel.spawnPoint.position;
         }
         else
         {
             pos = currentLevel.checkPoints.First(p => p.portalId == portalID).transform.position;
         }
         player.transform.position = pos;
+        if (!player.hubUnloked && currentLevel.isHub)
+            player.hubUnloked = true;
         player.SetRespawnPortal(portalID);
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);
@@ -100,7 +143,7 @@ public class GameManager : MonoBehaviour
             soundManager.PlayMusic(currentLevel.backgroundMusic);
         }
         player.AmuletFlash.SetAmuletFlash(currentLevel.DoesAmuletFlash, currentLevel.LevelEnd);
-
+        SaveGame(true);
     }
 
     public void ResetLevel(int portalID)

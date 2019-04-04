@@ -48,7 +48,7 @@ public class SaveManager
     {
         if (id >= profileCount)
         {
-            Debug.LogWarning("Profile id exeeded profile count: " + id);
+            Debug.LogWarning(string.Format("Profile id: {0} exeeded profile count: {1}", id, profileCount));
         }
 
         string path = savePath + id.ToString() + ".sav";
@@ -80,17 +80,49 @@ public class SaveProfile
     public int lvl;
     public int essence;
     public float timePlayed;
+    public int numberOfDeaths;
     public List<int> itemsInInventory;
     public List<int> itemsInHubChest;
+    public List<int> checkpoints;
+    public float xPosInHub, yPosInHub;
+    public bool hubUnloked;
 
-    public SaveProfile(int id, int lvl, int essence, float timePlayed, List<int> itemsInInventory, List<int> itemsInHubChest)
+    public bool dashUnlocked;
+    public bool midAirDashUnlocked;
+    public bool downwardAttackUnlocked;
+    public bool wallJumpingUnlocked;
+    public int maxJumpCount = 2;
+    public float dashDistance = 3;
+    public float minDelayBetweenDashes = 0.2f;
+    public int maxMidairDashesCount = 1;
+    public float invincibilityFrameTime = 0.5f;
+
+    public SaveProfile(int id, int lvl, int essence, float timePlayed, int numberOfDeaths, 
+        List<int> itemsInInventory, List<int> itemsInHubChest, List<int> checkpoints, float xPosInHub, float yPosInHub, bool hubUnloked,
+        bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount, 
+        float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime)
     {
         this.id = id;
         this.lvl = lvl;
         this.essence = essence;
         this.timePlayed = timePlayed;
+        this.numberOfDeaths = numberOfDeaths;
         this.itemsInInventory = itemsInInventory;
         this.itemsInHubChest = itemsInHubChest;
+        this.checkpoints = checkpoints;
+        this.xPosInHub = xPosInHub;
+        this.yPosInHub = yPosInHub;
+        this.hubUnloked = hubUnloked;
+
+        this.dashUnlocked = dashUnlocked;
+        this.midAirDashUnlocked = midAirDashUnlocked;
+        this.downwardAttackUnlocked = downwardAttackUnlocked;
+        this.wallJumpingUnlocked = wallJumpingUnlocked;
+        this.maxJumpCount = maxJumpCount;
+        this.dashDistance = dashDistance;
+        this.minDelayBetweenDashes = minDelayBetweenDashes;
+        this.maxMidairDashesCount = maxMidairDashesCount;
+        this.invincibilityFrameTime = invincibilityFrameTime;
     }
 
     public override string ToString()

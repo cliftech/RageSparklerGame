@@ -48,7 +48,7 @@ public class Portal : MonoBehaviour
             int index = 1;
             foreach(var Checkpoint in level.checkPoints)
             {
-                if(player.Checkpoints.Contains(Checkpoint.portalId))
+                if(player.checkpoints.Contains(Checkpoint.portalId))
                 {
                     portalGUI.SetOption(index, () => ActivateHubPortal(Checkpoint.portalId), level.title + " - " + index);
                     index++;
@@ -97,9 +97,10 @@ public class Portal : MonoBehaviour
                 player.SetRespawnPortal(portalId);
                 checkpointActivated = true;
             }
-            if(isCheckpint)
+            if(isCheckpint && !player.checkpoints.Contains(portalId))
             {
-                player.Checkpoints.Add(portalId);
+                player.checkpoints.Add(portalId);
+                levelManager.SaveGame(true);
             }
             if (!forceEntry)
                 playerEnteredBounds();
