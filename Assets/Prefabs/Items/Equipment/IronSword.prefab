@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1600482712993193942
 Transform:
   m_ObjectHideFlags: 0
@@ -75,7 +75,7 @@ MonoBehaviour:
   description: 
   icon: {fileID: 21300000, guid: 76401e9872bbfd6428c5484ddf03a458, type: 3}
   quality: Rare
-  pickedUp: 0
+  pickedUp: 1
   equipable: 1
   damage: 2
   armor: 0

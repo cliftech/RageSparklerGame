@@ -7,7 +7,7 @@ public class Smith : MonoBehaviour
 {
     private InteractableGUI interactableGUI;
     private Player player;
-    private LevelManager levelManager;
+    private GameManager levelManager;
     private string playerTag = "Player";
     private Action interactAction;
     
@@ -19,7 +19,7 @@ public class Smith : MonoBehaviour
     {
         interactableGUI = FindObjectOfType<InteractableGUI>();
         player = FindObjectOfType<Player>();
-        levelManager = FindObjectOfType<LevelManager>();
+        levelManager = FindObjectOfType<GameManager>();
     }
     // Start is called before the first frame update
     void Start()

@@ -5,8 +5,9 @@ using System;
 public class Player : MonoBehaviour
 {
     private PlayerInteract plrInter;
-    private LevelManager levelManager;
-    private Inventory equipment;
+    private GameManager levelManager;
+    [HideInInspector] public Inventory equipment;
+    [HideInInspector] public Inventory hubChest;
     [HideInInspector] public PlayerSoundController soundController;
     [HideInInspector] public PlayerMovement playerMovement;
     [HideInInspector] public TheFirstFlash AmuletFlash;
@@ -35,11 +36,12 @@ public class Player : MonoBehaviour
     private int respawnPortalID;
 
     [HideInInspector] public bool isDead;
+    private SaveProfile currentProfile;
 
     void Awake()
     {
         plrInter = FindObjectOfType<PlayerInteract>();
-        levelManager = FindObjectOfType<LevelManager>();
+        levelManager = FindObjectOfType<GameManager>();
         soundController = GetComponentInChildren<PlayerSoundController>();
         playerMovement = GetComponent<PlayerMovement>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
@@ -49,6 +51,8 @@ public class Player : MonoBehaviour
         {
             if (equipments[i].inventoryUI.name == "EquipmentUI")
                 equipment = equipments[i];
+            else
+                hubChest = equipments[i];
         }
     }
     void Start()
@@ -217,6 +221,17 @@ public class Player : MonoBehaviour
         {
             GetHit(collision.collider.GetComponent<Trap>().damagePercent * activeMaxHealth / 100, 2);
         }
+    }
+
+    public SaveProfile UpdateCurrentProfile()
+    {
+        SaveProfile p = new SaveProfile(currentProfile.id, level, essence, currentProfile.timePlayed, equipment.GetItemIds(), hubChest.GetItemIds());
+        currentProfile = p;
+        return p;
+    }
+    public void SetCurrentSaveProfile(SaveProfile profile)
+    {
+        currentProfile = profile;
     }
 
     #region Upgrading skills

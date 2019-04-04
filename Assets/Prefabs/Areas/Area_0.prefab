@@ -10228,7 +10228,7 @@ Transform:
   - {fileID: 5548240594240293178}
   - {fileID: 4098908232574314566}
   - {fileID: 1037618202317250933}
-  - {fileID: 8378764173112538681}
+  - {fileID: 7563452502909483411}
   - {fileID: 1264738296315000098}
   - {fileID: 3703347287056722200}
   - {fileID: 3619938731816099991}
@@ -11841,12 +11841,12 @@ PrefabInstance:
     - target: {fileID: 4557084565404321767, guid: 492d82f90962d844c99bbc5054fbc99e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.78
+      value: 9.42
       objectReference: {fileID: 0}
     - target: {fileID: 4557084565404321767, guid: 492d82f90962d844c99bbc5054fbc99e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.75
+      value: -7.44
       objectReference: {fileID: 0}
     - target: {fileID: 4557084565404321767, guid: 492d82f90962d844c99bbc5054fbc99e,
         type: 3}
@@ -12416,7 +12416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d386ee6f8414834ca5efd351b52722d, type: 3}
---- !u!4 &8378764173112538681 stripped
+--- !u!4 &7563452502909483411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2067607860775292030, guid: 5d386ee6f8414834ca5efd351b52722d,
     type: 3}

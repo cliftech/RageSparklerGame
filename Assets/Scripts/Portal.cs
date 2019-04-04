@@ -8,7 +8,7 @@ public class Portal : MonoBehaviour
     private PortalGUI portalGUI;
     private InteractableGUI interactableGUI;
     private Player player;
-    private LevelManager levelManager;
+    private GameManager levelManager;
     private string playerTag = "Player";
     private Action interactAction;
 
@@ -30,7 +30,7 @@ public class Portal : MonoBehaviour
         portalGUI = FindObjectOfType<PortalGUI>();
         interactableGUI = FindObjectOfType<InteractableGUI>();
         player = FindObjectOfType<Player>();
-        levelManager = FindObjectOfType<LevelManager>();
+        levelManager = FindObjectOfType<GameManager>();
     }
     void Start()
     {

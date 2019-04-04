@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    private static GameManager gameManager;
     private static GameObject toolTip;
     private static GameObject compareToolTip;
     private static Text textBox;
@@ -39,6 +40,10 @@ public class Inventory : MonoBehaviour
     public float slotPaddingHorizontal;
     public float slotPaddingVertical;
 
+    void Awake()
+    {
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+    }
 
     void Start()
     {
@@ -78,7 +83,7 @@ public class Inventory : MonoBehaviour
             ShowToolTip(slot[0]);
             invsOpen++;
         }
-        else if(Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && inventoryEnabled)
+        else if (Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && inventoryEnabled)
         {
             inventoryUI.SetActive(false);
             invsOpen--;
@@ -96,7 +101,7 @@ public class Inventory : MonoBehaviour
             {
                 ShowToolTip(plrInter.hubChest.slot[0]);
                 CompareToolTips(plrInter.hubChest.slot[0]);
-            }              
+            }
         }
     }
 
@@ -135,7 +140,7 @@ public class Inventory : MonoBehaviour
         Transform panel = tmpslot.transform.GetChild(0);
         panel.GetComponent<Image>().color = Color.white;
         toolTip.SetActive(false);
-        tmpslot.selected = false;       
+        tmpslot.selected = false;
     }
     public void HideCompareToolTips()
     {
@@ -192,6 +197,8 @@ public class Inventory : MonoBehaviour
 
             slot[i].GetComponent<Slot>().UpdateSlot();
             slot[i].GetComponent<Slot>().empty = false;
+
+            gameManager.SaveGame();
             return true;
         }
         return false;
@@ -224,6 +231,51 @@ public class Inventory : MonoBehaviour
                 break;
             }
         }
+
+        gameManager.SaveGame();
+    }
+
+    private void SetSlot(int i, GameObject itemObj)
+    {
+        Slot s = slot[i].GetComponent<Slot>();
+        Item item = itemObj.GetComponent<Item>();
+        s.icon = item.icon;
+        s.type = item.type;
+        s.description = item.description;
+        s.ID = item.ID;
+        s.item = itemObj;
+        s.quality = item.quality;
+        s.itemName = item.itemName;
+        s.damage = item.damage;
+        s.armor = item.armor;
+        s.health = item.health;
+
+        s.UpdateSlot();
+        s.empty = false;
+    }
+
+    public void LoadByIds(List<int> ids)
+    {
+        for (int i = 0; i < ids.Count; i++)
+        {
+            if (ids[i] != -1)
+                SetSlot(i, ItemDatabase.instance.GetItemByID(ids[i]));
+
+        }
+    }
+
+    public List<int> GetItemIds()
+    {
+        List<int> ids = new List<int>();
+        for (int i = 0; i < slot.Length; i++)
+        {
+            Slot s = slot[i].GetComponent<Slot>();
+            if (s.item != null)
+                ids.Add(s.ID);
+            else
+                ids.Add(-1);
+        }
+        return ids;
     }
 
     public GameObject GetPotion()
