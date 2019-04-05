@@ -17,6 +17,10 @@ public class CameraController : MonoBehaviour
     private bool isDisabled;
     Camera Camera;
 
+    private float shakeTimer;
+    private float shakeAmount;
+    private float prevShakeX, prevShakeY;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -43,12 +47,27 @@ public class CameraController : MonoBehaviour
         }
         var position = PlayerCharacter.transform.position + Offset;
         position += ExtraOffset;
+        if (shakeTimer > 0)
+        {
+            position.x += (Random.value - 0.5f) * shakeAmount;
+            position.y += (Random.value - 0.5f) * shakeAmount;
+
+            shakeTimer -= Time.deltaTime;
+        }
         position = new Vector3
         (
             Mathf.Clamp(position.x, LeftBound.position.x + Camera.orthographicSize * Camera.aspect, RightBound.position.x - Camera.orthographicSize * Camera.aspect),
             Mathf.Clamp(position.y, BottomBound.position.y + Camera.orthographicSize, TopBound.position.y - Camera.orthographicSize),
             position.z);
         transform.position = position;
+    }
+
+    public void Shake(float intensity, float duration = 0.2f)
+    {
+        shakeTimer = duration;
+        float newChakeAmount = Mathf.Clamp(intensity / 50f, 0.05f, 0.5f);
+        if (shakeAmount < newChakeAmount)
+            shakeAmount = newChakeAmount;
     }
 
     public void SetEnabled(bool enabled)

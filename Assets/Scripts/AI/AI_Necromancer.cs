@@ -256,6 +256,7 @@ public class AI_Necromancer : AI_Base
             SetStaggered(isRight);
             landTimer = minTimeToLandTime;
         }
+        cameraController.Shake(damage);
     }
     void OnTriggerEnter2D(Collider2D other)
     {

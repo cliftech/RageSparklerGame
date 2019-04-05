@@ -15,6 +15,8 @@ public class SaveManager
 
     public static int profileCount { get
         {
+            if (!Directory.Exists(savePath))
+                return 0;
             return Directory.GetFiles(savePath, "*.sav").Length;
         } }
 
@@ -24,6 +26,10 @@ public class SaveManager
 
         try
         {
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
             if (File.Exists(path))
             {
                 Debug.Log("Overriding: \"" + path + "\"");

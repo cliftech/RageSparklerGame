@@ -202,6 +202,7 @@ public class AI_Slug : AI_Base
             else
                 SetKnockedBack(isRight);
         }
+        cameraController.Shake(damage);
     }
     void OnTriggerEnter2D(Collider2D other)
     {

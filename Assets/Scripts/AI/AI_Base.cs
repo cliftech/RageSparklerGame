@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AI_Base : MonoBehaviour
 {
+    protected CameraController cameraController;
     protected Rigidbody2D rb;
     new protected SpriteRenderer renderer;
     protected CapsuleCollider2D coll;
@@ -45,6 +46,7 @@ public class AI_Base : MonoBehaviour
 
     protected void Initialize()
     {
+        cameraController = FindObjectOfType<CameraController>();
         rb = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<CapsuleCollider2D>();

@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 public class Player : MonoBehaviour
 {
+    private CameraController cameraController;
     private PlayerInteract plrInter;
     private GameManager levelManager;
     [HideInInspector] public Inventory equipment;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        cameraController = FindObjectOfType<CameraController>();
         plrInter = FindObjectOfType<PlayerInteract>();
         levelManager = FindObjectOfType<GameManager>();
         soundController = GetComponentInChildren<PlayerSoundController>();
@@ -99,7 +101,8 @@ public class Player : MonoBehaviour
         if (health <= 0)
             Die();
         statusGUI.UpdateHealthbar();
-        soundController.PlayGetHitSound();       
+        soundController.PlayGetHitSound();
+        cameraController.Shake(damage);
     }
 
     public void SetItemStats()
@@ -321,6 +324,7 @@ public class Player : MonoBehaviour
     public void AttackEffectEvent(int attacknum)
     {
         soundController.PlayAttackSound(attacknum);
+        cameraController.Shake(1);
     }
     public void AirAttackEffectEvent(int attacknum)
     {

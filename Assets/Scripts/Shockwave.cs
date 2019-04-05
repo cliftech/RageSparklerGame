@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Shockwave : MonoBehaviour
 {
+    private CameraController cameraController;
     private ParticleSystem trail, shockwave;
     private LayerMask terrainMask;
     private DamageContainer damageContainer;
@@ -18,6 +19,7 @@ public class Shockwave : MonoBehaviour
 
     public void Set(Vector2 position, float time, Vector2 direction, float damage, float speed = 10)
     {
+        cameraController = FindObjectOfType<CameraController>();
         audioSource = GetComponent<AudioSource>();
         trail = GetComponent<ParticleSystem>();
         shockwave = transform.Find("ShockwaveSpikes").GetComponent<ParticleSystem>();
@@ -54,6 +56,7 @@ public class Shockwave : MonoBehaviour
             this.enabled = false;
             collider.enabled = false;
             Destroy(gameObject, 1f);
+            cameraController.Shake(10);
         }
     }
 

@@ -271,6 +271,7 @@ public class AI_Executioner : AI_Base
         Instantiate(shockwavePrefab, transform.parent).GetComponent<Shockwave>().Set(shockwaveOrigin, 3f, Vector2.right, shockwaveDamage);
         Instantiate(shockwavePrefab, transform.parent).GetComponent<Shockwave>().Set(shockwaveOrigin, 3f, Vector2.left, shockwaveDamage);
 
+        cameraController.Shake(10);
         StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
         sound.PlayOneShot(landSound);
     }
@@ -315,6 +316,7 @@ public class AI_Executioner : AI_Base
         else if (stun)
         {
             sound.PlayOneShot(slamIntoWallSound);
+            cameraController.Shake(10);
             StartCoroutine(Stunned(wallStunTime, () => SetAggro()));
         }
         else
@@ -457,6 +459,7 @@ public class AI_Executioner : AI_Base
         }
         bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);
+        cameraController.Shake(damage);
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -472,14 +475,17 @@ public class AI_Executioner : AI_Base
     void PlayFootstep()
     {
         sound.PlayOneShot(footStepSound);
+        cameraController.Shake(3);
     }
 
     void PlayAttackEffect()
     {
         sound.PlayOneShot(attackHitGroundSound);
+        cameraController.Shake(3);
     }
     void PlayStronkAttackEffect()
     {
         sound.PlayOneShot(stronkAttackHitGroundSound);
+        cameraController.Shake(20);
     }
 }

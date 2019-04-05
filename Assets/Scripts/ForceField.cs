@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ForceField : MonoBehaviour
 {
+    private CameraController cameraController;
     private ParticleSystem ps1, ps2;
     new private Collider2D collider;
     private Animator animator;
@@ -15,6 +16,7 @@ public class ForceField : MonoBehaviour
 
     public void Set(Vector3 pos, float size, float time)
     {
+        cameraController = FindObjectOfType<CameraController>();
         ps1 = GetComponent<ParticleSystem>();
         ps2 = transform.Find("Sparks").GetComponent<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
@@ -37,6 +39,7 @@ public class ForceField : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
+        cameraController.Shake(10);
         if (timer <= 0)
         {
             ps2.Stop();
