@@ -460,6 +460,7 @@ public class AI_Executioner : AI_Base
         bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
+        ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
     void OnTriggerEnter2D(Collider2D other)
     {

@@ -64,10 +64,11 @@ public class CameraController : MonoBehaviour
 
     public void Shake(float intensity, float duration = 0.2f)
     {
-        shakeTimer = duration;
         float newChakeAmount = Mathf.Clamp(intensity / 50f, 0.05f, 0.5f);
-        if (shakeAmount < newChakeAmount)
+
+        if ((shakeTimer > 0 && shakeAmount < newChakeAmount) || shakeTimer <= 0)
             shakeAmount = newChakeAmount;
+        shakeTimer = duration;
     }
 
     public void SetEnabled(bool enabled)

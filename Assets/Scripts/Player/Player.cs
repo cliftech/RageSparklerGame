@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     private CameraController cameraController;
     private PlayerInteract plrInter;
-    private GameManager levelManager;
+    private GameManager gamemanager;
     [HideInInspector] public Inventory equipment;
     [HideInInspector] public Inventory hubChest;
     [HideInInspector] public PlayerSoundController soundController;
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     {
         cameraController = FindObjectOfType<CameraController>();
         plrInter = FindObjectOfType<PlayerInteract>();
-        levelManager = FindObjectOfType<GameManager>();
+        gamemanager = FindObjectOfType<GameManager>();
         soundController = GetComponentInChildren<PlayerSoundController>();
         playerMovement = GetComponent<PlayerMovement>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
@@ -103,6 +103,7 @@ public class Player : MonoBehaviour
         statusGUI.UpdateHealthbar();
         soundController.PlayGetHitSound();
         cameraController.Shake(damage);
+        ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, playerMovement.capsColl.bounds.center, knockBackDirection == 1 ? Vector3.left : Vector3.right);
     }
 
     public void SetItemStats()
@@ -138,10 +139,12 @@ public class Player : MonoBehaviour
     private void Die()
     {
         isDead = true;
+        numberOfDeaths++;
         playerMovement.animator.SetBool("Dead", true);
         StartCoroutine(ReviveAfterTime(2f));
-        essence = 0;
+        essence /= 2;
         statusGUI.UpdateEssenceText();
+        gamemanager.SaveGame();
     }
     private IEnumerator ReviveAfterTime(float time)
     {
@@ -156,7 +159,7 @@ public class Player : MonoBehaviour
         isDead = false;
         health = activeMaxHealth;
         playerMovement.animator.SetBool("Dead", false);
-        levelManager.ResetLevel(respawnPortalID);
+        gamemanager.ResetLevel(respawnPortalID);
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateEssenceText();
     }
@@ -246,6 +249,9 @@ public class Player : MonoBehaviour
     {
         currentProfileID = profile.id;
         timePlayed = profile.id;
+        level = profile.lvl;
+        essence = profile.essence;
+        numberOfDeaths = profile.numberOfDeaths;
         lastPosInHub = new Vector3(profile.xPosInHub, profile.yPosInHub, 0);
         hubUnloked = profile.hubUnloked;
         checkpoints = profile.checkpoints;
@@ -266,7 +272,7 @@ public class Player : MonoBehaviour
 
     public Vector3 GetPosInHub()
     {
-        if (levelManager.isCurrLevelHub)
+        if (gamemanager.isCurrLevelHub)
             return transform.position;
         return lastPosInHub;
     }
