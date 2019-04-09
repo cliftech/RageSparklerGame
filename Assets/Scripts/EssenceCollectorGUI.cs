@@ -1,23 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class InteractableGUI : MonoBehaviour
+public class EssenceCollectorGUI : MonoBehaviour
 {
     public RectTransform canvasRect;
-    public Text interactText;
 
     private bool showing;
     private Vector2 hiddenPos;
     private Transform target;
     private Vector2 offset;
+    private Action deposit;
+    private Action withdraw;
 
     void Start()
     {
         hiddenPos = new Vector2(-10000, -10000);
+        Hide();
     }
-
+    private void Update()
+    {
+        if (showing)
+        {
+            if (Input.GetButtonDown("Interact"))
+            {
+                deposit.Invoke();
+            }
+            else if (Input.GetButtonDown("Withdraw"))
+            {
+                withdraw.Invoke();
+            }
+        }
+    }
     void LateUpdate()
     {
         if (showing)
@@ -36,15 +51,14 @@ public class InteractableGUI : MonoBehaviour
             transform.localPosition = canvasPos;
         }
     }
-
-    public void Show(string interactMessage, Transform target, Vector2 offset)
+    public void Show(Transform target, Vector2 offset, Action deposit, Action withdraw)
     {
-        interactText.text = interactMessage;
         this.target = target;
         this.offset = offset;
+        this.deposit = deposit;
+        this.withdraw = withdraw;
         showing = true;
     }
-
     public void Hide()
     {
         transform.position = hiddenPos;
