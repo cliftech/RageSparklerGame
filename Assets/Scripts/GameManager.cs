@@ -37,12 +37,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         int profileToLoad = PlayerPrefs.GetInt("SaveProfileToLoad", 0);
-        print(profileToLoad);
+        print("Loading profile: " + profileToLoad);
         if (SaveManager.profileCount == 0 || profileToLoad >= SaveManager.profileCount)
         {
             // creating a new game save profile
             Vector3 playerHubPos = (onStartLoadType == OnStartLoadType.loadArea0 ? zerothArea : hubArea).GetComponent<Level>().spawnPoint.position;
-            player.LoadFromProfile(new SaveProfile(profileToLoad, 1, 0, 0, 0, player.equipment.GetItemIds(), player.hubChest.GetItemIds(),
+            player.LoadFromProfile(new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, player.equipment.GetItemIds(), player.hubChest.GetItemIds(),
                                                          player.checkpoints, playerHubPos.x, playerHubPos.y, false,
                                                          player.playerMovement.dashUnlocked, player.playerMovement.midAirDashUnlocked,
                                                          player.playerMovement.downwardAttackUnlocked, player.playerMovement.wallJumpingUnlocked,
@@ -132,8 +132,16 @@ public class GameManager : MonoBehaviour
             pos = currentLevel.checkPoints.First(p => p.portalId == portalID).transform.position;
         }
         player.transform.position = pos;
-        if (!player.hubUnloked && currentLevel.isHub)
-            player.hubUnloked = true;
+        if (currentLevel.isHub)
+        {
+            if (!player.hubUnloked)
+                player.hubUnloked = true;
+
+            EssenceCollector essenceCollector = currentLevel.GetComponentInChildren<EssenceCollector>();
+            essenceCollector.Start();
+            essenceCollector.UpdateEssenceCollector();
+        }
+        
         player.SetRespawnPortal(portalID);
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);

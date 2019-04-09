@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     private CameraController cameraController;
     private PlayerInteract plrInter;
     private GameManager gamemanager;
-    private EssenceCollector essenceCollector;
     [HideInInspector] public Inventory equipment;
     [HideInInspector] public Inventory hubChest;
     [HideInInspector] public PlayerSoundController soundController;
@@ -54,7 +53,6 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
         statusGUI = FindObjectOfType<StatusGUI>();
-        essenceCollector = FindObjectOfType<EssenceCollector>();
         Inventory[] equipments = GetComponents<Inventory>();
         for (int i = 0; i < equipments.Length; i++)
         {
@@ -76,7 +74,6 @@ public class Player : MonoBehaviour
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateLevelText();
         statusGUI.UpdateInventoryStats();
-        essenceCollector.UpdateEssenceCollector();
     }
 
     void Update()
@@ -240,7 +237,7 @@ public class Player : MonoBehaviour
     public SaveProfile GetCurrentProfile()
     {
         Vector3 playerHubPos = GetPosInHub();
-        SaveProfile p = new SaveProfile(currentProfileID, level, essence, timePlayed, numberOfDeaths, equipment.GetItemIds(), hubChest.GetItemIds(), 
+        SaveProfile p = new SaveProfile(currentProfileID, level, essence, storedEssence, timePlayed, numberOfDeaths, equipment.GetItemIds(), hubChest.GetItemIds(), 
                                         checkpoints, playerHubPos.x, playerHubPos.y, hubUnloked,
                                                          playerMovement.dashUnlocked, playerMovement.midAirDashUnlocked,
                                                          playerMovement.downwardAttackUnlocked, playerMovement.wallJumpingUnlocked,
@@ -255,6 +252,7 @@ public class Player : MonoBehaviour
         timePlayed = profile.id;
         level = profile.lvl;
         essence = profile.essence;
+        storedEssence = profile.essenceStored;
         numberOfDeaths = profile.numberOfDeaths;
         lastPosInHub = new Vector3(profile.xPosInHub, profile.yPosInHub, 0);
         hubUnloked = profile.hubUnloked;
@@ -272,6 +270,10 @@ public class Player : MonoBehaviour
         playerMovement.minDelayBetweenDashes = profile.minDelayBetweenDashes;
         playerMovement.maxMidairDashesCount = profile.maxMidairDashesCount;
         playerMovement.invincibilityFrameTime = profile.invincibilityFrameTime;
+        statusGUI.UpdateEssenceText();
+        statusGUI.UpdateHealthbar();
+        statusGUI.UpdateInventoryStats();
+        statusGUI.UpdateLevelText();
     }
 
     public Vector3 GetPosInHub()

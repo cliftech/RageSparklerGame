@@ -10,9 +10,11 @@ public class EssenceCollector : MonoBehaviour
     private int maxEssence;
     private Vector3 guiOffset = new Vector3(0, 1, 0);
     private EssenceCollectorGUI collectorGUI;
+    private GameManager gameManager;
 
-    private void Start()
+    public void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         collectorGUI = FindObjectOfType<EssenceCollectorGUI>();
         player = FindObjectOfType<Player>();
         fill = transform.GetChild(0);
@@ -42,6 +44,7 @@ public class EssenceCollector : MonoBehaviour
         player.essence = 0;
         UpdateEssenceCollector();
         player.statusGUI.UpdateEssenceText();
+        gameManager.SaveGame();
     }
     private void Withdraw()
     {
@@ -49,5 +52,6 @@ public class EssenceCollector : MonoBehaviour
         player.storedEssence = 0;
         UpdateEssenceCollector();
         player.statusGUI.UpdateEssenceText();
+        gameManager.SaveGame();
     }
 }
