@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     public float attack3Dam = 10;
     public float downwardAttackDam = 7.5f;
     public int essence;
+    public int storedEssence;
 
     private float health;
     //private int level;
@@ -236,7 +237,7 @@ public class Player : MonoBehaviour
     public SaveProfile GetCurrentProfile()
     {
         Vector3 playerHubPos = GetPosInHub();
-        SaveProfile p = new SaveProfile(currentProfileID, level, essence, timePlayed, numberOfDeaths, equipment.GetItemIds(), hubChest.GetItemIds(), 
+        SaveProfile p = new SaveProfile(currentProfileID, level, essence, storedEssence, timePlayed, numberOfDeaths, equipment.GetItemIds(), hubChest.GetItemIds(), 
                                         checkpoints, playerHubPos.x, playerHubPos.y, hubUnloked,
                                                          playerMovement.dashUnlocked, playerMovement.midAirDashUnlocked,
                                                          playerMovement.downwardAttackUnlocked, playerMovement.wallJumpingUnlocked,
@@ -251,6 +252,7 @@ public class Player : MonoBehaviour
         timePlayed = profile.id;
         level = profile.lvl;
         essence = profile.essence;
+        storedEssence = profile.essenceStored;
         numberOfDeaths = profile.numberOfDeaths;
         lastPosInHub = new Vector3(profile.xPosInHub, profile.yPosInHub, 0);
         hubUnloked = profile.hubUnloked;
@@ -268,6 +270,10 @@ public class Player : MonoBehaviour
         playerMovement.minDelayBetweenDashes = profile.minDelayBetweenDashes;
         playerMovement.maxMidairDashesCount = profile.maxMidairDashesCount;
         playerMovement.invincibilityFrameTime = profile.invincibilityFrameTime;
+        statusGUI.UpdateEssenceText();
+        statusGUI.UpdateHealthbar();
+        statusGUI.UpdateInventoryStats();
+        statusGUI.UpdateLevelText();
     }
 
     public Vector3 GetPosInHub()

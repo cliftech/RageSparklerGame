@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 500
+  maxHealth: 300
   touchDamage: 10
   shockwavePrefab: {fileID: 338336856533553160, guid: 26f2e2fc73c2e794d9adb33a05f729a7,
     type: 3}
