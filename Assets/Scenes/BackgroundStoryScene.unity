@@ -456,13 +456,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1732847638}
   storyLines:
-  - Cats
-  - Rule
-  - Over
+  - My name is Amarth. Many years
+  - ago, my grandfather, the
+  - greatest archeologist of his
+  - time, found this strange amulet.
+  - Though after many years, he
+  - couldn't figure out its
+  - origin.
   - F
-  - This
-  - World
-  intervalBetweenLines: 1
+  - About twenty years ago he
+  - passed away. His final words
+  - 'were: "Amarth, my time has come.'
+  - I couldn't make it. But I
+  - believe that one day you will
+  - find out the true purpose of
+  - this amulet..."
+  - F
+  - Many years of research later,
+  - I'm standing before the ancient
+  - city of Arthon, or what is left
+  - of it. There is very little
+  - information about Arthon.
+  - Some say it is nothing
+  - but a legend.
+  - F
+  - I have a feeling that this is
+  - the place. I hope so. Even
+  - my amulet feels different
+  - here. Can't really explain.
+  - This must be the place. It
+  - just must!
+  - F
+  - -Amarth carefully digs his
+  - way into Arthon trying not
+  - to damage the ancient
+  - buildings.-
+  - F
+  - I love you, grandfather...
+  - .
+  - .
+  - .
+  - -Amarth jumps into the
+  - burried city of Arthon-
+  - F
+  - ' '
+  - ' '
+  - Amarth's adventure
+  - begins
+  intervalBetweenLines: 2
   timeToShowAllLines: 2
 --- !u!114 &1732847637
 MonoBehaviour:
@@ -501,10 +542,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e62a4938a6639104d82d5c2eeb048d40, type: 3}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 60
     m_Alignment: 1
     m_AlignByGeometry: 0
