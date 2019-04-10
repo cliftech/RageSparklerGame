@@ -14,7 +14,7 @@ public class SoundManager : MonoBehaviour
     }
     void Start()
     {
-        musicVolume = PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : 1;
+        musicVolume = PlayerPrefs.HasKey("MusicVolume") ? PlayerPrefs.GetFloat("MusicVolume") : 1;
         audioSource.loop = true;
         audioSource.Stop();
     }
@@ -53,7 +53,6 @@ public class SoundManager : MonoBehaviour
     public void SetVolume(float vol)
     {
         musicVolume = vol;
-        PlayerPrefs.SetFloat("MasterVolume", vol);
-        Debug.Log(PlayerPrefs.GetFloat("MasterVolume"));
+        PlayerPrefs.SetFloat("MusicVolume", vol);
     }
 }
