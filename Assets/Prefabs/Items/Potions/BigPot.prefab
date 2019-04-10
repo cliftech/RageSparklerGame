@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6583315552322655231
 Transform:
   m_ObjectHideFlags: 0
@@ -76,10 +76,11 @@ MonoBehaviour:
   description: Heals the player for 75% max hp
   icon: {fileID: 21300000, guid: 7bd8372ac39472d4b9e2c51d4c0a277e, type: 3}
   quality: Epic
-  pickedUp: 0
+  pickedUp: 1
   equipable: 1
   damage: 0
   armor: 0
+  health: 0
 --- !u!61 &7268438449011735610
 BoxCollider2D:
   m_ObjectHideFlags: 0
