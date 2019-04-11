@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemDatabase : MonoBehaviour
 {
-    public List<GameObject> items;
+    public List<Item> items;
     private List<ItemPlaceholder> itemPlaceholders;
 
     public static ItemDatabase instance;
@@ -14,10 +14,10 @@ public class ItemDatabase : MonoBehaviour
         instance = this;
         itemPlaceholders = new List<ItemPlaceholder>();
         foreach (var i in items)
-            itemPlaceholders.Add(new ItemPlaceholder(i.GetComponent<Item>().ID, i));
+            itemPlaceholders.Add(new ItemPlaceholder(i.ID, i));
     }
 
-    public GameObject GetItemByID(int id)
+    public Item GetItemByID(string id)
     {
         foreach (var i in itemPlaceholders)
             if (i.id == id)
@@ -28,10 +28,10 @@ public class ItemDatabase : MonoBehaviour
 
     private class ItemPlaceholder
     {
-        public int id;
-        public GameObject item;
+        public string id;
+        public Item item;
 
-        public ItemPlaceholder(int id, GameObject item)
+        public ItemPlaceholder(string id, Item item)
         {
             this.id = id;
             this.item = item;

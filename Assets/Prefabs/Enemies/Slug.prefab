@@ -280,22 +280,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  movVelocity: 1
-  aggroRange: 5
   maxHealth: 50
-  knockBackVelocity: 10
-  staggerVelocity: 1.5
-  deadColor: {r: 1, g: 1, b: 1, a: 1}
-  terrainMask:
-    serializedVersion: 2
-    m_Bits: 512
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 256
-  attackRange: 0.85
+  touchDamage: 10
   attackDamage: 10
   vomitAttackChance: 0.2
-  vomitAttackRange: 1
   vomitAttackDamage: 20
 --- !u!114 &7334161040144605244
 MonoBehaviour:
@@ -310,6 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allDrops: {fileID: 7335206498698995495}
+  itm: {fileID: 0}
 --- !u!114 &7335206498698995495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTable:
-  - item: {fileID: 1106699394497858426, guid: 8259b644400f7ae4f99d30cb53abbb89, type: 3}
+  - item: {fileID: 11400000, guid: ddcbb67dea82ab14d885dd1455012337, type: 2}
     dropChance: 50
-  - item: {fileID: 3048069553989436969, guid: e87bb6914926a7741b3402274485da40, type: 3}
-    dropChance: 100
+  essence:
+  - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}

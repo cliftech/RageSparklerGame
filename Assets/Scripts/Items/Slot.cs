@@ -9,24 +9,61 @@ public class Slot : MonoBehaviour
     private string diffArm;
     private string diffHp;
 
+    public ItemType equipType;
+
+    [SerializeField] Item _itemas;
+    [SerializeField] Text amountText;
+    public Item itemas
+    {
+        get { return _itemas; }
+        set
+        {
+            _itemas = value;
+
+            if (_itemas == null)
+            {
+                slotIcon = transform.GetChild(0);
+                slotIcon.GetComponent<Image>().sprite = defaultIcon;
+                slotIcon.GetComponent<Image>().color = Color.white;
+            }
+            else
+            {
+                slotIcon = transform.GetChild(0);
+                slotIcon.GetComponent<Image>().sprite = _itemas.icon;
+            }
+        }
+    }
+
+    private int _amount;
+    public int Amount
+    {
+        get { return _amount; }
+        set
+        {
+            _amount = value;
+            if (_amount < 0)
+                _amount = 0;
+            if (_amount == 0 && itemas != null)
+                itemas = null;
+
+            if (amountText != null)
+            {
+                amountText.enabled = _itemas != null && _amount > 1;
+                if (amountText.enabled)
+                {
+                    amountText.text = _amount.ToString();
+                }
+            }
+        }
+    }
+
     public bool selected = false;
-    public GameObject item;
-    public bool empty;
-    public int ID;
-    public string quality;
-    public string type;
-    public string itemName;
-    public string description;
     public Sprite icon;
     public Sprite defaultIcon;
     public Transform slotIcon;
     public int whichSlot;
 
     public PlayerInteract inter;
-
-    public float damage;
-    public float armor;
-    public float health;
 
     public void UpdateSlot()
     {
@@ -42,15 +79,23 @@ public class Slot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Swap") && selected && !empty && gameObject.name.StartsWith("Slot"))
+        if (Input.GetButtonDown("Swap") && selected && itemas != null && gameObject.name.StartsWith("Slot"))
         { 
-            inter.swap(item, ID, type, description, quality, itemName, icon, damage, armor, health, whichSlot);
+            inter.swap(itemas, whichSlot);
         }
+        if (Input.GetButtonDown("Swap") && selected && itemas != null && !gameObject.name.StartsWith("Slot") && !gameObject.name.StartsWith("Item"))
+        {
+            inter.Unequip(itemas, this);
+        }
+    }
+
+    private void Awake()
+    {
+        slotIcon = transform.GetChild(0);
     }
 
     void Start()
     {
-        slotIcon = transform.GetChild(0);
         diffDmg = string.Empty;
         diffArm = string.Empty;
         diffHp = string.Empty;
@@ -63,20 +108,20 @@ public class Slot : MonoBehaviour
         diffHp = string.Empty;
 
 
-        if (damage > compare.damage)
-            diffDmg = string.Format("<color=lime> (+{0})</color>", (damage - compare.damage).ToString());
-        else if (damage < compare.damage)
-            diffDmg = string.Format("<color=red> ({0})</color>", (damage - compare.damage).ToString());
+        if (itemas.damage > compare.itemas.damage)
+            diffDmg = string.Format("<color=lime> (+{0})</color>", (itemas.damage - compare.itemas.damage).ToString());
+        else if (itemas.damage < compare.itemas.damage)
+            diffDmg = string.Format("<color=red> ({0})</color>", (itemas.damage - compare.itemas.damage).ToString());
 
-        if (armor > compare.armor)
-            diffArm = string.Format("<color=lime> (+{0})</color>", (armor - compare.armor).ToString());
-        else if (armor < compare.armor)
-            diffArm = string.Format("<color=red> ({0})</color>", (armor - compare.armor).ToString());
+        if (itemas.armor > compare.itemas.armor)
+            diffArm = string.Format("<color=lime> (+{0})</color>", (itemas.armor - compare.itemas.armor).ToString());
+        else if (itemas.armor < compare.itemas.armor)
+            diffArm = string.Format("<color=red> ({0})</color>", (itemas.armor - compare.itemas.armor).ToString());
 
-        if (health > compare.health)
-            diffHp = string.Format("<color=lime> (+{0})</color>", (health - compare.health).ToString());
-        else if (health < compare.health)
-            diffHp = string.Format("<color=red> ({0})</color>", (health - compare.health).ToString());
+        if (itemas.health > compare.itemas.health)
+            diffHp = string.Format("<color=lime> (+{0})</color>", (itemas.health - compare.itemas.health).ToString());
+        else if (itemas.health < compare.itemas.health)
+            diffHp = string.Format("<color=red> ({0})</color>", (itemas.health - compare.itemas.health).ToString());
     }
 
     public string GetToolTip(bool compare)
@@ -89,32 +134,32 @@ public class Slot : MonoBehaviour
         if (compare)
             comparison = "Currently equiped:\n";
 
-        if (description != string.Empty)
+        if (itemas.description != string.Empty)
         {
             newLine = "\n";
         }
 
-        if (quality == "Common")
+        if (itemas.quality.ToString() == "Common")
             color = "white";
-        else if (quality == "Rare")
+        else if (itemas.quality.ToString() == "Rare")
             color = "navy";
-        else if (quality == "Epic")
+        else if (itemas.quality.ToString() == "Epic")
             color = "magenta";
-        else if (quality == "Legendary")
+        else if (itemas.quality.ToString() == "Legendary")
             color = "orange";
 
-        if (damage > 0)
+        if (itemas.damage > 0)
         {
-            stats += "\n+" + damage.ToString() + " Damage" + diffDmg;
+            stats += "\n+" + itemas.damage.ToString() + " Damage" + diffDmg;
         }
-        if (armor > 0)
+        if (itemas.armor > 0)
         {
-            stats += "\n+" + armor.ToString() + " Armor" + diffArm;
+            stats += "\n+" + itemas.armor.ToString() + " Armor" + diffArm;
         }
-        if (health > 0)
+        if (itemas.health > 0)
         {
-            stats += "\n+" + health.ToString() + " Health" + diffHp;
+            stats += "\n+" + itemas.health.ToString() + " Health" + diffHp;
         }
-        return string.Format("<color=black><size=10>" + comparison + "</size></color><color=" + color + "><size=16>{0}</size></color><size=14>{1}<i><color=lime>" + newLine + "{2}</color></i></size>", itemName, stats, description);
+        return string.Format("<color=black><size=10>" + comparison + "</size></color><color=" + color + "><size=16>{0}</size></color><size=14>{1}<i><color=lime>" + newLine + "{2}</color></i></size>", itemas.itemName, stats, itemas.description);
     }
 }

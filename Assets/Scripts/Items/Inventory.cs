@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    
+    [SerializeField] Transform itemsParent;
+    [SerializeField] List<Item> startingItems;
+
     private static GameManager gameManager;
     private static GameObject toolTip;
     private static GameObject compareToolTip;
@@ -33,7 +37,8 @@ public class Inventory : MonoBehaviour
     public GameObject InvSlots;
     public bool inventoryEnabled;
 
-    public GameObject[] slot;
+    public Slot[] slots;
+
     public int totalSlots;
     public int invsOpen;
 
@@ -53,7 +58,6 @@ public class Inventory : MonoBehaviour
         compareToolTip = compareToolTipObject;
         compareTextBox = compareTextBoxObject;
         compareVisualText = compareVisualTextObject;
-        slot = new GameObject[totalSlots];
         plrInter = plrInterObject;
         player = GetComponent<Player>();
         slotC = GetComponent<Slot>();
@@ -62,10 +66,30 @@ public class Inventory : MonoBehaviour
 
         for (int i = 0; i < totalSlots; i++)
         {
-            slot[i] = InvSlots.transform.GetChild(i).gameObject;
-            slot[i].GetComponent<Slot>().whichSlot = i;
-            if (slot[i].GetComponent<Slot>().item == null)
-                slot[i].GetComponent<Slot>().empty = true;
+            slots[i].whichSlot = i;
+        }
+    }
+
+    private void OnValidate()
+    {
+        if(itemsParent !=null)
+        {
+            slots = itemsParent.GetComponentsInChildren<Slot>();
+            RefreshUI();    
+        }
+    }
+
+    private void RefreshUI()
+    {
+        int i = 0;
+        for (; i < startingItems.Count && i < slots.Length; i++)
+        {
+            slots[i].itemas = startingItems[i];
+        }
+
+        for (; i < slots.Length; i++)
+        {
+            slots[i].itemas = null;
         }
     }
 
@@ -74,13 +98,13 @@ public class Inventory : MonoBehaviour
         if (Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
             inventoryEnabled = true;
-            EventSystem.current.SetSelectedGameObject(slot[0]);
+            EventSystem.current.SetSelectedGameObject(slots[0].gameObject);
             inventoryUI.SetActive(true);
             player.playerMovement.SetEnabled(false);
             followCamera.SetEnabled(false);
             toolTipObject.SetActive(false);
             compareToolTipObject.SetActive(false);
-            ShowToolTip(slot[0]);
+            ShowToolTip(slots[0]);
             invsOpen++;
         }
         else if (Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && inventoryEnabled)
@@ -92,32 +116,35 @@ public class Inventory : MonoBehaviour
                 player.playerMovement.SetEnabled(true);
                 followCamera.SetEnabled(true);
             }
-            EventSystem.current.SetSelectedGameObject(plrInter.hubChest.slot[0]);
+            EventSystem.current.SetSelectedGameObject(plrInter.hubChest.slots[0].gameObject);
             inventoryEnabled = false;
             FindGrey();
             toolTipObject.SetActive(false);
             compareToolTipObject.SetActive(false);
             if (plrInter.hubChest.inventoryEnabled)
             {
-                ShowToolTip(plrInter.hubChest.slot[0]);
-                CompareToolTips(plrInter.hubChest.slot[0]);
+                ShowToolTip(plrInter.hubChest.slots[0]);
+                CompareToolTips(plrInter.hubChest.slots[0]);
             }
         }
     }
 
-    public void ShowToolTip(GameObject slot)
+    public void ShowToolTip(Slot slot)
     {
-        Slot tmpslot = slot.GetComponent<Slot>();
+        Slot tmpslot = slot;
         Slot equipped;
         Transform panel = tmpslot.transform.GetChild(0);
         tmpslot.selected = true;
         panel.GetComponent<Image>().color = Color.grey;
 
-        if (!tmpslot.empty)
+        if (tmpslot.itemas != null)
         {
-            equipped = plrInter.equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
-            if (!equipped.empty)
-                tmpslot.CompareItems(equipped);
+            if(tmpslot.itemas.type.ToString() != "Material")
+            {
+                equipped = plrInter.equipment.FindItemByType(tmpslot.itemas.type.ToString());
+                if (equipped.itemas != null)
+                    tmpslot.CompareItems(equipped);
+            }
             visualText.text = tmpslot.GetToolTip(false);
             textBox.text = visualText.text;
 
@@ -129,14 +156,14 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void CompareToolTips(GameObject slot)
+    public void CompareToolTips(Slot slot)
     {
         plrInter.CompareToolTips(slot, compareVisualText, compareTextBox, compareToolTip, toolTip);
     }
 
-    public void HideToolTip(GameObject slot)
+    public void HideToolTip(Slot slot)
     {
-        Slot tmpslot = slot.GetComponent<Slot>();
+        Slot tmpslot = slot;
         Transform panel = tmpslot.transform.GetChild(0);
         panel.GetComponent<Image>().color = Color.white;
         toolTip.SetActive(false);
@@ -147,187 +174,122 @@ public class Inventory : MonoBehaviour
         plrInter.HideCompareToolTips(compareToolTip);
     }
 
-    public bool Equip(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, float damage, float armor, float health)
+    public bool Equip(Item item, out Item previousItem)
     {
-        if (itemType == "Helmet")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 0, damage, armor, health);
-        else if (itemType == "Amulet")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 1, damage, armor, health);
-        else if (itemType == "BodyArmor")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 2, damage, armor, health);
-        else if (itemType == "Weapon")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 3, damage, armor, health);
-        else if (itemType == "LegArmor")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 4, damage, armor, health);
-        else if (itemType == "Boots")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 5, damage, armor, health);
-        else if (itemType == "Gloves")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 6, damage, armor, health);
-        else if (itemType == "SecondaryWeapon")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 7, damage, armor, health);
-        else if (itemType == "Potions")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 8, damage, armor, health);
-        else if (itemType == "Ring")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 9, damage, armor, health);
-        else if (itemType == "Cape")
-            return AddItemToPlayerInv(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, quality, 10, damage, armor, health);
-        else
-            return false;
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if(slots[i].equipType == item.type)
+            {
+                previousItem = slots[i].itemas;
+                slots[i].itemas = item;
+                player.SetItemStats();
+                gameManager.SaveGame();
+                return true;
+            }
+        }
+        previousItem = null;
+        return false;
     }
 
-    public bool AddItemToPlayerInv(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, Sprite itemIcon, string quality, int i, float damage, float armor, float health)
+    public bool AddItemToHubChest(Item item)
     {
-        if (slot[i].GetComponent<Slot>().empty)
+        for (int i = 0; i < slots.Length; i++)
         {
-            itemObj.GetComponent<Item>().pickedUp = true;
-
-            slot[i].GetComponent<Slot>().icon = itemIcon;
-            slot[i].GetComponent<Slot>().type = itemType;
-            slot[i].GetComponent<Slot>().description = itemDescription;
-            slot[i].GetComponent<Slot>().ID = itemID;
-            slot[i].GetComponent<Slot>().item = itemObj;
-            slot[i].GetComponent<Slot>().quality = quality;
-            slot[i].GetComponent<Slot>().itemName = itemName;
-            slot[i].GetComponent<Slot>().damage = damage;
-            slot[i].GetComponent<Slot>().armor = armor;
-            slot[i].GetComponent<Slot>().health = health;
-
-            itemObj.transform.parent = slot[i].transform;
-            itemObj.SetActive(false);
-
-            slot[i].GetComponent<Slot>().UpdateSlot();
-            slot[i].GetComponent<Slot>().empty = false;
-
-            gameManager.SaveGame();
-            return true;
+            if (slots[i].itemas == null)
+            {
+                slots[i].itemas = Instantiate(item);
+                gameManager.SaveGame();
+                return true;
+            }
         }
         return false;
     }
 
-    public void AddItemToHubChest(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemName, string quality, Sprite itemIcon, float damage, float armor, float health)
+    public int ItemCount(Item item)
     {
-        for (int i = 0; i < totalSlots; i++)
+        int amount = 0;
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot[i].GetComponent<Slot>().empty)
+            if (slots[i].itemas != null)
             {
-                itemObj.GetComponent<Item>().pickedUp = true;
-
-                slot[i].GetComponent<Slot>().icon = itemIcon;
-                slot[i].GetComponent<Slot>().type = itemType;
-                slot[i].GetComponent<Slot>().description = itemDescription;
-                slot[i].GetComponent<Slot>().ID = itemID;
-                slot[i].GetComponent<Slot>().item = itemObj;
-                slot[i].GetComponent<Slot>().itemName = itemName;
-                slot[i].GetComponent<Slot>().quality = quality;
-                slot[i].GetComponent<Slot>().damage = damage;
-                slot[i].GetComponent<Slot>().armor = armor;
-                slot[i].GetComponent<Slot>().health = health;
-
-                itemObj.transform.parent = slot[i].transform;
-                itemObj.SetActive(false);
-
-                slot[i].GetComponent<Slot>().UpdateSlot();
-                slot[i].GetComponent<Slot>().empty = false;
-                break;
+                if (slots[i].itemas.itemName == item.itemName)
+                    amount++;
             }
         }
-
-        gameManager.SaveGame();
+        return amount;
     }
 
-    private void SetSlot(int i, GameObject itemObj)
+    private void SetSlot(int i, Item item)
     {
-        Slot s = slot[i].GetComponent<Slot>();
-        Item item = itemObj.GetComponent<Item>();
-        s.icon = item.icon;
-        s.type = item.type;
-        s.description = item.description;
-        s.ID = item.ID;
-        s.item = itemObj;
-        s.quality = item.quality;
-        s.itemName = item.itemName;
-        s.damage = item.damage;
-        s.armor = item.armor;
-        s.health = item.health;
+        startingItems[i] = item;
 
-        s.UpdateSlot();
-        s.empty = false;
+        RefreshUI();
     }
 
-    public void LoadByIds(List<int> ids)
+    public void LoadByIds(List<string> ids)
     {
         for (int i = 0; i < ids.Count; i++)
         {
-            if (ids[i] != -1)
+            if (ids[i].ToString() != "-1")
                 SetSlot(i, ItemDatabase.instance.GetItemByID(ids[i]));
-
         }
     }
 
-    public List<int> GetItemIds()
+    public List<string> GetItemIds()
     {
-        List<int> ids = new List<int>();
-        for (int i = 0; i < slot.Length; i++)
+        List<string> ids = new List<string>();
+        for (int i = 0; i < slots.Length; i++)
         {
-            Slot s = slot[i].GetComponent<Slot>();
-            if (s.item != null)
-                ids.Add(s.ID);
+            Slot s = slots[i];
+            if (s.itemas != null)
+                ids.Add(s.itemas.ID);
             else
-                ids.Add(-1);
+                ids.Add("-1");
         }
         return ids;
     }
 
-    public GameObject GetPotion()
+    public Item GetPotion()
     {
-        return slot[8].GetComponent<Slot>().item;
+        return slots[8].itemas;
     }
-    public void RemoveItem(string type)
+
+    public Item RemoveItemByID(string itemID)
     {
-        for (int i = 0; i < slot.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot[i].GetComponent<Slot>().type == type)
+            Item item = slots[i].itemas;
+            if (item != null && item.ID == itemID)
             {
-                Remove(i);
-                break;
+                slots[i].itemas = null;
+                return item;
             }
         }
+        return null;
     }
-    public void RemoveItem(int id)
+
+    public bool RemoveItem(Item item)
     {
-        for (int i = 0; i < slot.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot[i].GetComponent<Slot>().ID == id)
+            if (slots[i].itemas == item)
             {
-                Remove(i);
-                break;
+                slots[i].itemas = null;
+                return true;
             }
         }
+        return false;
     }
-    void Remove(int i)
+
+    public Slot FindItemByType(string itemType)
     {
-        slot[i].GetComponent<Slot>().icon = default;
-        slot[i].GetComponent<Slot>().type = "";
-        slot[i].GetComponent<Slot>().description = "";
-        slot[i].GetComponent<Slot>().ID = 0;
-        slot[i].GetComponent<Slot>().item = null;
-        slot[i].GetComponent<Slot>().UpdateSlot();
-        slot[i].GetComponent<Slot>().empty = true;
-        slot[i].GetComponent<Slot>().quality = "";
-        slot[i].GetComponent<Slot>().itemName = "";
-        slot[i].GetComponent<Slot>().damage = 0;
-        slot[i].GetComponent<Slot>().armor = 0;
-        slot[i].GetComponent<Slot>().health = 0;
-    }
-    public GameObject FindItemByType(string itemType)
-    {
-        for (int i = 0; i < slot.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot[i] != null)
+            if (slots[i] != null)
             {
-                if (slot[i].name == itemType)
+                if (slots[i].name == itemType)
                 {
-                    return slot[i];
+                    return slots[i];
                 }
             }
         }
@@ -337,9 +299,9 @@ public class Inventory : MonoBehaviour
     public void FindGrey()
     {
         Transform panel;
-        for (int i = 0; i < slot.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            panel = slot[i].transform.GetChild(0);
+            panel = slots[i].transform.GetChild(0);
             if (panel.GetComponent<Image>().color == Color.grey)
             {
                 panel.GetComponent<Image>().color = Color.white;

@@ -262,10 +262,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTable:
-  - item: {fileID: 3048069553989436969, guid: e87bb6914926a7741b3402274485da40, type: 3}
-    dropChance: 100
-  - item: {fileID: 8993061056632405719, guid: db65c5d59e7e62d4c961992a90359185, type: 3}
+  - item: {fileID: 11400000, guid: 7c41a759014e6734aa028a9252e9c56f, type: 2}
     dropChance: 50
+  essence:
+  - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
+  - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
+  - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
 --- !u!114 &5401939003273531421
 MonoBehaviour:
   m_ObjectHideFlags: 0
