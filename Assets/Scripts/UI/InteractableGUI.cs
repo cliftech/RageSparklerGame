@@ -9,13 +9,12 @@ public class InteractableGUI : MonoBehaviour
     public Text interactText;
 
     private bool showing;
-    private Vector2 hiddenPos;
     private Transform target;
     private Vector2 offset;
 
     void Start()
     {
-        hiddenPos = new Vector2(-10000, -10000);
+        Hide();
     }
 
     void LateUpdate()
@@ -39,6 +38,7 @@ public class InteractableGUI : MonoBehaviour
 
     public void Show(string interactMessage, Transform target, Vector2 offset)
     {
+        gameObject.SetActive(true);
         interactText.text = interactMessage;
         this.target = target;
         this.offset = offset;
@@ -47,7 +47,7 @@ public class InteractableGUI : MonoBehaviour
 
     public void Hide()
     {
-        transform.position = hiddenPos;
         showing = false;
+        gameObject.SetActive(false);
     }
 }

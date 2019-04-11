@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Executioner Stronk Attack
+  m_Name: Naga Female Attack 2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -30,7 +30,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.1
+        time: 0.5
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -39,7 +39,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.2
+        time: 0.7
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -51,21 +51,33 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: AttackHitBox
+    path: PierceAttackHitBox
     classID: 60
     script: {fileID: 0}
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 4ec37d52d70242649a4fe637d01ae02f, type: 3}
+      value: {fileID: 21300000, guid: cf5304c47fcfa2f4fad376cbf026538f, type: 3}
     - time: 0.1
-      value: {fileID: 21300000, guid: deb917d4aa6aaa24a9fef63e3d4543bc, type: 3}
+      value: {fileID: 21300000, guid: 0ae63983644db49408f17195c6fd7892, type: 3}
     - time: 0.2
-      value: {fileID: 21300000, guid: 0402aaf530101704ebde647483ae588f, type: 3}
+      value: {fileID: 21300000, guid: 2376867754b464648b6c90a41ddc0f38, type: 3}
     - time: 0.3
-      value: {fileID: 21300000, guid: 799cb84a10d4c5a4a852145ef1d55aa6, type: 3}
+      value: {fileID: 21300000, guid: 69edd23df4eda5646b13522c3ccc702c, type: 3}
     - time: 0.4
-      value: {fileID: 21300000, guid: ad9bda7358155014c980c5ad961c989b, type: 3}
+      value: {fileID: 21300000, guid: 4e155adcfbfab4840862b001e2635e61, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: c5fdc662d92500e47911f1542f163a98, type: 3}
+    - time: 0.6
+      value: {fileID: 21300000, guid: db73621da63b74d4087dd5192e1e3a7e, type: 3}
+    - time: 0.7
+      value: {fileID: 21300000, guid: aae07a88d52f3934d81512bd4599c800, type: 3}
+    - time: 0.8
+      value: {fileID: 21300000, guid: a5c88e906b74a3d42b2998096064df4d, type: 3}
+    - time: 0.9
+      value: {fileID: 21300000, guid: fa9ed448dabb40d46a682b26f164758e, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: cfcc6c5b997b9b6498456a15822a2d3a, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -78,7 +90,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 2706796285
+      path: 893870183
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 60
@@ -92,22 +104,28 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 4ec37d52d70242649a4fe637d01ae02f, type: 3}
-    - {fileID: 21300000, guid: deb917d4aa6aaa24a9fef63e3d4543bc, type: 3}
-    - {fileID: 21300000, guid: 0402aaf530101704ebde647483ae588f, type: 3}
-    - {fileID: 21300000, guid: 799cb84a10d4c5a4a852145ef1d55aa6, type: 3}
-    - {fileID: 21300000, guid: ad9bda7358155014c980c5ad961c989b, type: 3}
+    - {fileID: 21300000, guid: cf5304c47fcfa2f4fad376cbf026538f, type: 3}
+    - {fileID: 21300000, guid: 0ae63983644db49408f17195c6fd7892, type: 3}
+    - {fileID: 21300000, guid: 2376867754b464648b6c90a41ddc0f38, type: 3}
+    - {fileID: 21300000, guid: 69edd23df4eda5646b13522c3ccc702c, type: 3}
+    - {fileID: 21300000, guid: 4e155adcfbfab4840862b001e2635e61, type: 3}
+    - {fileID: 21300000, guid: c5fdc662d92500e47911f1542f163a98, type: 3}
+    - {fileID: 21300000, guid: db73621da63b74d4087dd5192e1e3a7e, type: 3}
+    - {fileID: 21300000, guid: aae07a88d52f3934d81512bd4599c800, type: 3}
+    - {fileID: 21300000, guid: a5c88e906b74a3d42b2998096064df4d, type: 3}
+    - {fileID: 21300000, guid: fa9ed448dabb40d46a682b26f164758e, type: 3}
+    - {fileID: 21300000, guid: cfcc6c5b997b9b6498456a15822a2d3a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 1.1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 0
+    m_LoopTime: 1
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -131,7 +149,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.1
+        time: 0.5
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -140,7 +158,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.2
+        time: 0.7
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -152,22 +170,22 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: AttackHitBox
+    path: PierceAttackHitBox
     classID: 60
     script: {fileID: 0}
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.2
-    functionName: PlayStronkAttackEffect
+  - time: 0.5
+    functionName: PlayPierceAttackEffect
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.4
-    functionName: EndAttack
+  - time: 1.1
+    functionName: EndAttackPierce
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

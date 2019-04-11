@@ -8,7 +8,6 @@ public class EssenceCollectorGUI : MonoBehaviour
     public RectTransform canvasRect;
 
     private bool showing;
-    private Vector2 hiddenPos;
     private Transform target;
     private Vector2 offset;
     private Action deposit;
@@ -16,7 +15,6 @@ public class EssenceCollectorGUI : MonoBehaviour
 
     void Start()
     {
-        hiddenPos = new Vector2(-10000, -10000);
         Hide();
     }
     private void Update()
@@ -53,6 +51,7 @@ public class EssenceCollectorGUI : MonoBehaviour
     }
     public void Show(Transform target, Vector2 offset, Action deposit, Action withdraw)
     {
+        gameObject.SetActive(true);
         this.target = target;
         this.offset = offset;
         this.deposit = deposit;
@@ -61,7 +60,7 @@ public class EssenceCollectorGUI : MonoBehaviour
     }
     public void Hide()
     {
-        transform.position = hiddenPos;
         showing = false;
+        gameObject.SetActive(false);
     }
 }

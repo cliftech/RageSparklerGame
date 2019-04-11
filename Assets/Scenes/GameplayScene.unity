@@ -22678,6 +22678,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1412240953855950337, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: toolTipObject
@@ -22718,11 +22723,6 @@ PrefabInstance:
       propertyPath: InvSlots
       value: 
       objectReference: {fileID: 1158498221480648315}
-    - target: {fileID: 1056179042876710176, guid: 8e19d10d787e598449b793ee124a129b,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 1056179042876710187, guid: 8e19d10d787e598449b793ee124a129b,
         type: 3}
       propertyPath: m_LocalPosition.x

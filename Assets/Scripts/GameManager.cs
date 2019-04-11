@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private EssenceCollectorGUI essenceCollectorGUI;
     private AreaNotificationText areaNotificationText;
     private CameraController cameraController;
     private Player player;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        essenceCollectorGUI = FindObjectOfType<EssenceCollectorGUI>();
         areaNotificationText = FindObjectOfType<AreaNotificationText>();
         cameraController = FindObjectOfType<CameraController>();
         player = FindObjectOfType<Player>();
@@ -138,7 +140,7 @@ public class GameManager : MonoBehaviour
                 player.hubUnloked = true;
 
             EssenceCollector essenceCollector = currentLevel.GetComponentInChildren<EssenceCollector>();
-            essenceCollector.Start();
+            essenceCollector.Set(essenceCollectorGUI);
             essenceCollector.UpdateEssenceCollector();
         }
         
