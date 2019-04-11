@@ -153,6 +153,10 @@ public class Inventory : MonoBehaviour
             float xPos = slot.transform.position.x - slotPaddingHorizontal - 35;
             float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - slotPaddingVertical - 15;
             toolTip.transform.position = new Vector2(xPos, yPos);
+            toolTip.transform.GetComponent<HorizontalLayoutGroup>().enabled = false;
+            toolTip.transform.GetComponent<HorizontalLayoutGroup>().enabled = true;
+            Canvas.ForceUpdateCanvases();
+            plrInter.ClampToWindow(toolTip);
         }
     }
 

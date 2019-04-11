@@ -16,7 +16,7 @@ MonoBehaviour:
     type: 3}
   quality: 0
   id: fb411e777019ef147bd69db64e28cde9
-  itemName: yes
+  itemName: yesaaaaaaaaaaaaaaaaaaaaaaaaaa
   description: 
   icon: {fileID: 21300000, guid: 4089a6e3f18995c4ab5f140533e6268b, type: 3}
   pickedUp: 0
@@ -25,3 +25,4 @@ MonoBehaviour:
   armor: 30
   health: 30
   type: 3
+  healPercent: 0

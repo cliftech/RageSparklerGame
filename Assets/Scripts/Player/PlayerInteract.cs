@@ -14,6 +14,7 @@ public class PlayerInteract : MonoBehaviour
     private InteractableGUI interactableGUI;
     private Player player;
     private CameraController followCamera;
+    private Canvas canvas;
     private int priceToLevelUp;
 
     void Update()
@@ -92,6 +93,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Start()
     {
+        canvas = FindObjectOfType<Canvas>();
         hubChest = GetComponent<Inventory>();
         player = GetComponent<Player>();
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -155,12 +157,29 @@ public class PlayerInteract : MonoBehaviour
                 cmpToolTip.transform.position = new Vector2(xPos, yPos);
                 cmpToolTip.transform.GetComponent<RectTransform>().localPosition = new Vector3(toolTip.transform.GetComponent<RectTransform>().localPosition.x, toolTip.transform.GetComponent<RectTransform>().localPosition.y - offset);
                 cmpToolTip.SetActive(true);
+                cmpToolTip.transform.GetComponent<HorizontalLayoutGroup>().enabled = false;
+                cmpToolTip.transform.GetComponent<HorizontalLayoutGroup>().enabled = true;
+                Canvas.ForceUpdateCanvases();
+                ClampToWindow(cmpToolTip);
             }
         }
     }
     public void HideCompareToolTips(GameObject toolTip)
     {
         toolTip.SetActive(false);
+    }
+
+    public void ClampToWindow(GameObject toolTip)
+    {
+        Vector3 pos = toolTip.transform.GetComponent<RectTransform>().localPosition;
+
+        Vector3 minPosition = canvas.transform.GetComponent<RectTransform>().rect.min - toolTip.transform.GetComponent<RectTransform>().rect.min;
+        Vector3 maxPosition = canvas.transform.GetComponent<RectTransform>().rect.max - toolTip.transform.GetComponent<RectTransform>().rect.max;
+
+        pos.x = Mathf.Clamp(toolTip.transform.GetComponent<RectTransform>().localPosition.x, minPosition.x, maxPosition.x);
+        pos.y = Mathf.Clamp(toolTip.transform.GetComponent<RectTransform>().localPosition.y, minPosition.y, maxPosition.y);
+
+        toolTip.transform.GetComponent<RectTransform>().localPosition = pos;
     }
 
     void OnTriggerEnter2D(Collider2D other)

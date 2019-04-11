@@ -79,7 +79,7 @@ public class Slot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Swap") && selected && itemas != null && gameObject.name.StartsWith("Slot"))
+        if (Input.GetButtonDown("Swap") && selected && itemas != null && gameObject.name.StartsWith("Slot") && itemas.type.ToString() != "Material")
         { 
             inter.swap(itemas, whichSlot);
         }
