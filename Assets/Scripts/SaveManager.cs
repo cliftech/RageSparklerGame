@@ -88,8 +88,8 @@ public class SaveProfile
     public int essenceStored;
     public float timePlayed;
     public int numberOfDeaths;
-    public List<int> itemsInInventory;
-    public List<int> itemsInHubChest;
+    public List<string> itemsInInventory;
+    public List<string> itemsInHubChest;
     public List<int> checkpoints;
     public float xPosInHub, yPosInHub;
     public bool hubUnloked;
@@ -104,9 +104,9 @@ public class SaveProfile
     public int maxMidairDashesCount = 1;
     public float invincibilityFrameTime = 0.5f;
 
-    public SaveProfile(int id, int lvl, int essence, int essenceStored, float timePlayed, int numberOfDeaths, 
-        List<int> itemsInInventory, List<int> itemsInHubChest, List<int> checkpoints, float xPosInHub, float yPosInHub, bool hubUnloked,
-        bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount, 
+    public SaveProfile(int id, int lvl, int essence, int essenceStored, float timePlayed, int numberOfDeaths,
+        List<string> itemsInInventory, List<string> itemsInHubChest, List<int> checkpoints, float xPosInHub, float yPosInHub, bool hubUnloked,
+        bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount,
         float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime)
     {
         this.id = id;

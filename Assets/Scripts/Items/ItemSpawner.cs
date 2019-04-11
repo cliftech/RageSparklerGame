@@ -9,12 +9,7 @@ public class ItemSpawner : MonoBehaviour
 
     public Item itm;
 
-
-
-    void Start()
-    {
-        itm = GetComponent<Item>();
-    }
+    private GameObject spawnObject;
 
     public void Spawn(bool directionLeft)
     {
@@ -30,9 +25,20 @@ public class ItemSpawner : MonoBehaviour
             chance = Random.Range(0, 100);
             if (chance < allDrops.GetComponent<LootTable>().lootTable[i].DropChance)
             {
-                itm = Instantiate(allDrops.GetComponent<LootTable>().lootTable[i].Item, this.transform.position, Quaternion.identity);
-                itm.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
+                spawnObject = Instantiate(allDrops.GetComponent<LootTable>().lootTable[i].Item.Object2D, this.transform.position, Quaternion.identity);
+                spawnObject.GetComponent<SpriteRenderer>().sprite = allDrops.GetComponent<LootTable>().lootTable[i].Item.icon;
+                spawnObject.GetComponent<PickUp>().item = allDrops.GetComponent<LootTable>().lootTable[i].Item;
+                spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
             }
-        }    
+        }
+        for (int i = 0; i < allDrops.GetComponent<LootTable>().essence.Length; ++i)
+        {
+            if (directionLeft)
+                dropDirection = Random.Range(-3.0f, -1.0f);
+            else dropDirection = Random.Range(1.0f, 3.0f);
+
+            spawnObject = Instantiate(allDrops.GetComponent<LootTable>().essence[i], this.transform.position, Quaternion.identity);
+            spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
+        }
     }
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1089153324245350891}
   - component: {fileID: 1089153324245350884}
+  - component: {fileID: 455600452593623091}
   - component: {fileID: 1089153325757256277}
   - component: {fileID: 578060762}
   m_Layer: 0
@@ -43,15 +44,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b2b78d527b52164e892689bc869e718, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   zerothArea: {fileID: 4475020107916960832, guid: 3b360e9310d4c3145abce55a4ab05861,
     type: 3}
   hubArea: {fileID: 316683854749628759, guid: 656eca0976f1f0f4b9b39f6c4168bf31, type: 3}
   onStartLoadType: 1
   overideSavedHubPosition: 0
   isBuildVersion: 0
---- !u!114 &1089153325757256277
+--- !u!114 &455600452593623091
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,8 +62,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48f00c8aba81bba4ebe93c301200b923, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   items:
   - {fileID: 7280401373980428976, guid: a6d54e2153c74e042b72bdbb18093dad, type: 3}
   - {fileID: 7280401373980428976, guid: 02d81bf8d180d22478c9b8ad6fc908bf, type: 3}
@@ -89,8 +90,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 915bb70372c6bb94db1d7f6167b60a47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   particleEffects:
   - prefab: {fileID: 245668326697742384, guid: e6a639ac5b9849c4a97931be578be40f, type: 3}
     particleSystem: {fileID: 0}

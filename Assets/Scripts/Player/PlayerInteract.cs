@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
 {
-    //Class for interactions with objects
-
     public GameObject currentInterObj = null;
     public InteractionObject currentInterObjScript = null;
     public Inventory hubChest;
@@ -48,12 +46,12 @@ public class PlayerInteract : MonoBehaviour
                 {
                     equipment.invsOpen++;
                     hubChest.inventoryEnabled = !hubChest.inventoryEnabled;
-                    EventSystem.current.SetSelectedGameObject(hubChest.slot[0]);
+                    EventSystem.current.SetSelectedGameObject(hubChest.slots[0].gameObject);
                     hubChest.inventoryUI.SetActive(true);
                     player.playerMovement.SetEnabled(false);
                     followCamera.SetEnabled(false);
-                    hubChest.ShowToolTip(hubChest.slot[0]);
-                    hubChest.CompareToolTips(hubChest.slot[0]);
+                    hubChest.ShowToolTip(hubChest.slots[0]); 
+                    hubChest.CompareToolTips(hubChest.slots[0]);
                 }
                 else if (currentInterObj.name == "HubChest" && hubChest.inventoryEnabled)
                 {
@@ -64,32 +62,29 @@ public class PlayerInteract : MonoBehaviour
                         player.playerMovement.SetEnabled(true);
                         followCamera.SetEnabled(true);
                     }
-                    EventSystem.current.SetSelectedGameObject(equipment.slot[0]);                    
-                    hubChest.HideToolTip(hubChest.slot[0]);
+                    EventSystem.current.SetSelectedGameObject(equipment.slots[0].gameObject);              
+                    hubChest.HideToolTip(hubChest.slots[0]); 
                     hubChest.HideCompareToolTips();
                     hubChest.FindGrey();
                     hubChest.inventoryEnabled = false;
                     if(equipment.inventoryEnabled)
-                    equipment.ShowToolTip(equipment.slot[0]);
+                    equipment.ShowToolTip(equipment.slots[0]); 
                 }
             }
             
-        }    
+        }
 
         if (Input.GetButtonDown("UseHealthPotion"))
         {
             if (player.Health != player.base_maxhealth)
             {
-                GameObject potion = equipment.GetPotion();
+                Item potion = equipment.GetPotion();
                 if (potion != null)
                 {
-                    float heal = potion.GetComponent<HealthPotions>().healPercent;
-                    string type = potion.GetComponent<Item>().type;
-                    if (potion != null)
-                    {
-                        equipment.RemoveItem(type);
-                        player.AddHealth(heal);
-                    }
+                    float heal = potion.healPercent;
+                    equipment.RemoveItem(potion);
+                    player.AddHealth(heal);
+                    
                 }
             }
         }
@@ -105,37 +100,48 @@ public class PlayerInteract : MonoBehaviour
     }
 
     //swap player inventory item with hub chest inventory item
-    public void swap(GameObject itemObj, int itemID, string itemType, string itemDescription, string itemQuality, string itemName, Sprite itemIcon, float damage, float armor, float health, int whichSlot)
+    public void swap(Item item, int whichSlot)
     {
-        GameObject which = equipment.FindItemByType(itemType);
-        if(!which.GetComponent<Slot>().empty)
+        if (hubChest.RemoveItem(item))
         {
-            hubChest.RemoveItem(itemID);
-            hubChest.AddItemToHubChest(which.GetComponent<Slot>().item, which.GetComponent<Slot>().ID, which.GetComponent<Slot>().type, which.GetComponent<Slot>().description,
-               which.GetComponent<Slot>().itemName, which.GetComponent<Slot>().quality, which.GetComponent<Slot>().icon, which.GetComponent<Slot>().damage,
-               which.GetComponent<Slot>().armor, which.GetComponent<Slot>().health);
+            Item previousItem;
+            if (equipment.Equip(item, out previousItem) && previousItem != null)
+            {
+                hubChest.AddItemToHubChest(previousItem);
+                hubChest.ShowToolTip(hubChest.slots[whichSlot]);
+                hubChest.CompareToolTips(hubChest.slots[whichSlot]);
+            }
+            else
+            {
+                hubChest.HideToolTip(hubChest.slots[whichSlot]);
+                hubChest.HideCompareToolTips();
+            }
 
-            equipment.RemoveItem(itemType);
-            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
-            player.SetItemStats();
-            hubChest.ShowToolTip(hubChest.slot[whichSlot]);
-            hubChest.CompareToolTips(hubChest.slot[whichSlot]);
         }
         else
         {
-            hubChest.RemoveItem(itemID);
-            equipment.Equip(itemObj, itemID, itemType, itemDescription, itemName, itemIcon, itemQuality, damage, armor, health);
+            hubChest.AddItemToHubChest(item);
         }
     }
 
-    public void CompareToolTips(GameObject slot, Text visualText, Text textBox, GameObject cmpToolTip, GameObject toolTip)
+    public void Unequip(Item item, Slot slot)
     {
-        Slot tmpslot = slot.GetComponent<Slot>();
-        Slot tmp2;
-        if (!tmpslot.empty)
+        if(equipment.RemoveItem(item))
         {
-            tmp2 = equipment.FindItemByType(tmpslot.type).GetComponent<Slot>();
-            if (!tmp2.empty)
+            player.SetItemStats();
+            equipment.HideToolTip(slot);
+            hubChest.AddItemToHubChest(item);
+        }
+    }
+
+    public void CompareToolTips(Slot slot, Text visualText, Text textBox, GameObject cmpToolTip, GameObject toolTip)
+    {
+        Slot tmpslot = slot;
+        Slot tmp2;
+        if (tmpslot.itemas != null && tmpslot.itemas.type.ToString() != "Material")
+        {
+            tmp2 = equipment.FindItemByType(tmpslot.itemas.type.ToString());
+            if (tmp2.itemas != null)
             {
                 tmp2.CompareItems(tmpslot);
                 visualText.text = tmp2.GetToolTip(true);
@@ -164,21 +170,24 @@ public class PlayerInteract : MonoBehaviour
             currentInterObj = other.gameObject;
             if (currentInterObj.name == "LevelUpNPC")
                 interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
-            
-            Item item = currentInterObj.GetComponent<Item>();
+          
             currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
             if (currentInterObjScript.openable)
                 interactableGUI.Show("Open", transform, new Vector2(0, 2f));
+
             if (currentInterObjScript.collectable)
             {
-                bool Equipped = false;
-                if (item.equipable)
+                Item item = currentInterObj.GetComponent<PickUp>().item;
+                Item previousItem;
+                if (equipment.Equip(item, out previousItem) && previousItem != null)
                 {
-                    Equipped = equipment.Equip(currentInterObj, item.ID, item.type, item.description, item.itemName, item.icon, item.quality, item.damage, item.armor, item.health);
-                    player.SetItemStats();
+                    hubChest.AddItemToHubChest(previousItem);
                 }
-                if (Equipped == false)
-                hubChest.AddItemToHubChest(currentInterObj, item.ID, item.type, item.description, item.itemName, item.quality, item.icon, item.damage, item.armor, item.health);
+                else if(item.type.ToString() == "Material")
+                {
+                    hubChest.AddItemToHubChest(item);
+                }
+                currentInterObj.SetActive(false);
             }
         }
     }
@@ -207,8 +216,8 @@ public class PlayerInteract : MonoBehaviour
                 hubChest.HideCompareToolTips();
                 if (equipment.inventoryEnabled)
                 {
-                    EventSystem.current.SetSelectedGameObject(equipment.slot[0]);
-                    equipment.ShowToolTip(equipment.slot[0]);
+                    EventSystem.current.SetSelectedGameObject(equipment.slots[0].gameObject);
+                    equipment.ShowToolTip(equipment.slots[0]);
                 }
             }           
         }

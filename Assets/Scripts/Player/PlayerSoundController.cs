@@ -55,4 +55,8 @@ public class PlayerSoundController : MonoBehaviour
     {
         audioSource.PlayOneShot(downwardAttackCommenceSound);
     }
+    public void Update()
+    {
+        audioSource.volume = PlayerPrefs.HasKey("SoundsVolume") ? PlayerPrefs.GetFloat("SoundsVolume") : 1;
+    }
 }

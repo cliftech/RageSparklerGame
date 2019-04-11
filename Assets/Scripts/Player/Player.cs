@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     public float Health { get { return health; } }
     public float Armor = 0;
 
+    public CraftingWindow craftWindow;
+
     [HideInInspector] public List<int> checkpoints;
 
     public float attack1Dam = 5;
@@ -61,6 +63,8 @@ public class Player : MonoBehaviour
             else
                 hubChest = equipments[i];
         }
+        craftWindow.equipment = equipment;
+        craftWindow.hubChest = hubChest;
     }
     void Start()
     {
@@ -115,14 +119,17 @@ public class Player : MonoBehaviour
         attack2Dam = 7.5f;
         attack3Dam = 10;
         downwardAttackDam = 7.5f;
-        for (int i = 0; i < equipment.slot.Length; i++)
+        for (int i = 0; i < equipment.slots.Length; i++)
         {
-            activeMaxHealth += equipment.slot[i].GetComponent<Slot>().health;
-            Armor += equipment.slot[i].GetComponent<Slot>().armor;
-            attack1Dam += equipment.slot[i].GetComponent<Slot>().damage;
-            attack2Dam += equipment.slot[i].GetComponent<Slot>().damage * 1.5f;
-            attack3Dam += equipment.slot[i].GetComponent<Slot>().damage * 2;
-            downwardAttackDam += equipment.slot[i].GetComponent<Slot>().damage * 1.5f;
+            if (equipment.slots[i].itemas != null)
+            {
+                activeMaxHealth += equipment.slots[i].itemas.health;
+                Armor += equipment.slots[i].itemas.armor;
+                attack1Dam += equipment.slots[i].itemas.damage;
+                attack2Dam += equipment.slots[i].itemas.damage * 1.5f;
+                attack3Dam += equipment.slots[i].itemas.damage * 2;
+                downwardAttackDam += equipment.slots[i].itemas.damage * 1.5f;
+            }
         }
         statusGUI.UpdateInventoryStats();
     }

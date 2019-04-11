@@ -506,6 +506,7 @@ GameObject:
   - component: {fileID: 1056179042876710186}
   - component: {fileID: 143479156}
   - component: {fileID: 480756720}
+  - component: {fileID: 1353965624}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -670,7 +671,6 @@ MonoBehaviour:
   currentInterObjScript: {fileID: 0}
   hubChest: {fileID: 1412240953855950337}
   equipment: {fileID: 454859859997555492}
-  essStorageObj: {fileID: 0}
 --- !u!114 &1412240953855950337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,6 +683,109 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c64c564d2648954082e9a24e987862f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemsParent: {fileID: 0}
+  startingItems:
+  - {fileID: 11400000, guid: a819a590189ce6c4caa76dc60b4c2f29, type: 2}
+  - {fileID: 11400000, guid: 207ac906f761d1d44909db1f7bb6b181, type: 2}
+  - {fileID: 11400000, guid: 3fa1830145e9df24ba094ab7c60cfa36, type: 2}
+  - {fileID: 11400000, guid: fb411e777019ef147bd69db64e28cde9, type: 2}
+  - {fileID: 11400000, guid: ddcbb67dea82ab14d885dd1455012337, type: 2}
+  - {fileID: 11400000, guid: 40d78f7b9c45453459d402141e0f59f8, type: 2}
+  - {fileID: 11400000, guid: d675109a7eacdfd43847a358a6bb7ae6, type: 2}
+  - {fileID: 11400000, guid: e4af3164f92be98449b88d86d8908c44, type: 2}
+  - {fileID: 11400000, guid: 3fa1830145e9df24ba094ab7c60cfa36, type: 2}
+  - {fileID: 11400000, guid: 668673e318161fb4e85bdf7b122af52e, type: 2}
+  - {fileID: 11400000, guid: aa8bc4b5d81be74448eb7f92e0e7568e, type: 2}
+  - {fileID: 11400000, guid: 72fc3e2fbff12cf4ea953fd1e40f1f3e, type: 2}
+  - {fileID: 11400000, guid: 82025c629c243914eae48f041dd02a6e, type: 2}
+  - {fileID: 11400000, guid: 7c41a759014e6734aa028a9252e9c56f, type: 2}
+  - {fileID: 11400000, guid: 29735eb714b68b44ba338ec098fe0f10, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   slotC: {fileID: 0}
   toolTipObject: {fileID: 0}
   textBoxObject: {fileID: 0}
@@ -694,7 +797,107 @@ MonoBehaviour:
   inventoryUI: {fileID: 0}
   InvSlots: {fileID: 0}
   inventoryEnabled: 0
-  slot: []
+  slots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   totalSlots: 100
   invsOpen: 0
   slotPaddingHorizontal: 2
@@ -711,6 +914,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c64c564d2648954082e9a24e987862f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemsParent: {fileID: 0}
+  startingItems:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   slotC: {fileID: 0}
   toolTipObject: {fileID: 0}
   textBoxObject: {fileID: 0}
@@ -722,7 +938,18 @@ MonoBehaviour:
   inventoryUI: {fileID: 0}
   InvSlots: {fileID: 0}
   inventoryEnabled: 0
-  slot: []
+  slots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   totalSlots: 11
   invsOpen: 0
   slotPaddingHorizontal: 10
@@ -750,12 +977,14 @@ MonoBehaviour:
   base_maxhealth: 100
   health_perLevel: 20
   Armor: 0
+  craftWindow: {fileID: 0}
   checkpoints: 
   attack1Dam: 5
   attack2Dam: 7.5
   attack3Dam: 10
   downwardAttackDam: 7.5
   essence: 0
+  storedEssence: 0
   isDead: 0
   currentProfileID: 0
   timePlayed: 0
@@ -808,3 +1037,15 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.13411546}
   m_Size: {x: 0.35, y: 0.8285916}
   m_Direction: 0
+--- !u!114 &1353965624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056179042876710176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 011f20710c1b50a4d83d86a341e97db9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
