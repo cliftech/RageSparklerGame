@@ -27,8 +27,8 @@ public class Portal : MonoBehaviour
 
     void Awake()
     {
-        portalGUI = FindObjectOfType<PortalGUI>();
-        interactableGUI = FindObjectOfType<InteractableGUI>();
+        portalGUI = Resources.FindObjectsOfTypeAll<PortalGUI>()[0];
+        interactableGUI = Resources.FindObjectsOfTypeAll<InteractableGUI>()[0];
         player = FindObjectOfType<Player>();
         levelManager = FindObjectOfType<GameManager>();
     }

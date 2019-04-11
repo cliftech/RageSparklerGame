@@ -12,7 +12,7 @@ public class AmuletFlashTrigger : MonoBehaviour
     private void Awake()
     {
         Flash = FindObjectOfType<TheFirstFlash>();
-        dialogBox = FindObjectOfType<DialogBox>();
+        dialogBox = Resources.FindObjectsOfTypeAll<DialogBox>()[0];
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -12,18 +12,14 @@ public class EssenceCollector : MonoBehaviour
     private EssenceCollectorGUI collectorGUI;
     private GameManager gameManager;
 
-    private void Start()
+    public void Initialize()
     {
+        collectorGUI = Resources.FindObjectsOfTypeAll<EssenceCollectorGUI>()[0];
         gameManager = FindObjectOfType<GameManager>();
-        player = FindObjectOfType<Player>();
-        fill = transform.GetChild(0);
+        player = FindObjectOfType<Player>(); fill = transform.GetChild(0);
         maxEssence = 10;
     }
-    public void Set(EssenceCollectorGUI gui)
-    {
-        collectorGUI = gui;
-        Start();
-    }
+
     public void UpdateEssenceCollector()
     {
         fill.localScale = new Vector3(1, (float)player.storedEssence/maxEssence, 1);

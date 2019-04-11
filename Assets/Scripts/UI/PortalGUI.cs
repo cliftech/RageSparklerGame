@@ -10,7 +10,6 @@ public class PortalGUI : MonoBehaviour
     private RectTransform rect;
 
     private bool showing;
-    private Vector2 hiddenPos;
     private Transform target;
     private Vector2 offset;
 
@@ -45,7 +44,6 @@ public class PortalGUI : MonoBehaviour
             optionButtons.Add(b);
             optionTexts.Add(t);
         }
-        hiddenPos = new Vector2(-10000, -10000);
     }
 
     void LateUpdate()
@@ -69,11 +67,12 @@ public class PortalGUI : MonoBehaviour
 
     public void Show(Transform target, Vector2 offset)
     {
-        eventSystem.SetSelectedGameObject(optionButtons[0].gameObject);
+        gameObject.SetActive(true);
         this.target = target;
         this.offset = offset;
         showing = true;
         UpdateGUI();
+        eventSystem.SetSelectedGameObject(optionButtons[0].gameObject);
     }
 
     public void SetOption(int index, UnityEngine.Events.UnityAction onClickAction, string optionText)
@@ -88,8 +87,8 @@ public class PortalGUI : MonoBehaviour
     {
         for (int i = 0; i < optionButtons.Count; i++)
             optionButtons[i].gameObject.SetActive(false);
-        transform.position = hiddenPos;
         showing = false;
+        gameObject.SetActive(false);
     }
 
     private void UpdateGUI()

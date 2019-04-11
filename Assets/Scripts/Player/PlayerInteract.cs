@@ -95,7 +95,7 @@ public class PlayerInteract : MonoBehaviour
         hubChest = GetComponent<Inventory>();
         player = GetComponent<Player>();
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        interactableGUI = FindObjectOfType<InteractableGUI>();
+        interactableGUI = Resources.FindObjectsOfTypeAll<InteractableGUI>()[0];
         priceToLevelUp = 0;
     }
 

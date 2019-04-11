@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         essenceCollectorGUI = FindObjectOfType<EssenceCollectorGUI>();
-        areaNotificationText = FindObjectOfType<AreaNotificationText>();
+        areaNotificationText = Resources.FindObjectsOfTypeAll<AreaNotificationText>()[0];
         cameraController = FindObjectOfType<CameraController>();
         player = FindObjectOfType<Player>();
         screenCover = FindObjectOfType<ScreenCover>();
@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
                 player.hubUnloked = true;
 
             EssenceCollector essenceCollector = currentLevel.GetComponentInChildren<EssenceCollector>();
-            essenceCollector.Set(essenceCollectorGUI);
+            essenceCollector.Initialize();
             essenceCollector.UpdateEssenceCollector();
         }
         

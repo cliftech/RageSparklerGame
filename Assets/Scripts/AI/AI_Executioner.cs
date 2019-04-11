@@ -66,7 +66,7 @@ public class AI_Executioner : AI_Base
         sound = GetComponent<AI_Soundmanager>();
         soundManager = GameObject.FindObjectOfType<SoundManager>();
         notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
-        bossHealthbar = GameObject.FindObjectOfType<EnemyBossHealthbar>();
+        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
 

@@ -7,8 +7,6 @@ public class DialogBox : MonoBehaviour
 {
     public Text text;
     public Text speakerText;
-    private Vector2 hiddenPosition;
-    private Vector2 showingPosition;
     public RectTransform canvasRect;
     private RectTransform rect;
     public string playerName = "42";
@@ -17,14 +15,14 @@ public class DialogBox : MonoBehaviour
     void Start()
     {
         rect = GetComponent<RectTransform>();
-        hiddenPosition = new Vector2(-10000, -10000);
-        showingPosition = rect.anchoredPosition;
         HideText();
     }
 
     public void ShowText(string speakerName, string text, float timeToShow = 5, bool showKeyIcon = false)
     {
-        rect.anchoredPosition = showingPosition;
+        gameObject.SetActive(true);
+        if (rect == null)
+            Start();
         this.text.text = text;
         speakerText.text = speakerName;
         keyIcon.enabled = showKeyIcon;
@@ -37,7 +35,7 @@ public class DialogBox : MonoBehaviour
 
     public void HideText()
     {
-        rect.anchoredPosition = hiddenPosition;
+        gameObject.SetActive(false);
     }
 
     private IEnumerator HideAfter(float time)

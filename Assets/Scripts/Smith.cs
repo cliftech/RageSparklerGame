@@ -17,7 +17,7 @@ public class Smith : MonoBehaviour
 
     private void Awake()
     {
-        interactableGUI = FindObjectOfType<InteractableGUI>();
+        interactableGUI = Resources.FindObjectsOfTypeAll<InteractableGUI>()[0];
         player = FindObjectOfType<Player>();
         levelManager = FindObjectOfType<GameManager>();
     }
