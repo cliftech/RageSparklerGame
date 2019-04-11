@@ -50,6 +50,4 @@ public class InteractableGUI : MonoBehaviour
         transform.position = hiddenPos;
         showing = false;
     }
-
-
 }

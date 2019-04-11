@@ -10,9 +10,7 @@ public class PlayerInteract : MonoBehaviour
     public InteractionObject currentInterObjScript = null;
     public Inventory hubChest;
     public Inventory equipment;
-    public EssenceStorage essStorageObj;
 
-    private static EssenceStorage essStorage;
     private InteractableGUI interactableGUI;
     private Player player;
     private CameraController followCamera;
@@ -22,22 +20,6 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetButtonDown("Interact") && currentInterObj)
         {
-            if(currentInterObj.name == "EssenceStorage")
-            {
-                interactableGUI.Hide();
-                interactableGUI.Show("Store/Take Essence ", transform, new Vector2(0, 2f));
-                if (player.essence > 0)
-                {
-                    essStorage.StoreEssence(player.essence);
-                    player.essence = 0;
-                    player.statusGUI.UpdateEssenceText();
-                }
-                else
-                {
-                    player.essence = essStorage.TakeEssence();
-                    player.statusGUI.UpdateEssenceText();
-                }
-            }
             if(currentInterObjScript.talks)
             {
                 if(currentInterObj.name == "LevelUpNPC")
@@ -112,7 +94,6 @@ public class PlayerInteract : MonoBehaviour
     {
         hubChest = GetComponent<Inventory>();
         player = GetComponent<Player>();
-        essStorage = essStorageObj;
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
         interactableGUI = FindObjectOfType<InteractableGUI>();
         priceToLevelUp = 0;

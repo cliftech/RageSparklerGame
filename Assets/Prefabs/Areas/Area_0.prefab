@@ -3207,8 +3207,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcc333bba39b1c945b843a588b371b03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   sortingLayer: Background
   sortingOrder: 1
 --- !u!1 &2088325552967133975
@@ -10243,8 +10243,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1f13eaecce2a7b45bedab3f50f02a2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   isHub: 0
   title: RUINS OF ARTHON
   checkPoints: []
@@ -10454,8 +10454,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8874e1c6e43fdcc4d9ab23e3147c58ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   damagePercent: 10
 --- !u!1 &5789422423345869768
 GameObject:
@@ -10741,8 +10741,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 945f244f7d25bf54e9c61208950a4a3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   dialogText: Huh? What's this?
 --- !u!61 &7260752178881193898
 BoxCollider2D:
@@ -11812,6 +11812,11 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 0.86901295
       objectReference: {fileID: 0}
+    - target: {fileID: 8932900406326695526, guid: 951104f84ac7e6e47845a08728ca8014,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 951104f84ac7e6e47845a08728ca8014, type: 3}
 --- !u!4 &3619938731816099991 stripped
@@ -11972,26 +11977,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3968900172975147784, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.93
-      objectReference: {fileID: 0}
-    - target: {fileID: 3968900172975147784, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 2.29
-      objectReference: {fileID: 0}
     - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
       propertyPath: levelToLoad
-      value: 
+      value:
       objectReference: {fileID: 316683854749628759, guid: 656eca0976f1f0f4b9b39f6c4168bf31,
         type: 3}
     - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
       propertyPath: textToDisplay
-      value: 
+      value:
       objectReference: {fileID: 0}
     - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
@@ -12001,7 +11996,17 @@ PrefabInstance:
     - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
       propertyPath: interactTextToDisplay
-      value: 
+      value:
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968900172975147784, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968900172975147784, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f, type: 3}
@@ -12098,11 +12103,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5733698980015302806}
     m_Modifications:
-    - target: {fileID: 7542770926214921579, guid: 5d1679108d4967047a8cf167d7b75677,
-        type: 3}
-      propertyPath: m_Name
-      value: Slug
-      objectReference: {fileID: 0}
     - target: {fileID: 7542770926214921574, guid: 5d1679108d4967047a8cf167d7b75677,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12157,6 +12157,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7542770926214921579, guid: 5d1679108d4967047a8cf167d7b75677,
+        type: 3}
+      propertyPath: m_Name
+      value: Slug
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d1679108d4967047a8cf167d7b75677, type: 3}

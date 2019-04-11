@@ -12,6 +12,7 @@ public class DialogBox : MonoBehaviour
     public RectTransform canvasRect;
     private RectTransform rect;
     public string playerName = "42";
+    public Image keyIcon;
 
     void Start()
     {
@@ -21,19 +22,17 @@ public class DialogBox : MonoBehaviour
         HideText();
     }
 
-    void Update()
-    {
-        
-    }
-
-    public void ShowText(string speakerName, string text)
+    public void ShowText(string speakerName, string text, float timeToShow = 5, bool showKeyIcon = false)
     {
         rect.anchoredPosition = showingPosition;
         this.text.text = text;
         speakerText.text = speakerName;
-        float timeToShow = 5;
-        StopAllCoroutines();
-        StartCoroutine(HideAfter(timeToShow));
+        keyIcon.enabled = showKeyIcon;
+        if(timeToShow > 0)
+        {
+            StopAllCoroutines();
+            StartCoroutine(HideAfter(timeToShow));
+        }
     }
 
     public void HideText()

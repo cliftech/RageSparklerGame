@@ -23,7 +23,7 @@ public class MainMenuManager : MonoBehaviour
     public void LoadNewGame()
     {
         SetProfileToLoad(SaveManager.profileCount);
-        LoadSceneById(1);
+        LoadSceneById(2);
     }
 
     public void LoadGame(int profileID)

@@ -203,6 +203,7 @@ public class AI_Slug : AI_Base
                 SetKnockedBack(isRight);
         }
         cameraController.Shake(damage);
+        ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
     void OnTriggerEnter2D(Collider2D other)
     {

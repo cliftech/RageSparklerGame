@@ -430,12 +430,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c0a2bd5a141d84c8c1be58b8d00c66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  craftEnabled: 0
   recipeUIPrefab: {fileID: 7678511951698808469, guid: ddf7bde39169df943aedc31f20a95fec,
     type: 3}
   recipeUIParent: {fileID: 6783565729666563977}
   craftingRecipeUIs: []
-  craftWindow: {fileID: 6783565729819285549}
   hubChest: {fileID: 0}
   equipment: {fileID: 0}
   craftingRecipes: []
