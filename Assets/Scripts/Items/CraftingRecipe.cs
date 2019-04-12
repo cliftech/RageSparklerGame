@@ -45,7 +45,7 @@ public class CraftingRecipe : ScriptableObject
                     oldItem = hubchest.RemoveItemByID(itemAmount.item.ID);
                     if (oldItem == null)
                     {
-                        inventory.RemoveItem(itemAmount.item);
+                        inventory.RemoveItemByID(itemAmount.item.ID);
                     }
                 }
             }

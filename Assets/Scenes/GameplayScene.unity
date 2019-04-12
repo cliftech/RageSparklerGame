@@ -41271,6 +41271,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb9b7cd1feb36d46a42d7480a9886b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1918453697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6783565729704890948, guid: c248247cf79570a478e8fd27c1de65df,
+    type: 3}
+  m_PrefabInstance: {fileID: 1959139556}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1918453699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918453697}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97170b0fc01bb3a4ba05ef815b568dd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1918453701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918453697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e84f6737c06f7ec419424bb7f8e454a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollDirection: 0
+  scrollSpeed: 10
+  cancelScrollOnInput: 0
+  cancelScrollKeycodes: 
 --- !u!224 &1921415449 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 798869686137592908, guid: e4a3f5ae078ad304193cb9150989c6a3,
@@ -42296,12 +42330,27 @@ PrefabInstance:
     - target: {fileID: 6783565729666563977, guid: c248247cf79570a478e8fd27c1de65df,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1.1399994
+      value: 248.86
       objectReference: {fileID: 0}
     - target: {fileID: 6783565729666563977, guid: c248247cf79570a478e8fd27c1de65df,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 365.03998
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729666563977, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.00003044914
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729666563977, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729666563977, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6783565729819285548, guid: c248247cf79570a478e8fd27c1de65df,
         type: 3}
@@ -42517,6 +42566,133 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 97fea2545c6867044b67d6e0ec8b8f9e,
         type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[9]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[10]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[11]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[12]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[13]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[14]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipeUIs.Array.data[15]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: 73e2a12ab0174ea4c9b3ddb9e26956e6,
+        type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[10]
+      value: 
+      objectReference: {fileID: 11400000, guid: 98db63fa1b9283f4fbd7b4828d555e2e,
+        type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: 52f96f47660f9e84582b400eb3d34bad,
+        type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: bc04633ea9c24844aa35a377fc84af6f,
+        type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[13]
+      value: 
+      objectReference: {fileID: 11400000, guid: 28a2eb7368ddb084ebfb7b46a2c10c50,
+        type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[14]
+      value: 
+      objectReference: {fileID: 11400000, guid: da328d868bf66684ead2404d6b64db24,
+        type: 2}
+    - target: {fileID: 6783565729819285537, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: craftingRecipes.Array.data[15]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ef0ea5282e89584b859ec0d4464e8a4,
+        type: 2}
+    - target: {fileID: 6783565731150199270, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565731150199270, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565731150199270, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 247.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565731150199270, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 239.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565731150199270, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729704890971, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.7200012
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729704890971, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 28.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729704890971, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -28.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729704890971, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -86.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783565729704890970, guid: c248247cf79570a478e8fd27c1de65df,
+        type: 3}
+      propertyPath: m_MovementType
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c248247cf79570a478e8fd27c1de65df, type: 3}
 --- !u!1001 &1963106569
@@ -46663,7 +46839,7 @@ PrefabInstance:
     - target: {fileID: 1089153324245350884, guid: f41238ca9fd492e4d9bf6e916af41d47,
         type: 3}
       propertyPath: onStartLoadType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 455600452593623091, guid: f41238ca9fd492e4d9bf6e916af41d47,
         type: 3}

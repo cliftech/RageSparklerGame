@@ -13,24 +13,28 @@ public enum ItemType
 [CreateAssetMenu]
 public class Item : ScriptableObject
 {
+    [Header("[Required attributes for all items]")]
+    [Header("Don't forget to add item to item database !")]
     public GameObject Object2D;
     public Quality quality;
-    [SerializeField] string id;
-    public string ID { get { return id; } }
-    public string itemName;
-    public string description;
-    public Sprite icon;
-    public bool pickedUp;
     public bool equipable;
-    [Space]
+    public Sprite icon;
+    public string itemName;
+    public ItemType type;
+    [Header("Equipement stats")]
+    [Header("[Optional attribues]")]
     public float damage;
     public float armor;
     public float health;
     [Space]
-    public ItemType type;
-    [Space]
     [Range(0, 100)]
     public float healPercent;
+    [Space]
+    public string description;
+    [SerializeField] string id;
+    public string ID { get { return id; } }
+
+
 
     private void OnValidate()
     {
