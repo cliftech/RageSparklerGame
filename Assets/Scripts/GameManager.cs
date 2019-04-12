@@ -156,9 +156,11 @@ public class GameManager : MonoBehaviour
         SaveGame(true);
     }
 
-    public void ResetLevel(int portalID)
+    public IEnumerator ResetLevel(int portalID, float delay)
     {
+        yield return new WaitForSecondsRealtime(delay);
         LoadLevel(currentLevelPrefab, portalID);
+        player.Revive();
     }
 
     private void DestroyCurrentLevel()

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-    private PlayerSoundController playerSoundController;
-
     private float movVelocity = 5;
     private float acceleration = 1;
     private float jumpVel = 10;
@@ -78,6 +76,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private float yRaylength;
     private float xRaylength;
+
+    private Vector2 externalVelocity;
 
     void Awake ()
     {
@@ -166,7 +166,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // setting animator parameters
-        animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("Horizontal Velocity", horizontalInput != 0 ? 1 : 0);
         animator.SetFloat("Vertical Velocity", rb.velocity.y);
         animator.SetBool("Is Grounded", isGrounded);
         animator.SetBool("Is Wall Sliding", isStuckToWall_L || isStuckToWall_R);
@@ -258,6 +258,14 @@ public class PlayerMovement : MonoBehaviour {
             else
                 rb.gravityScale = gravityScale;
         }
+        if (!isDashing && externalVelocity.magnitude > 0)
+        {
+            rb.velocity += externalVelocity;
+        }
+    }
+    public void SetExternalVelocity(Vector2 externalVelocity)
+    {
+        this.externalVelocity = externalVelocity;
     }
 
     #region attacking
@@ -385,6 +393,7 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetBool("Rolling", !isGrounded);
 
         player.soundController.PlayDashSound();
+        player.playerDashParticleController.Play(direction);
     }
     public void StopDashing()
     {

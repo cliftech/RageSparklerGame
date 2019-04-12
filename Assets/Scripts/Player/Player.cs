@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public Inventory equipment;
     [HideInInspector] public Inventory hubChest;
     [HideInInspector] public PlayerSoundController soundController;
+    [HideInInspector] public PlayerDashParticleController playerDashParticleController;
     [HideInInspector] public PlayerMovement playerMovement;
     [HideInInspector] public TheFirstFlash AmuletFlash;
     [HideInInspector] public StatusGUI statusGUI;
@@ -52,6 +53,7 @@ public class Player : MonoBehaviour
         plrInter = FindObjectOfType<PlayerInteract>();
         gamemanager = FindObjectOfType<GameManager>();
         soundController = GetComponentInChildren<PlayerSoundController>();
+        playerDashParticleController = GetComponentInChildren<PlayerDashParticleController>();
         playerMovement = GetComponent<PlayerMovement>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
         statusGUI = FindObjectOfType<StatusGUI>();
@@ -149,25 +151,23 @@ public class Player : MonoBehaviour
         isDead = true;
         numberOfDeaths++;
         playerMovement.animator.SetBool("Dead", true);
-        StartCoroutine(ReviveAfterTime(2f));
+        StartCoroutine(StopMovingAfterDelay(0.5f));
         essence /= 2;
         statusGUI.UpdateEssenceText();
         gamemanager.SaveGame();
+        gamemanager.StartCoroutine(gamemanager.ResetLevel(respawnPortalID, 2f));
     }
-    private IEnumerator ReviveAfterTime(float time)
+    private IEnumerator StopMovingAfterDelay(float delay)
     {
-        yield return new WaitForSecondsRealtime(.5f);
+        yield return new WaitForSecondsRealtime(delay);
         playerMovement.rb.velocity = Vector2.zero;
-        yield return new WaitForSecondsRealtime(time - .5f);
-        Revive();
     }
 
-    private void Revive()
+    public void Revive()
     {
         isDead = false;
         health = activeMaxHealth;
         playerMovement.animator.SetBool("Dead", false);
-        gamemanager.ResetLevel(respawnPortalID);
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateEssenceText();
     }
