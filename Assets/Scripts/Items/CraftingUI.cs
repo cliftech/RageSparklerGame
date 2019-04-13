@@ -17,6 +17,18 @@ public class CraftingUI : MonoBehaviour
         set { SetCraftingRecipe(value); }
     }
 
+    private void Awake()
+    {
+        Inventory[] equipments = GetComponents<Inventory>();
+        for (int i = 0; i < equipments.Length; i++)
+        {
+            if (equipments[i].inventoryUI.name == "EquipmentUI")
+                Equipment = equipments[i];
+            else
+                HubChest = equipments[i];
+        }
+    }
+
     private void OnValidate()
     {
         slots = GetComponentsInChildren<Slot>(includeInactive: true);
@@ -49,7 +61,7 @@ public class CraftingUI : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-    }
+    }    
 
     private int SetSlots(IList<ItemAmount> itemAmountList, int slotIndex)
     {

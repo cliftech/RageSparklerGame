@@ -74,7 +74,6 @@ public class Slot : MonoBehaviour
             slotIcon.GetComponent<Image>().sprite = defaultIcon;
             slotIcon.GetComponent<Image>().color = Color.white;
         }
-
     }
 
     void Update()
@@ -92,6 +91,10 @@ public class Slot : MonoBehaviour
     private void Awake()
     {
         slotIcon = transform.GetChild(0);
+        if (amountText == null)
+        {
+            amountText = GetComponentInChildren<Text>();
+        }
     }
 
     void Start()

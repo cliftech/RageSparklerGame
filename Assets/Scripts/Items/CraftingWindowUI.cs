@@ -18,13 +18,29 @@ public class CraftingWindowUI : MonoBehaviour
         craftWindow = player.craftWindow;
     }
 
+    private void Start()
+    {
+        UpdateCraftingRecipes();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.C) && !craftEnabled)
         {
+            UpdateCraftingRecipes();
             craftWindow.gameObject.SetActive(true);
+            UpdateCraftingRecipes();
             craftEnabled = true;
-            EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[0].slots[0].gameObject);
+            for (int i = 0; i < craftWindow.craftingRecipeUIs.Count; i++)
+            {
+                if (craftWindow.craftingRecipeUIs[i].gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].slots[0].gameObject);
+                    craftWindow.equipment.ShowToolTip(craftWindow.craftingRecipeUIs[i].slots[0]);
+                    break;
+                }
+            }
+            //EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[0].slots[0].gameObject);
             player.playerMovement.SetEnabled(false);
             followCamera.SetEnabled(false);
             craftWindow.equipment.toolTipObject.SetActive(false);
@@ -32,7 +48,7 @@ public class CraftingWindowUI : MonoBehaviour
             craftWindow.hubChest.toolTipObject.SetActive(false);
             craftWindow.hubChest.compareToolTipObject.SetActive(false);
             craftWindow.equipment.invsOpen++;
-            craftWindow.equipment.ShowToolTip(craftWindow.craftingRecipeUIs[0].slots[0]);
+            //craftWindow.equipment.ShowToolTip(craftWindow.craftingRecipeUIs[0].slots[0]);
         }
         else if (Input.GetKeyDown(KeyCode.C) && craftEnabled)
         {
@@ -54,6 +70,17 @@ public class CraftingWindowUI : MonoBehaviour
             if(craftWindow.equipment.inventoryEnabled)
             {
                 craftWindow.equipment.ShowToolTip(craftWindow.equipment.slots[0]);
+            }
+        }
+    }
+
+    public void UpdateCraftingRecipes()
+    {
+        for (int i = 0; i < craftWindow.craftingRecipeUIs.Count; i++)
+        {
+            if (!craftWindow.craftingRecipeUIs[i].Recipe.CanCraft(craftWindow.equipment, craftWindow.hubChest))
+            {
+                craftWindow.craftingRecipeUIs[i].gameObject.SetActive(false);
             }
         }
     }
