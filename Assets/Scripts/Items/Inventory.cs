@@ -75,21 +75,23 @@ public class Inventory : MonoBehaviour
         if(itemsParent !=null)
         {
             slots = itemsParent.GetComponentsInChildren<Slot>();
-            RefreshUI();    
+            SetStartingItems();    
         }
     }
 
-    private void RefreshUI()
+    private void SetStartingItems()
     {
         int i = 0;
         for (; i < startingItems.Count && i < slots.Length; i++)
         {
             slots[i].itemas = startingItems[i];
+            slots[i].Amount = 1;
         }
 
         for (; i < slots.Length; i++)
         {
             slots[i].itemas = null;
+            slots[i].Amount = 0;
         }
     }
 
@@ -199,9 +201,15 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].itemas == null)
+            if (slots[i].itemas == null || slots[i].itemas.ID == item.ID && item.MaximumStack > slots[i].Amount)
             {
-                slots[i].itemas = Instantiate(item);
+                if (item.type.ToString() != "Material")
+                    slots[i].itemas = Instantiate(item);
+                else
+                {
+                    slots[i].itemas = item;
+                    slots[i].Amount++;
+                }
                 gameManager.SaveGame();
                 return true;
             }
@@ -227,7 +235,7 @@ public class Inventory : MonoBehaviour
     {
         startingItems[i] = item;
 
-        RefreshUI();
+        SetStartingItems();
     }
 
     public void LoadByIds(List<string> ids)
@@ -265,7 +273,9 @@ public class Inventory : MonoBehaviour
             Item item = slots[i].itemas;
             if (item != null && item.ID == itemID)
             {
-                slots[i].itemas = null;
+                slots[i].Amount--;
+                if (slots[i].Amount == 0)
+                    slots[i].itemas = null;
                 return item;
             }
         }
@@ -278,6 +288,8 @@ public class Inventory : MonoBehaviour
         {
             if (slots[i].itemas == item)
             {
+                slots[i].Amount--;
+                if(slots[i].Amount == 0)
                 slots[i].itemas = null;
                 return true;
             }

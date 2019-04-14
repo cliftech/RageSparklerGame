@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
+  m_Name: GoldShield
+  m_EditorClassIdentifier: 
+  Object2D: {fileID: 8899865901792235539, guid: 693c2c8857d5a91488540fbf462ed228,
+    type: 3}
+  quality: 1
+  equipable: 1
+  icon: {fileID: 21300000, guid: a8ff81c1c58c80c43b8814bc4d1d89df, type: 3}
+  itemName: Gold Shield
+  type: 7
+  MaximumStack: 1
+  damage: 0
+  armor: 15
+  health: 5
+  healPercent: 0
+  description: 
+  id: 9c0a30a253650fe419a56ddf4971b754

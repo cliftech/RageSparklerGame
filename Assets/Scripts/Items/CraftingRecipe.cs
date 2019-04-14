@@ -14,6 +14,7 @@ public struct ItemAmount
 [CreateAssetMenu]
 public class CraftingRecipe : ScriptableObject
 {
+    [Header("[Add new recipes to: Canvas-CraftingWindow-CraftinWindow Component-CraftingRecipes !]")]
     public List<ItemAmount> Materials;
     public List<ItemAmount> Results;
 

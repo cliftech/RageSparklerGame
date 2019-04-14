@@ -21,6 +21,8 @@ public class Item : ScriptableObject
     public Sprite icon;
     public string itemName;
     public ItemType type;
+    [Range(1,999)]
+    public int MaximumStack = 1;
     [Header("Equipement stats")]
     [Header("[Optional attribues]")]
     public float damage;
