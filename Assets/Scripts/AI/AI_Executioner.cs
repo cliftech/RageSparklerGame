@@ -20,6 +20,7 @@ public class AI_Executioner : AI_Base
     public AudioClip shoutLoopSound;
     public AudioClip slamIntoWallSound;
 
+    private BossArena bossArena;
     private AI_Soundmanager sound;
     private SoundManager soundManager;
     private AreaNotificationText notificationText;
@@ -67,6 +68,7 @@ public class AI_Executioner : AI_Base
         soundManager = GameObject.FindObjectOfType<SoundManager>();
         notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
         bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
+        bossArena = FindObjectOfType<BossArena>();
         Initialize();
     }
 
@@ -114,6 +116,8 @@ public class AI_Executioner : AI_Base
         stateAfterKnockbackCall = () => SetAwakening();
         stateAfterStaggeredCall = () => SetAggro();
         stateAfterAwake = () => SetAggro();
+
+        bossArena.Set(() => EnterAggro());
     }
     void Update()
     {
@@ -166,24 +170,6 @@ public class AI_Executioner : AI_Base
                     EndKnockedBack();
                 break;
             case State.Idle:
-                if (Vector2.Distance(transform.position, target.position) < aggroRange)
-                {
-                    if (!hasBeenAggroed)
-                    {
-                        notificationText.ShowNotification(displayName);
-                        soundManager.PlayBossMusic(music);
-                        ChangeDirection(coll.bounds.center.x < target.position.x);
-                        ShoutAttack();
-                        bossHealthbar.Show();
-                        hasBeenAggroed = true;
-                    }
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
-                        RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
-                    {
-                        SetAggro();
-                        aggroRange *= 5;
-                    }
-                }
                 break;
             case State.Dead:
                 break;
@@ -230,6 +216,18 @@ public class AI_Executioner : AI_Base
         animator.SetFloat("Vertical Velocity", rb.velocity.y);
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
+    void EnterAggro()
+    {
+            notificationText.ShowNotification(displayName);
+            soundManager.PlayBossMusic(music);
+            ChangeDirection(coll.bounds.center.x < target.position.x);
+            ShoutAttack();
+            bossHealthbar.Show();
+            hasBeenAggroed = true;
+            SetAggro();
+            aggroRange *= 5;
+    }
+
     void ShoutAttack()
     {
         StartCoroutine(ShoutFor(shoutTime));
@@ -444,6 +442,7 @@ public class AI_Executioner : AI_Base
             animator.SetBool("Stunned", false);
             soundManager.StopPlayingBossMusic();
             bossHealthbar.Hide();
+            bossArena.OpenGate();
         }
         else
         {
