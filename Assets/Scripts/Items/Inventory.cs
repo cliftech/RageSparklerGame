@@ -231,32 +231,35 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
-    private void SetSlot(int i, Item item)
-    {
-        startingItems[i] = item;
-
-        SetStartingItems();
-    }
-
-    public void LoadByIds(List<string> ids)
+    public void LoadByIds(List<string> ids, List<int> amounts)
     {
         for (int i = 0; i < ids.Count; i++)
         {
             if (ids[i].ToString() != "-1")
-                SetSlot(i, ItemDatabase.instance.GetItemByID(ids[i]));
+            {
+                slots[i].itemas = ItemDatabase.instance.GetItemByID(ids[i]);
+                slots[i].Amount = amounts[i];
+            }
         }
     }
 
-    public List<string> GetItemIds()
+    public List<string> GetItemIds(out List<int> amounts)
     {
         List<string> ids = new List<string>();
+        amounts = new List<int>();
         for (int i = 0; i < slots.Length; i++)
         {
             Slot s = slots[i];
             if (s.itemas != null)
+            {
                 ids.Add(s.itemas.ID);
+                amounts.Add(s.Amount);
+            }
             else
+            {
                 ids.Add("-1");
+                amounts.Add(-1);
+            }
         }
         return ids;
     }

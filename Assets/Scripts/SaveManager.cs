@@ -89,7 +89,9 @@ public class SaveProfile
     public float timePlayed;
     public int numberOfDeaths;
     public List<string> itemsInInventory;
+    public List<int> itemInInventoryAmounts;
     public List<string> itemsInHubChest;
+    public List<int> itemInHubChestAmounts;
     public List<int> checkpoints;
     public float xPosInHub, yPosInHub;
     public bool hubUnloked;
@@ -105,7 +107,8 @@ public class SaveProfile
     public float invincibilityFrameTime = 0.5f;
 
     public SaveProfile(int id, int lvl, int essence, int essenceStored, float timePlayed, int numberOfDeaths,
-        List<string> itemsInInventory, List<string> itemsInHubChest, List<int> checkpoints, float xPosInHub, float yPosInHub, bool hubUnloked,
+        List<string> itemsInInventory, List<int> itemInInventoryAmounts, List<string> itemsInHubChest, List<int> itemInHubChestAmounts,
+        List<int> checkpoints, float xPosInHub, float yPosInHub, bool hubUnloked,
         bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount,
         float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime)
     {
@@ -116,7 +119,9 @@ public class SaveProfile
         this.timePlayed = timePlayed;
         this.numberOfDeaths = numberOfDeaths;
         this.itemsInInventory = itemsInInventory;
+        this.itemInInventoryAmounts = itemInInventoryAmounts;
         this.itemsInHubChest = itemsInHubChest;
+        this.itemInHubChestAmounts = itemInHubChestAmounts;
         this.checkpoints = checkpoints;
         this.xPosInHub = xPosInHub;
         this.yPosInHub = yPosInHub;

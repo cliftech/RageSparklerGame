@@ -24,6 +24,12 @@ public class BackgroundStory : MonoBehaviour
     
     void Update()
     {
+        if(Input.GetButtonDown("Cancel"))
+        {
+            LoadSceneById(1);
+            this.enabled = false;
+        }
+
         timer += Time.deltaTime;
         if (allLinesShown)
         {

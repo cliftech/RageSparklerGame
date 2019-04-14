@@ -46,7 +46,11 @@ public class GameManager : MonoBehaviour
         {
             // creating a new game save profile
             Vector3 playerHubPos = (onStartLoadType == OnStartLoadType.loadArea0 ? zerothArea : hubArea).GetComponent<Level>().spawnPoint.position;
-            player.LoadFromProfile(new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, player.equipment.GetItemIds(), player.hubChest.GetItemIds(),
+            List<int> inventoryAmounts;
+            List<string> inventoryItems = player.equipment.GetItemIds(out inventoryAmounts);
+            List<int> hubChestAmounts;
+            List<string> hubChestItems = player.hubChest.GetItemIds(out hubChestAmounts);
+            player.LoadFromProfile(new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
                                                          player.checkpoints, playerHubPos.x, playerHubPos.y, false,
                                                          player.playerMovement.dashUnlocked, player.playerMovement.midAirDashUnlocked,
                                                          player.playerMovement.downwardAttackUnlocked, player.playerMovement.wallJumpingUnlocked,
@@ -100,8 +104,8 @@ public class GameManager : MonoBehaviour
 
         //print(profile);
         player.LoadFromProfile(profile, overideSavedHubPosition);
-        player.equipment.LoadByIds(profile.itemsInInventory);
-        player.hubChest.LoadByIds(profile.itemsInHubChest);
+        player.equipment.LoadByIds(profile.itemsInInventory, profile.itemInInventoryAmounts);
+        player.hubChest.LoadByIds(profile.itemsInHubChest, profile.itemInHubChestAmounts);
         player.SetItemStats();
         player.statusGUI.UpdateInventoryStats();
     }

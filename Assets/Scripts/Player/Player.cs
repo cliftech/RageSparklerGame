@@ -244,7 +244,11 @@ public class Player : MonoBehaviour
     public SaveProfile GetCurrentProfile()
     {
         Vector3 playerHubPos = GetPosInHub();
-        SaveProfile p = new SaveProfile(currentProfileID, level, essence, storedEssence, timePlayed, numberOfDeaths, equipment.GetItemIds(), hubChest.GetItemIds(), 
+        List<int> inventoryAmounts;
+        List<string> inventoryItems = equipment.GetItemIds(out inventoryAmounts);
+        List<int> hubChestAmounts;
+        List<string> hubChestItems = hubChest.GetItemIds(out hubChestAmounts);
+        SaveProfile p = new SaveProfile(currentProfileID, level, essence, storedEssence, timePlayed, numberOfDeaths, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
                                         checkpoints, playerHubPos.x, playerHubPos.y, hubUnloked,
                                                          playerMovement.dashUnlocked, playerMovement.midAirDashUnlocked,
                                                          playerMovement.downwardAttackUnlocked, playerMovement.wallJumpingUnlocked,
