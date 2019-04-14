@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
-  m_Name: SteelShield
+  m_Name: GoldBoots
   m_EditorClassIdentifier: 
   Object2D: {fileID: 8899865901792235539, guid: 693c2c8857d5a91488540fbf462ed228,
     type: 3}
   quality: 1
-  id: 30e0ec8fe0425de4599ebe7da77b651b
-  itemName: Steel Shield
-  description: 
-  icon: {fileID: 21300000, guid: 5e4bf72b8675c9d48a75f2e6a17819a0, type: 3}
-  pickedUp: 0
   equipable: 1
+  icon: {fileID: 21300000, guid: 4405871741e32ff4cad36a192e18f011, type: 3}
+  itemName: Gold Boots
+  type: 5
+  MaximumStack: 1
   damage: 0
-  armor: 10
-  health: 4
-  type: 7
+  armor: 3
+  health: 3
   healPercent: 0
+  description: 
+  id: e0ca97d15c3445a4da7051f5509915b3

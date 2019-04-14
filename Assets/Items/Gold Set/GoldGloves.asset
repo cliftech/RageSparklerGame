@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
-  m_Name: BronzeHelmet
+  m_Name: GoldGloves
   m_EditorClassIdentifier: 
   Object2D: {fileID: 8899865901792235539, guid: 693c2c8857d5a91488540fbf462ed228,
     type: 3}
-  quality: 0
-  id: aa8bc4b5d81be74448eb7f92e0e7568e
-  itemName: Bronze Helmet
-  description: 
-  icon: {fileID: 21300000, guid: 91858efc4a2776d449327dee6884d42e, type: 3}
-  pickedUp: 0
+  quality: 1
   equipable: 1
+  icon: {fileID: 21300000, guid: 37ef8a323fb097f46be0cd291c35fae9, type: 3}
+  itemName: Gold Gloves
+  type: 6
+  MaximumStack: 1
   damage: 0
-  armor: 2
-  health: 1
-  type: 0
+  armor: 3
+  health: 3
   healPercent: 0
+  description: 
+  id: 3b0af0091f7454a41850bf39f8ea2723

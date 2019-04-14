@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
-  m_Name: SteelBoots
+  m_Name: BronzeBoots
   m_EditorClassIdentifier: 
   Object2D: {fileID: 8899865901792235539, guid: 693c2c8857d5a91488540fbf462ed228,
     type: 3}
-  quality: 1
-  id: cdd7bbd92ba5e664786791186c51e8a0
-  itemName: Steel Boots
-  description: 
-  icon: {fileID: 21300000, guid: 6088a8da6e1c3d64692511dfcc94a980, type: 3}
-  pickedUp: 0
+  quality: 0
   equipable: 1
-  damage: 0
-  armor: 2
-  health: 2
+  icon: {fileID: 21300000, guid: 5fecbe73776be2a4bb135a81badd4a0b, type: 3}
+  itemName: Bronze Boots
   type: 5
+  MaximumStack: 1
+  damage: 0
+  armor: 1
+  health: 1
   healPercent: 0
+  description: 
+  id: e4af3164f92be98449b88d86d8908c44
