@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private EnemyBossHealthbar bossHealthbar;
     private EssenceCollectorGUI essenceCollectorGUI;
     private AreaNotificationText areaNotificationText;
     private CameraController cameraController;
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         essenceCollectorGUI = FindObjectOfType<EssenceCollectorGUI>();
         areaNotificationText = Resources.FindObjectsOfTypeAll<AreaNotificationText>()[0];
         cameraController = FindObjectOfType<CameraController>();
@@ -112,6 +114,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevelPrefab = level;
         player.playerMovement.StopDashing();
+        player.playerMovement.SetExternalVelocity(Vector2.zero);
         if (currentLevel != null)
             screenCover.CoverScreen(.1f, () => LoadLevel(potalId));
         else
@@ -147,6 +150,7 @@ public class GameManager : MonoBehaviour
         player.SetRespawnPortal(portalID);
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);
+        bossHealthbar.Hide();
         screenCover.UncoverScreen(.1f);
         if (currentLevel.backgroundMusic != null)
         {

@@ -198,15 +198,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 300
+  maxHealth: 200
   touchDamage: 10
-  music: {fileID: 0}
   simpleAttackSound: {fileID: 0}
   whirlwindAttackSound: {fileID: 0}
   getHitSound: {fileID: 0}
   moveSound: {fileID: 0}
   shoutLoopSound: {fileID: 0}
   whirlwindEffectPrefab: {fileID: 4976682580291618496, guid: 8e94ccbf8ea828845a4a14a6c65e4a0c,
+    type: 3}
+  enragedPrefab: {fileID: 4744467962148257388, guid: ebee039a5c42e1e4683982cd06968210,
     type: 3}
   simpleAttackDamage: 30
   whirlwindAttackDamage: 70

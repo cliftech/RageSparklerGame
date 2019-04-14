@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private float yRaylength;
     private float xRaylength;
+    private float attackSlideRayLength;
 
     private Vector2 externalVelocity;
 
@@ -93,6 +94,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         yRaylength = capsColl.bounds.size.y / 2 + 0.05f;
         xRaylength = capsColl.bounds.size.x / 2 + 0.1f;
+        attackSlideRayLength = xRaylength + 0.2f;
         accel = acceleration;
         isDirRight = true;
         enemyWeaponLayer = LayerMask.NameToLayer(enemyWeaponLayerName);
@@ -221,7 +223,7 @@ public class PlayerMovement : MonoBehaviour {
             else
             {
                 Vector2 origin = capsColl.bounds.center;
-                if (!DoesGroundInFrontExists() || RaycastSideways_OR((isDirRight ? 1 : -1), 3, Color.red, unslideableWhileAttackingMask))
+                if (!DoesGroundInFrontExists() || RaycastSideways_OR((isDirRight ? 1 : -1), 3, Color.red, unslideableWhileAttackingMask, attackSlideRayLength))
                     rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(0, rb.velocity.y), acceleration);
             }
             attackCooldownTimer -= Time.fixedDeltaTime;
@@ -285,7 +287,7 @@ public class PlayerMovement : MonoBehaviour {
 
         Vector2 origin = capsColl.bounds.center;
         //if (DoesGroundInFrontExists() && !Physics2D.Raycast(origin, Vector2.right * (isDirRight ? 1 : -1), xRaylength, unDashableMask))
-            rb.velocity = new Vector2((isDirRight ? 1 : -1) * groundedAttackHorizontalVel, rb.velocity.y);
+        rb.velocity = new Vector2((isDirRight ? 1 : -1) * groundedAttackHorizontalVel, rb.velocity.y);
     }
     //called in animator events
     public void EndAttack()
@@ -633,20 +635,22 @@ public class PlayerMovement : MonoBehaviour {
     }
 
 
-    bool RaycastSideways_OR(int direction, int perpRayCount, Color debugColor, LayerMask mask)
+    bool RaycastSideways_OR(int direction, int perpRayCount, Color debugColor, LayerMask mask, float distance = -1)
     {
+        if (distance == -1)
+            distance = xRaylength;
         Vector2 origin = capsColl.bounds.center;
         if (perpRayCount == 1)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
-            return Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask);
+            Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
+            return Physics2D.Raycast(origin, Vector2.right * direction, distance, mask);
         }
         float yOffset = (capsColl.size.y - 0.05f) / perpRayCount;
         origin.y -= yOffset * perpRayCount / 2;
         for (int i = 0; i < perpRayCount + 1; i++)
         {
-            Debug.DrawRay(origin, Vector2.right * direction * xRaylength, debugColor, 0.075f);
-            if (Physics2D.Raycast(origin, Vector2.right * direction, xRaylength, mask))
+            Debug.DrawRay(origin, Vector2.right * direction * distance, debugColor, 0.075f);
+            if (Physics2D.Raycast(origin, Vector2.right * direction, distance, mask))
                 return true;
             origin.y += yOffset;
         }

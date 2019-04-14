@@ -11,17 +11,18 @@ public class AI_MaleNaga : AI_Base
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
-    public AudioClip music;
     public AudioClip simpleAttackSound;
     public AudioClip whirlwindAttackSound;
     public AudioClip getHitSound;
     public AudioClip moveSound;
     public AudioClip shoutLoopSound;
     public GameObject whirlwindEffectPrefab;
+    public GameObject enragedPrefab;
 
     public float simpleAttackDamage;
     private float simpleAttackRange;
     private float cantAttackTimeAfterSimpleAttack;
+    private bool canAttackSimple = true;
 
     public float whirlwindAttackDamage;
     private float whirlwindWindupTime;
@@ -50,18 +51,18 @@ public class AI_MaleNaga : AI_Base
     }
     void Start()
     {
-        movVelocity = 4;
+        movVelocity = 3;
         aggroRange = 10;
 
         simpleAttackRange = 1.5f;
-        cantAttackTimeAfterSimpleAttack = 0.5f;
+        cantAttackTimeAfterSimpleAttack = 0.25f;
 
         whirlwindWindupTime = .5f;
         whirlwindCastTime = 2f;
-        immobilizedTimeAfterWhirlwind = 0.5f;
+        immobilizedTimeAfterWhirlwind = 1f;
         whirlwindCooldownTime = 5f;
 
-        staggerVelocity = 0.5f;
+        staggerVelocity = 0.75f;
         staggerFalloff = 2;
         maxStaggerCount = 2;
 
@@ -95,7 +96,7 @@ public class AI_MaleNaga : AI_Base
                     if (Mathf.Abs(yDistToTarget) > maxYDistToFollow)
                         SetRunning();
 
-                    if (dist <= simpleAttackRange)
+                    if (dist <= simpleAttackRange && canAttackSimple)
                     {
                         AttackSimple();
                     }
@@ -112,9 +113,8 @@ public class AI_MaleNaga : AI_Base
                         RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
                     {
                         notificationText.ShowNotification(displayName);
-                        soundManager.PlayBossMusic(music);
                         ChangeDirection(coll.bounds.center.x < target.position.x);
-                        bossHealthbar.Show();
+                        bossHealthbar.Show(displayName);
                         bossHealthbar.UpdateHealthbar(health, maxHealth);
                         SetAggro();
                     }
@@ -192,9 +192,19 @@ public class AI_MaleNaga : AI_Base
         canCastWirldwind = false;
         yield return new WaitForSecondsRealtime(cooldownTime);
         canCastWirldwind = true;
-
     }
 
+    void EndWhirlwindAttack()
+    {
+        damageContainer.SetDamageCall(() => touchDamage);
+        StartCoroutine(SetImmobilizedFor(immobilizedTimeAfterWhirlwind, () => SetRunning()));
+    }
+    private IEnumerator SetImmobilizedFor(float time, System.Action stateAfter)
+    {
+        SetImmobilized();
+        yield return new WaitForSecondsRealtime(time);
+        stateAfter.Invoke();
+    }
 
     void AttackSimple()
     {
@@ -204,11 +214,47 @@ public class AI_MaleNaga : AI_Base
     void EndSimpleAttack()
     {
         SetAggro();
+        StartCoroutine(CantSimpleAttack(cantAttackTimeAfterSimpleAttack));
     }
-    void EndWhirlwindAttack()
+    private IEnumerator CantSimpleAttack(float time)
     {
-        damageContainer.SetDamageCall(() => touchDamage);
-        SetRunning();
+        canAttackSimple = false;
+        yield return new WaitForSecondsRealtime(time);
+        canAttackSimple = true;
+    }
+
+    public void TeleportToMiddle()
+    {
+        Vector2 leftHitPoint = Physics2D.Raycast(coll.bounds.center, Vector2.left, 1000, terrainMask).point;
+        Vector2 rightHitPoint = Physics2D.Raycast(coll.bounds.center, Vector2.right, 1000, terrainMask).point;
+        Vector2 midPoint = (leftHitPoint + rightHitPoint) / 2;
+        Vector2 position = Physics2D.Raycast(midPoint, Vector2.down, 1000, terrainMask).point;
+        Vector2 offset = (Vector3.up * coll.bounds.extents.y) + transform.position - coll.bounds.center;
+        transform.position = position + offset;
+    }
+    private void Enrage()
+    {
+        //TeleportToMiddle();
+        animator.SetTrigger("Transform");
+        StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
+    }
+    public void EnterRageState()
+    {
+        Instantiate(enragedPrefab, transform.position, Quaternion.identity, transform.parent);
+        StopAllCoroutines();
+        Destroy(gameObject);
+    }
+
+    private IEnumerator StartIncreasingScale(float delay, float time, float scale)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Vector2 targetScale = new Vector2(isDirRight ? -scale : scale, scale);
+        while (transform.localScale.x < 2)
+        {
+            transform.localScale = Vector2.Lerp(transform.localScale, targetScale, Time.deltaTime / time);
+            yield return null;
+        }
+        transform.localScale = targetScale;
     }
 
     protected void GetHit(bool isRight, float damage)
@@ -218,10 +264,11 @@ public class AI_MaleNaga : AI_Base
         health -= damage;
         if (health <= 0)
         {
-            SetDead(isRight);
+            state = State.Dead;
             StopAllCoroutines();
-            soundManager.StopPlayingBossMusic();
-            bossHealthbar.Hide();
+            Enrage();       // will delete this later
+            bossHealthbar.UpdateHealthbar(0, maxHealth);
+            this.enabled = false;
         }
         else
         {
