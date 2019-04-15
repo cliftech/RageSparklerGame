@@ -25,6 +25,7 @@ public class AI_FemaleNaga : AI_Base
     private float timeBetweenRanged;
     private float staggerCounter;
     private float staggerFalloff;
+    private float maxRunningDistance;
     private int maxStaggerCount;
 
     public string displayName = "Queen Naga";
@@ -37,12 +38,12 @@ public class AI_FemaleNaga : AI_Base
         sound = GetComponent<AI_Soundmanager>();
         soundManager = GameObject.FindObjectOfType<SoundManager>();
         notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
-        bossHealthbar = GameObject.FindObjectOfType<EnemyBossHealthbar>();
+        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
     void Start()
     {
-        movVelocity = 5;
+        movVelocity = 2;
         aggroRange = 5;
         rangedAttackRange = 1;
         pierceAttackRange = 2;
@@ -50,6 +51,7 @@ public class AI_FemaleNaga : AI_Base
         staggerCounter = 0;
         staggerFalloff = 1;
         maxStaggerCount = 3;
+        maxRunningDistance = 3;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
         playerMask = 1 << LayerMask.NameToLayer("Player");
 
@@ -63,10 +65,15 @@ public class AI_FemaleNaga : AI_Base
 
     void Update()
     {
+        float dist = Vector2.Distance(transform.position, target.position);
         switch (state)
         {
             case State.Running:
-                if (RaycastSideways_OR(isDirRight, 3, xRayLength, terrainMask))
+                if (dist > maxRunningDistance)
+                {
+                    SetAggro();
+                }
+                else if (RaycastSideways_OR(!isDirRight, 3, xRayLength, terrainMask))
                 {
                     Teleport();
                 }
@@ -74,7 +81,6 @@ public class AI_FemaleNaga : AI_Base
             case State.Aggro:
                 bool inLineWithPlayer = RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
                                         RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask);
-                float dist = Vector2.Distance(transform.position, target.position);
                 if (dist <= pierceAttackRange)
                 {
                     AttackPierce();
@@ -105,10 +111,12 @@ public class AI_FemaleNaga : AI_Base
     }
     void AttackRanged()
     {
+        ChangeDirection(coll.bounds.center.x < target.position.x);
         SetAttack1();
     }
     void AttackPierce()
     {
+        ChangeDirection(coll.bounds.center.x < target.position.x);
         damageContainer.SetDamageCall(() => pierceAttackDamage);
         SetAttack2();
     }
@@ -123,12 +131,21 @@ public class AI_FemaleNaga : AI_Base
     }
     void Teleport()
     {
+        animator.SetTrigger("Teleport");
+        SetImmobilized();
+    }
+    void TeleportToMiddle()
+    {
         Vector2 leftHitPoint = Physics2D.Raycast(coll.bounds.center, Vector2.left, 1000, terrainMask).point;
         Vector2 rightHitPoint = Physics2D.Raycast(coll.bounds.center, Vector2.right, 1000, terrainMask).point;
         Vector2 midPoint = (leftHitPoint + rightHitPoint) / 2;
         Vector2 position = Physics2D.Raycast(midPoint, Vector2.down, 1000, terrainMask).point;
         Vector2 offset = (Vector3.up * coll.bounds.extents.y) + transform.position - coll.bounds.center;
         transform.position = position + offset;
+    }
+    void EndTeleport()
+    {
+        SetAggro();
     }
     private void FixedUpdate()
     {
@@ -170,6 +187,9 @@ public class AI_FemaleNaga : AI_Base
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case State.Dead:
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                break;
+            case State.Immobilized:
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
         }
@@ -219,6 +239,10 @@ public class AI_FemaleNaga : AI_Base
     void PlayPierceAttackEffect()
     {
         cameraController.Shake(3);
+    }
+    void SpawnExplosion()
+    {
+        print("splosion");
     }
 
 }
