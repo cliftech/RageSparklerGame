@@ -1820,8 +1820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a86a235c36592418dffa6bbf1e5304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystem: {fileID: 512745035}
-  selectedObject: {fileID: 1473371380}
+  eventSystem: {fileID: 0}
+  selectedObject: {fileID: 0}
 --- !u!1 &1047113579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2447,9 +2447,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f68ae32eeaa44c4291ad7af45e35507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterSlider: {fileID: 1567913901}
-  musicSlider: {fileID: 1584100138}
-  soundsSlider: {fileID: 1412638382}
+  masterSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  soundsSlider: {fileID: 0}
 --- !u!1 &1445842736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2803,9 +2803,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f68ae32eeaa44c4291ad7af45e35507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterSlider: {fileID: 1567913901}
-  musicSlider: {fileID: 1584100138}
-  soundsSlider: {fileID: 1412638382}
+  masterSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  soundsSlider: {fileID: 0}
 --- !u!1 &1572888979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,9 +2997,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f68ae32eeaa44c4291ad7af45e35507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterSlider: {fileID: 1567913901}
-  musicSlider: {fileID: 1584100138}
-  soundsSlider: {fileID: 1412638382}
+  masterSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  soundsSlider: {fileID: 0}
 --- !u!1 &1627415157
 GameObject:
   m_ObjectHideFlags: 0
@@ -3469,7 +3469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ffef18f6c2f1a24997989ec82ba9f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadGameButton: {fileID: 1966952169}
+  loadGameButton: {fileID: 0}
 --- !u!4 &1752863096
 Transform:
   m_ObjectHideFlags: 0
@@ -3599,8 +3599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a86a235c36592418dffa6bbf1e5304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystem: {fileID: 512745035}
-  selectedObject: {fileID: 1002013541}
+  eventSystem: {fileID: 0}
+  selectedObject: {fileID: 0}
 --- !u!1 &1771162272
 GameObject:
   m_ObjectHideFlags: 0

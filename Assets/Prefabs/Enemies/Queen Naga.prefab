@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 258422419556431931}
   - component: {fileID: 7172345289621595406}
   - component: {fileID: 7797067755531225983}
+  - component: {fileID: 1374046196803807147}
   - component: {fileID: 2954425019803899380}
   - component: {fileID: 4814273733783653186}
   m_Layer: 11
@@ -222,12 +223,14 @@ MonoBehaviour:
   state: 0
   maxHealth: 200
   touchDamage: 10
-  music: {fileID: 0}
+  explosionPrefab: {fileID: 5751695558078150377, guid: 73bb1d4a7a220764a9527f9c3d49f920,
+    type: 3}
   rangedAttackHitSound: {fileID: 0}
   pierceAttackHitSound: {fileID: 0}
   getHitSound: {fileID: 0}
   moveSound: {fileID: 0}
   shoutLoopSound: {fileID: 0}
+  staffAttackDamage: 0
   rangedAttackDamage: 50
   pierceAttackDamage: 25
   displayName: Queen Naga
@@ -292,8 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f07c0178c613aa04697ea9db389f9f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oneShotAudioSource: {fileID: 0}
-  loopAudioSource: {fileID: 0}
+  oneShotAudioSource: {fileID: 7797067755531225983}
+  loopAudioSource: {fileID: 1374046196803807147}
 --- !u!82 &7797067755531225983
 AudioSource:
   m_ObjectHideFlags: 0
@@ -310,6 +313,103 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1374046196803807147
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180448301435278685}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243647591947529784, guid: 3b92fdc85c7735846ab47de2d8fdd1a4,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

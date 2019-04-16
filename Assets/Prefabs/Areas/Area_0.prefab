@@ -12234,6 +12234,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Queen Naga
       objectReference: {fileID: 0}
+    - target: {fileID: 180448301435278685, guid: 1aff5815050af8e4d9a4660a56d28921,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6431046105994024437, guid: 1aff5815050af8e4d9a4660a56d28921,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12415,6 +12420,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4758768208694449077}
     m_Modifications:
+    - target: {fileID: 2677249111788508307, guid: 0a31d02fe85a3cb47b8c6971d7b76211,
+        type: 3}
+      propertyPath: m_Name
+      value: Fire Golem
+      objectReference: {fileID: 0}
+    - target: {fileID: 2677249111788508307, guid: 0a31d02fe85a3cb47b8c6971d7b76211,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3469389570500381650, guid: 0a31d02fe85a3cb47b8c6971d7b76211,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12468,16 +12483,6 @@ PrefabInstance:
     - target: {fileID: 3469389570500381650, guid: 0a31d02fe85a3cb47b8c6971d7b76211,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677249111788508307, guid: 0a31d02fe85a3cb47b8c6971d7b76211,
-        type: 3}
-      propertyPath: m_Name
-      value: Fire Golem
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677249111788508307, guid: 0a31d02fe85a3cb47b8c6971d7b76211,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

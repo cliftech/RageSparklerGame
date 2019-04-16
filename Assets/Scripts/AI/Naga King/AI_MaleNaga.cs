@@ -268,6 +268,8 @@ public class AI_MaleNaga : AI_Base
             StopAllCoroutines();
             Enrage();       // will delete this later
             bossHealthbar.UpdateHealthbar(0, maxHealth);
+            animator.SetBool("IsChannellingWhirlwind", false);
+            animator.SetBool("IsWindingUpWhirlwind", false);
             this.enabled = false;
         }
         else

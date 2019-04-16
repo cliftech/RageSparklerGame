@@ -230,10 +230,12 @@ public class AI_MaleNagaEnraged : AI_Base
         health -= damage;
         if (health <= 0)
         {
-            SetDead(isRight);
             StopAllCoroutines();
+            SetDead(isRight);
             soundManager.StopPlayingBossMusic();
             bossHealthbar.Hide();
+            animator.SetBool("IsChannellingWhirlwind", false);
+            animator.SetBool("IsWindingUpWhirlwind", false);
         }
         else
         {

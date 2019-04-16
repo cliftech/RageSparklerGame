@@ -4767,7 +4767,7 @@ MonoBehaviour:
   soundLoop: {fileID: 0}
   suctionDelay: 0.5
   maxSuctionDistance: 10
-  suctionStrength: 4
+  suctionStrength: 3
 --- !u!82 &5402856810487118083
 AudioSource:
   m_ObjectHideFlags: 0

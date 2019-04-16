@@ -11,28 +11,28 @@ public class AI_FemaleNaga : AI_Base
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
-    public AudioClip music;
+    public GameObject explosionPrefab;
+
     public AudioClip rangedAttackHitSound;
     public AudioClip pierceAttackHitSound;
     public AudioClip getHitSound;
     public AudioClip moveSound;
     public AudioClip shoutLoopSound;
 
+    public float staffAttackDamage;
     public float rangedAttackDamage;
-    private float rangedAttackRange;
     public float pierceAttackDamage;
+    private float rangedAttackRange;
     private float pierceAttackRange;
     private float timeBetweenRanged;
     private float staggerCounter;
     private float staggerFalloff;
     private float maxRunningDistance;
     private int maxStaggerCount;
-
+    private bool canRangedAttack = true;
     public string displayName = "Queen Naga";
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
-    private bool isNextPierceAttack;
-
     void Awake()
     {
         sound = GetComponent<AI_Soundmanager>();
@@ -45,8 +45,9 @@ public class AI_FemaleNaga : AI_Base
     {
         movVelocity = 2;
         aggroRange = 5;
-        rangedAttackRange = 1;
+        rangedAttackRange = 10;
         pierceAttackRange = 2;
+        timeBetweenRanged = 1;
         staggerVelocity = 0.5f;
         staggerCounter = 0;
         staggerFalloff = 1;
@@ -85,7 +86,7 @@ public class AI_FemaleNaga : AI_Base
                 {
                     AttackPierce();
                 }
-                else
+                else if(dist <= rangedAttackRange && canRangedAttack)
                 {
                     AttackRanged();
                 }
@@ -97,7 +98,6 @@ public class AI_FemaleNaga : AI_Base
                         RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
                     {
                         notificationText.ShowNotification(displayName);
-                        soundManager.PlayBossMusic(music);
                         ChangeDirection(coll.bounds.center.x < target.position.x);
                         bossHealthbar.Show();
                         bossHealthbar.UpdateHealthbar(health, maxHealth);
@@ -105,13 +105,13 @@ public class AI_FemaleNaga : AI_Base
                     }
                 }
                 break;
-
-
         }
+        animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
     void AttackRanged()
     {
         ChangeDirection(coll.bounds.center.x < target.position.x);
+        damageContainer.SetDamageCall(() => staffAttackDamage);
         SetAttack1();
     }
     void AttackPierce()
@@ -122,7 +122,14 @@ public class AI_FemaleNaga : AI_Base
     }
     void EndAttackRanged()
     {
+        StartCoroutine(DisableRanged(timeBetweenRanged));
         SetAggro();
+    }
+    private IEnumerator DisableRanged(float time)
+    {
+        canRangedAttack = false;
+        yield return new WaitForSecondsRealtime(time);
+        canRangedAttack = true;
     }
     void EndAttackPierce()
     {
@@ -201,8 +208,8 @@ public class AI_FemaleNaga : AI_Base
         health -= damage;
         if (health <= 0)
         {
-            SetDead(isRight);
             StopAllCoroutines();
+            SetDead(isRight);
             soundManager.StopPlayingBossMusic();
             bossHealthbar.Hide();
         }
@@ -242,7 +249,7 @@ public class AI_FemaleNaga : AI_Base
     }
     void SpawnExplosion()
     {
-        print("splosion");
+        Instantiate(explosionPrefab, target.position, Quaternion.identity, transform.parent).GetComponent<NagaQueenExplosionEffect>().Set(target.position, rangedAttackDamage);
     }
 
 }
