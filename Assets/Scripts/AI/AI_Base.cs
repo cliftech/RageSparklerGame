@@ -126,14 +126,15 @@ public class AI_Base : MonoBehaviour
     {
         stateAfterStaggeredCall();
     }
-    protected void SetDead(bool dropItemDirRight)
+    protected void SetDead(bool dropItemDirRight, float colliderDisableDelay = 0.5f)
     {
         state = State.Dead;
         health = 0;
         renderer.color = deadColor;
         foreach (var c in bodyWeaponColliders)
             c.enabled = false;
-        StartCoroutine(DeathRoutine(.5f));
+        rb.gravityScale = 1;
+        StartCoroutine(DeathRoutine(colliderDisableDelay));
         animator.SetBool("Dead", true);
         itemSpawner.Spawn(dropItemDirRight);
         if (isSummon)
