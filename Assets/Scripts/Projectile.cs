@@ -15,13 +15,16 @@ public class Projectile : MonoBehaviour
     private float speed, damage;
     private Vector2 targetPos;
     private Vector2 lookDirection;
+    private bool explodeOnTargetDestination;
+    private bool directionLocked;
 
-    public void Set(Vector2 position, Vector2 lookDirection, string physicsLayerName, Vector2 targetPos, float speed, float damage)
+    public void Set(Vector2 position, Vector2 lookDirection, string physicsLayerName, Vector2 targetPos, float speed, float damage, bool explodeOnTarget = false)
     {
         renderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         collider = GetComponent<Collider2D>();
         renderer.color = travelColor;
+        explodeOnTargetDestination = explodeOnTarget;
 
         transform.position = position;
         gameObject.layer = LayerMask.NameToLayer(physicsLayerName);
@@ -33,19 +36,33 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        Vector2 targetDirection = (targetPos - (Vector2)transform.position);
-        lookDirection = Vector2.Lerp(lookDirection, targetDirection, Time.deltaTime * rotationSpeed);
-
-        Vector2 pos = transform.position;
-        pos += lookDirection * Time.deltaTime * speed;
-        transform.position = pos;
-
-        float rot_z = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rot_z - degreeOffset);
-
-        if (Vector2.Distance(transform.position, targetPos) < 0.25f)
+        if(!directionLocked)
         {
-            Explode();
+            Vector2 targetDirection = (targetPos - (Vector2)transform.position);
+            lookDirection = Vector2.Lerp(lookDirection, targetDirection, Time.deltaTime * rotationSpeed);
+
+            Vector2 pos = transform.position;
+            pos += lookDirection * Time.deltaTime * speed;
+            transform.position = pos;
+
+            float rot_z = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rot_z - degreeOffset);
+
+            if (Vector2.Distance(transform.position, targetPos) < 0.25f)
+            {
+                if(explodeOnTargetDestination)
+                    Explode();
+                else
+                {
+                    directionLocked = true;
+                }
+            }
+        }
+        else
+        {
+            Vector2 pos = transform.position;
+            pos += lookDirection * Time.deltaTime * speed;
+            transform.position = pos;
         }
     }
 

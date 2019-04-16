@@ -20,7 +20,7 @@ public class PlayerSoundController : MonoBehaviour
 
     public void PlayFootstepSound()
     {
-        footstepSource.PlayOneShot(footstepSound);
+        audioSource.PlayOneShot(footstepSound);
     }
 
     public void PlayJumpSound()
