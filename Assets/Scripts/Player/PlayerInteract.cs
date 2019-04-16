@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -89,6 +90,10 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
+        if(Input.GetKeyDown(KeyCode.Y) && hubChest.inventoryEnabled)
+        {
+            Sort();
+        }
     }
 
     void Start()
@@ -118,7 +123,6 @@ public class PlayerInteract : MonoBehaviour
                 hubChest.HideToolTip(hubChest.slots[whichSlot]);
                 hubChest.HideCompareToolTips();
             }
-
         }
         else
         {
@@ -128,11 +132,51 @@ public class PlayerInteract : MonoBehaviour
 
     public void Unequip(Item item, Slot slot)
     {
-        if(equipment.RemoveItem(item))
+        Item tempItem = null;
+        tempItem = equipment.RemoveItemByID(item.ID);
+        if(tempItem != null)
         {
             player.SetItemStats();
             equipment.HideToolTip(slot);
-            hubChest.AddItemToHubChest(item);
+            hubChest.AddItemToHubChest(tempItem);
+        }
+    }
+
+    public void Sort()
+    {
+        hubChest.slots = (from x in hubChest.slots
+                          where x.itemas != null
+                          select x).OrderBy(x => x.itemas.type).ThenBy(x => x.itemas.name).ToArray();
+        Refresh();
+
+    }
+    public void Refresh()
+    {
+        List<Item> templist = new List<Item>(hubChest.slots.Length);
+        Item tempItem = null;
+        int amount;
+        for (int i = 0; i < hubChest.slots.Length; i++)
+        {
+            if (hubChest.slots[i].itemas.type == ItemType.Material)
+            {
+                amount = hubChest.slots[i].Amount;
+                for (int j = 0; j < amount; j++)
+                {
+                    tempItem = hubChest.RemoveItemByID(hubChest.slots[i].itemas.ID);
+                    templist.Add(tempItem);
+                }
+            }
+            else
+            {
+                tempItem = hubChest.RemoveItemByID(hubChest.slots[i].itemas.ID);
+                templist.Add(tempItem);
+            }
+        }
+        hubChest.slots = hubChest.itemsParent.GetComponentsInChildren<Slot>();
+        hubChest.RemoveAll();
+        for (int i = 0; i < templist.Count; i++)
+        {
+            hubChest.AddItemToHubChest(templist[i]);
         }
     }
 

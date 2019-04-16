@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    
-    [SerializeField] Transform itemsParent;
     [SerializeField] List<Item> startingItems;
 
     private static GameManager gameManager;
@@ -36,6 +34,7 @@ public class Inventory : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject InvSlots;
     public bool inventoryEnabled;
+    public Transform itemsParent;
 
     public Slot[] slots;
 
@@ -204,7 +203,10 @@ public class Inventory : MonoBehaviour
             if (slots[i].itemas == null || slots[i].itemas.ID == item.ID && item.MaximumStack > slots[i].Amount)
             {
                 if (item.type.ToString() != "Material")
+                {
                     slots[i].itemas = Instantiate(item);
+                    slots[i].Amount++;
+                }
                 else
                 {
                     slots[i].itemas = item;
@@ -283,6 +285,15 @@ public class Inventory : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void RemoveAll()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].itemas = null;
+            slots[i].Amount = 0;
+        }
     }
 
     public bool RemoveItem(Item item)
