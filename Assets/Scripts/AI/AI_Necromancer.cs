@@ -8,6 +8,11 @@ public class AI_Necromancer : AI_Base
     public Transform projectileSpawnPoint;
     public float projectileSpeed, projectileDamage;
 
+    public AudioClip summonSound;
+    public AudioClip projectileSummonSound;
+    public AudioClip getHitSound;
+    private AI_Soundmanager soundManager;
+
     public GameObject summonPrefab;
     public Transform summonSpawnPoint;
     public int maxSummonCount;
@@ -33,6 +38,7 @@ public class AI_Necromancer : AI_Base
 
     void Awake()
     {
+        soundManager = GetComponent<AI_Soundmanager>();
         Initialize();
     }
 
@@ -166,6 +172,7 @@ public class AI_Necromancer : AI_Base
     }
     void ShootProjectileEvent()
     {
+        soundManager.PlayOneShot(projectileSummonSound);
         Instantiate(projectilePrefab, transform.parent).GetComponent<Projectile>()
             .Set(projectileSpawnPoint.position, new Vector2(coll.bounds.center.x < target.position.x ? 1 : -1, 0),
             "EnemyWeapon", target.position, projectileSpeed, projectileDamage);
@@ -178,6 +185,7 @@ public class AI_Necromancer : AI_Base
 
     void SummonSummonEvent()
     {
+        soundManager.PlayOneShot(summonSound);
         projAttackTimer = maxProjAttackTime;
         Instantiate(summonPrefab, summonSpawnPoint.position, Quaternion.identity, transform.parent).GetComponent<AI_Base>().SetSummon(() => SummonDiedCalledBySummon());
         currentSummonCount++;
@@ -244,8 +252,9 @@ public class AI_Necromancer : AI_Base
     }
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
+        if (state == State.Dead)
+            return;
         health -= damage;
-        print(name + " Health: " + health);
         if (health <= 0)
         {
             if (state != State.Dead)
@@ -256,6 +265,7 @@ public class AI_Necromancer : AI_Base
             SetStaggered(isRight);
             landTimer = minTimeToLandTime;
         }
+        soundManager.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }

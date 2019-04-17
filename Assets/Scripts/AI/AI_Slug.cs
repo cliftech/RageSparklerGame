@@ -9,6 +9,11 @@ public class AI_Slug : AI_Base
     [Range(0, 1)] public float vomitAttackChance;
     public float vomitAttackDamage;
 
+    public AudioClip attackSound;
+    public AudioClip vomitSound;
+    public AudioClip getHitSound;
+    private AI_Soundmanager soundmanager;
+
     private LayerMask terrainMask;
     private LayerMask playerMask;
     private float attackRange;
@@ -22,6 +27,7 @@ public class AI_Slug : AI_Base
 
     void Awake()
     {
+        soundmanager = GetComponent<AI_Soundmanager>();
         Initialize();
     }
 
@@ -188,8 +194,9 @@ public class AI_Slug : AI_Base
 
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
+        if (state == State.Dead)
+            return;
         health -= damage;
-        print(name + " Health: " + health);
         if (health <= 0)
         {
             if (state != State.Dead)
@@ -202,6 +209,7 @@ public class AI_Slug : AI_Base
             else
                 SetKnockedBack(isRight);
         }
+        soundmanager.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
@@ -221,5 +229,15 @@ public class AI_Slug : AI_Base
         {
             GetHit(rb.velocity.x > 0, maxHealth, false);
         }
+    }
+
+    private void PlayAttackEffect()
+    {
+        soundmanager.PlayOneShot(attackSound);
+    }
+
+    private void PlayVomitEffect()
+    {
+        soundmanager.PlayOneShot(vomitSound);
     }
 }
