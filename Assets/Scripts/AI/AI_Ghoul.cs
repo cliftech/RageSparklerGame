@@ -7,6 +7,10 @@ public class AI_Ghoul : AI_Base
     public float attackDamage;
     public float jumpDamage;
 
+    public AudioClip attackSound;
+    public AudioClip getHitSound;
+    private AI_Soundmanager soundManager;
+
     private float maxAggroRange;
     private LayerMask terrainMask;
     private LayerMask playerMask;
@@ -28,6 +32,7 @@ public class AI_Ghoul : AI_Base
 
     void Awake()
     {
+        soundManager = GetComponent<AI_Soundmanager>();
         Initialize();
     }
 
@@ -235,8 +240,9 @@ public class AI_Ghoul : AI_Base
     }
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
+        if (state == State.Dead)
+            return;
         health -= damage;
-        print(name + " Health: " + health);
         if (health <= 0)
         {
             if (state != State.Dead)
@@ -249,6 +255,7 @@ public class AI_Ghoul : AI_Base
             else
                 SetKnockedBack(isRight);
         }
+        soundManager.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
@@ -260,5 +267,10 @@ public class AI_Ghoul : AI_Base
             GetHit(transform.position.x < other.transform.position.x,
                 dc.GetDamage(), dc.doKnockback());
         }
+    }
+
+    private void PlayAttackEfect()
+    {
+        soundManager.PlayOneShot(attackSound);
     }
 }

@@ -9,6 +9,13 @@ public class AI_FireGolem : AI_Base
     public float doubleAttackDamage;
     public float jumpDamage;
 
+    public AudioClip attackSound;
+    public AudioClip doubleAttackSound;
+    public AudioClip getHitSound;
+    public AudioClip jumpSound;
+    public AudioClip landSound;
+    private AI_Soundmanager soundManager;
+
     private LayerMask terrainMask;
     private LayerMask playerMask;
     private float attackRange;
@@ -30,6 +37,7 @@ public class AI_FireGolem : AI_Base
 
     void Awake()
     {
+        soundManager = GetComponent<AI_Soundmanager>();
         Initialize();
     }
 
@@ -139,7 +147,10 @@ public class AI_FireGolem : AI_Base
             case State.Jumping:
                 minJumpTimer -= Time.deltaTime;
                 if (isGrounded && minJumpTimer <= 0)
+                {
                     StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
+                    soundManager.PlayOneShot(landSound);
+                }
                 break;
             case State.Immobilized:
                 break;
@@ -148,7 +159,8 @@ public class AI_FireGolem : AI_Base
                 if (isGrounded && minJumpTimer <= 0)
                 {
                     damageContainer.SetDamageCall(() => touchDamage);
-                    SetAggro();
+                    StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
+                    soundManager.PlayOneShot(landSound);
                 }
                 break;
         }
@@ -168,6 +180,7 @@ public class AI_FireGolem : AI_Base
         ChangeDirection(jumpVel.x > 0);
         isNextDoubleAttack = Random.value < doubleAttackChance;
         minJumpTimer = minJumpInterval;
+        soundManager.PlayOneShot(jumpSound);
     }
     void AttackSingle()
     {
@@ -253,8 +266,9 @@ public class AI_FireGolem : AI_Base
     }
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
+        if (state == State.Dead)
+            return;
         health -= damage;
-        print(name + " Health: " + health);
         if (health <= 0)
         {
             if (state != State.Dead)
@@ -267,6 +281,7 @@ public class AI_FireGolem : AI_Base
             else
                 SetKnockedBack(isRight);
         }
+        soundManager.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
@@ -278,5 +293,15 @@ public class AI_FireGolem : AI_Base
             GetHit(transform.position.x < other.transform.position.x,
                 dc.GetDamage(), dc.doKnockback());
         }
+    }
+
+    private void PlaySingleAttackEffect()
+    {
+        soundManager.PlayOneShot(attackSound);
+    }
+
+    private void PlayDoubleAttackEffect()
+    {
+        soundManager.PlayOneShot(doubleAttackSound);
     }
 }

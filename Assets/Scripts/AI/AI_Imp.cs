@@ -6,6 +6,10 @@ public class AI_Imp : AI_Base
 {
     public float attackDamage;
 
+    public AudioClip getHitSound;
+    public AudioClip summonProjectileSound;
+    private AI_Soundmanager soundManager;
+
     private LayerMask terrainMask;
     private LayerMask playerMask;
     private float attackRange;
@@ -24,6 +28,7 @@ public class AI_Imp : AI_Base
 
     void Awake()
     {
+        soundManager = GetComponent<AI_Soundmanager>();
         Initialize();
     }
 
@@ -140,6 +145,7 @@ public class AI_Imp : AI_Base
 
     void SummonProjectile()
     {
+        soundManager.PlayOneShot(summonProjectileSound);
         Instantiate(projectilePrefab, transform.parent).GetComponent<Projectile>().Set(projectileSpawnPoint.position, 
             new Vector2(coll.bounds.center.x < target.position.x?1:-1,0), "EnemyWeapon", target.position, projectileSpeed, attackDamage);
     }
@@ -159,12 +165,15 @@ public class AI_Imp : AI_Base
 
     protected void GetHit(bool isRight, float damage, bool doKnockback)
     {
+        if (state == State.Dead)
+            return;
         health -= damage;
         if (health <= 0)
             if (state != State.Dead)
                 SetDead(isRight, 5f);
         else
             SetStaggered(isRight);
+        soundManager.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
