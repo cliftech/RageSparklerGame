@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI_FemaleNagaEnraged : AI_Base
+public class AI_FemaleNaga : AI_Base
 {
+    private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
-    private SoundManager soundManager;
-    private AreaNotificationText notificationText;
     private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
     public GameObject explosionPrefab;
+    public GameObject enragedPrefab;
 
     public AudioClip rangedAttackHitSound;
     public AudioClip pierceAttackHitSound;
@@ -19,6 +19,7 @@ public class AI_FemaleNagaEnraged : AI_Base
     public AudioClip moveSound;
     public AudioClip shoutLoopSound;
 
+    public bool startFacingLeft;
     public float staffAttackDamage;
     public float rangedAttackDamage;
     public float pierceAttackDamage;
@@ -35,33 +36,36 @@ public class AI_FemaleNagaEnraged : AI_Base
     private string playerWeaponTag = "PlayerWeapon";
     void Awake()
     {
+        nagaManager = transform.parent.GetComponent<Naga_Manager>();
         sound = GetComponent<AI_Soundmanager>();
-        soundManager = GameObject.FindObjectOfType<SoundManager>();
-        notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
         bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
     void Start()
     {
-        movVelocity = 5;
+        movVelocity = 2;
         aggroRange = 5;
         rangedAttackRange = 10;
         pierceAttackRange = 2;
-        timeBetweenRanged = 0.5f;
+        timeBetweenRanged = 1;
         staggerVelocity = 0.5f;
         staggerCounter = 0;
         staggerFalloff = 1;
-        maxStaggerCount = 2;
-        maxRunningDistance = 6;
+        maxStaggerCount = 3;
+        maxRunningDistance = 3;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
         playerMask = 1 << LayerMask.NameToLayer("Player");
 
         damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
-        SetAggro();
+        SetIdle();
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
+        if (!startFacingLeft)
+        {
+            ChangeDirection(true);
+        }
     }
 
     void Update()
@@ -92,18 +96,6 @@ public class AI_FemaleNagaEnraged : AI_Base
                 }
                 break;
             case State.Idle:
-                if (Vector2.Distance(transform.position, target.position) < aggroRange)
-                {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
-                        RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
-                    {
-                        notificationText.ShowNotification(displayName);
-                        ChangeDirection(coll.bounds.center.x < target.position.x);
-                        bossHealthbar.Show();
-                        bossHealthbar.UpdateHealthbar(health, maxHealth);
-                        SetAggro();
-                    }
-                }
                 break;
         }
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
@@ -201,6 +193,37 @@ public class AI_FemaleNagaEnraged : AI_Base
                 break;
         }
     }
+    public void Aggro()
+    {
+        ChangeDirection(coll.bounds.center.x < target.position.x);
+        bossHealthbar.Show(displayName);
+        bossHealthbar.UpdateHealthbar(health, maxHealth);
+        SetAggro();
+    }
+    public void Enrage()
+    {
+        TeleportToMiddle();
+        animator.SetTrigger("Transform");
+        StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
+    }
+    private void EnterRageState()
+    {
+        Instantiate(enragedPrefab, transform.position, Quaternion.identity, transform.parent);
+        StopAllCoroutines();
+        Destroy(gameObject);
+    }
+
+    private IEnumerator StartIncreasingScale(float delay, float time, float scale)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Vector2 targetScale = new Vector2(isDirRight ? -scale : scale, scale);
+        while (transform.localScale.x < 2)
+        {
+            transform.localScale = Vector2.Lerp(transform.localScale, targetScale, Time.deltaTime / time);
+            yield return null;
+        }
+        transform.localScale = targetScale;
+    }
     protected void GetHit(bool isRight, float damage)
     {
         if (state == State.Dead)
@@ -209,9 +232,10 @@ public class AI_FemaleNagaEnraged : AI_Base
         if (health <= 0)
         {
             StopAllCoroutines();
+            nagaManager.EnrageMaleNaga();
             SetDead(isRight);
-            soundManager.StopPlayingBossMusic();
-            bossHealthbar.Hide();
+            bossHealthbar.UpdateHealthbar(0, maxHealth);
+            this.enabled = false;
         }
         else
         {

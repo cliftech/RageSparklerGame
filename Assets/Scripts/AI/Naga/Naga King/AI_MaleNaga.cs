@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class AI_MaleNaga : AI_Base
 {
+    private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
-    private SoundManager soundManager;
-    private AreaNotificationText notificationText;
     private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
@@ -18,6 +17,8 @@ public class AI_MaleNaga : AI_Base
     public AudioClip shoutLoopSound;
     public GameObject whirlwindEffectPrefab;
     public GameObject enragedPrefab;
+
+    public bool startFacingLeft;
 
     public float simpleAttackDamage;
     private float simpleAttackRange;
@@ -43,9 +44,8 @@ public class AI_MaleNaga : AI_Base
 
     void Awake()
     {
+        nagaManager = transform.parent.GetComponent<Naga_Manager>();
         sound = GetComponent<AI_Soundmanager>();
-        soundManager = GameObject.FindObjectOfType<SoundManager>();
-        notificationText = Resources.FindObjectsOfTypeAll<AreaNotificationText>()[0];
         bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
@@ -77,6 +77,10 @@ public class AI_MaleNaga : AI_Base
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
+        if (!startFacingLeft)
+        {
+            ChangeDirection(true);
+        }
     }
 
     void Update()
@@ -107,18 +111,6 @@ public class AI_MaleNaga : AI_Base
                     break;
                 }
             case State.Idle:
-                if (Vector2.Distance(transform.position, target.position) < aggroRange)
-                {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
-                        RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
-                    {
-                        notificationText.ShowNotification(displayName);
-                        ChangeDirection(coll.bounds.center.x < target.position.x);
-                        bossHealthbar.Show(displayName);
-                        bossHealthbar.UpdateHealthbar(health, maxHealth);
-                        SetAggro();
-                    }
-                }
                 break;
             case State.Running:
                 {
@@ -131,6 +123,7 @@ public class AI_MaleNaga : AI_Base
         }
         animator.SetFloat("Horizontal Velocity", Mathf.Abs(rb.velocity.x));
     }
+
     private void FixedUpdate()
     {
         switch (state)
@@ -173,6 +166,7 @@ public class AI_MaleNaga : AI_Base
     {
         StartCoroutine(CastWhirlwind(whirlwindWindupTime, whirlwindCastTime, whirlwindCooldownTime));
     }
+
     IEnumerator CastWhirlwind(float windUpTime, float castTime, float cooldownTime)
     {
         animator.SetBool("IsWindingUpWhirlwind", true);
@@ -232,13 +226,21 @@ public class AI_MaleNaga : AI_Base
         Vector2 offset = (Vector3.up * coll.bounds.extents.y) + transform.position - coll.bounds.center;
         transform.position = position + offset;
     }
-    private void Enrage()
+
+    public void Aggro()
+    {
+        ChangeDirection(coll.bounds.center.x < target.position.x);
+        bossHealthbar.Show(displayName);
+        bossHealthbar.UpdateHealthbar(health, maxHealth);
+        SetAggro();
+    }
+    public void Enrage()
     {
         //TeleportToMiddle();
         animator.SetTrigger("Transform");
         StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
     }
-    public void EnterRageState()
+    private void EnterRageState()
     {
         Instantiate(enragedPrefab, transform.position, Quaternion.identity, transform.parent);
         StopAllCoroutines();
@@ -264,9 +266,9 @@ public class AI_MaleNaga : AI_Base
         health -= damage;
         if (health <= 0)
         {
-            state = State.Dead;
             StopAllCoroutines();
-            Enrage();       // will delete this later
+            nagaManager.EnrageFemaleNaga();
+            SetDead(isRight);
             bossHealthbar.UpdateHealthbar(0, maxHealth);
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);

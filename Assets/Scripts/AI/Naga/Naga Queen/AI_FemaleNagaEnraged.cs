@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI_FemaleNaga : AI_Base
+public class AI_FemaleNagaEnraged : AI_Base
 {
     private AI_Soundmanager sound;
     private SoundManager soundManager;
@@ -12,7 +12,6 @@ public class AI_FemaleNaga : AI_Base
     private LayerMask playerMask;
 
     public GameObject explosionPrefab;
-    public GameObject enragedPrefab;
 
     public AudioClip rangedAttackHitSound;
     public AudioClip pierceAttackHitSound;
@@ -44,22 +43,22 @@ public class AI_FemaleNaga : AI_Base
     }
     void Start()
     {
-        movVelocity = 2;
+        movVelocity = 5;
         aggroRange = 5;
         rangedAttackRange = 10;
-        pierceAttackRange = 2;
-        timeBetweenRanged = 1;
+        pierceAttackRange = 3;
+        timeBetweenRanged = 0.5f;
         staggerVelocity = 0.5f;
         staggerCounter = 0;
         staggerFalloff = 1;
-        maxStaggerCount = 3;
-        maxRunningDistance = 3;
+        maxStaggerCount = 2;
+        maxRunningDistance = 6;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
         playerMask = 1 << LayerMask.NameToLayer("Player");
 
         damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
-        SetIdle();
+        SetAggro();
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
@@ -87,7 +86,7 @@ public class AI_FemaleNaga : AI_Base
                 {
                     AttackPierce();
                 }
-                else if(dist <= rangedAttackRange && canRangedAttack)
+                else if (dist <= rangedAttackRange && canRangedAttack)
                 {
                     AttackRanged();
                 }
@@ -202,30 +201,6 @@ public class AI_FemaleNaga : AI_Base
                 break;
         }
     }
-    private void Enrage()
-    {
-        TeleportToMiddle();
-        animator.SetTrigger("Transform");
-        StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
-    }
-    public void EnterRageState()
-    {
-        Instantiate(enragedPrefab, transform.position, Quaternion.identity, transform.parent);
-        StopAllCoroutines();
-        Destroy(gameObject);
-    }
-
-    private IEnumerator StartIncreasingScale(float delay, float time, float scale)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-        Vector2 targetScale = new Vector2(isDirRight ? -scale : scale, scale);
-        while (transform.localScale.x < 2)
-        {
-            transform.localScale = Vector2.Lerp(transform.localScale, targetScale, Time.deltaTime / time);
-            yield return null;
-        }
-        transform.localScale = targetScale;
-    }
     protected void GetHit(bool isRight, float damage)
     {
         if (state == State.Dead)
@@ -233,11 +208,10 @@ public class AI_FemaleNaga : AI_Base
         health -= damage;
         if (health <= 0)
         {
-            state = State.Dead;
             StopAllCoroutines();
-            Enrage();
-            bossHealthbar.UpdateHealthbar(0, maxHealth);
-            this.enabled = false;
+            SetDead(isRight);
+            soundManager.StopPlayingBossMusic();
+            bossHealthbar.Hide();
         }
         else
         {

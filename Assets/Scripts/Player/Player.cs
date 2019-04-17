@@ -193,7 +193,7 @@ public class Player : MonoBehaviour
             case 3:
                 return attack3Dam;
         }
-        Debug.LogError("current attack number is nor recognized: " + playerMovement.currentAttackNum);
+        Debug.LogError("Current attack number is not recognized: " + playerMovement.currentAttackNum);
         return attack1Dam;
     }
 
