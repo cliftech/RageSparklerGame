@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class AI_FemaleNagaEnraged : AI_Base
 {
+    private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
-    private SoundManager soundManager;
-    private AreaNotificationText notificationText;
-    private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
@@ -35,17 +33,15 @@ public class AI_FemaleNagaEnraged : AI_Base
     private string playerWeaponTag = "PlayerWeapon";
     void Awake()
     {
+        nagaManager = transform.parent.GetComponent<Naga_Manager>();
         sound = GetComponent<AI_Soundmanager>();
-        soundManager = GameObject.FindObjectOfType<SoundManager>();
-        notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
-        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
     void Start()
     {
         movVelocity = 5;
         aggroRange = 5;
-        rangedAttackRange = 10;
+        rangedAttackRange = 50;
         pierceAttackRange = 3;
         timeBetweenRanged = 0.5f;
         staggerVelocity = 0.5f;
@@ -89,20 +85,6 @@ public class AI_FemaleNagaEnraged : AI_Base
                 else if (dist <= rangedAttackRange && canRangedAttack)
                 {
                     AttackRanged();
-                }
-                break;
-            case State.Idle:
-                if (Vector2.Distance(transform.position, target.position) < aggroRange)
-                {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
-                        RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
-                    {
-                        notificationText.ShowNotification(displayName);
-                        ChangeDirection(coll.bounds.center.x < target.position.x);
-                        bossHealthbar.Show();
-                        bossHealthbar.UpdateHealthbar(health, maxHealth);
-                        SetAggro();
-                    }
                 }
                 break;
         }
@@ -210,8 +192,8 @@ public class AI_FemaleNagaEnraged : AI_Base
         {
             StopAllCoroutines();
             SetDead(isRight);
-            soundManager.StopPlayingBossMusic();
-            bossHealthbar.Hide();
+            nagaManager.StopPlayingBossMusic();
+            nagaManager.HideHealthbar(true);
         }
         else
         {
@@ -225,7 +207,7 @@ public class AI_FemaleNagaEnraged : AI_Base
                 SetStaggered(isRight);
             }
         }
-        bossHealthbar.UpdateHealthbar(health, maxHealth);
+        nagaManager.UpdateHealthbar(true, health, maxHealth);
         sound.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);

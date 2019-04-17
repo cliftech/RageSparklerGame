@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 1000
+  maxHealth: 100
   touchDamage: 10
   explosionPrefab: {fileID: 5751695558078150377, guid: e638e7b3746de06438e141675641f6c4,
     type: 3}
@@ -230,9 +230,9 @@ MonoBehaviour:
   getHitSound: {fileID: 0}
   moveSound: {fileID: 0}
   shoutLoopSound: {fileID: 0}
-  staffAttackDamage: 0
-  rangedAttackDamage: 0
-  pierceAttackDamage: 0
+  staffAttackDamage: 20
+  rangedAttackDamage: 100
+  pierceAttackDamage: 50
   displayName: Queen Naga
 --- !u!70 &7914238546463260915
 CapsuleCollider2D:

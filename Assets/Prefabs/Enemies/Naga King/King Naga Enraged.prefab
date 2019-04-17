@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 200
+  maxHealth: 100
   touchDamage: 10
   simpleAttackSound: {fileID: 0}
   whirlwindAttackSound: {fileID: 0}

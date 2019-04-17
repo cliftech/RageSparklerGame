@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class AI_MaleNagaEnraged : AI_Base
 {
+    private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
-    private SoundManager soundManager;
-    private AreaNotificationText notificationText;
-    private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
@@ -42,10 +40,8 @@ public class AI_MaleNagaEnraged : AI_Base
 
     void Awake()
     {
+        nagaManager = transform.parent.GetComponent<Naga_Manager>();
         sound = GetComponent<AI_Soundmanager>();
-        soundManager = GameObject.FindObjectOfType<SoundManager>();
-        notificationText = Resources.FindObjectsOfTypeAll<AreaNotificationText>()[0];
-        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
     void Start()
@@ -72,10 +68,10 @@ public class AI_MaleNagaEnraged : AI_Base
 
         damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
-        SetIdle();
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
+        SetAggro();
     }
 
     void Update()
@@ -105,20 +101,6 @@ public class AI_MaleNagaEnraged : AI_Base
                     }
                     break;
                 }
-            case State.Idle:
-                if (Vector2.Distance(transform.position, target.position) < aggroRange)
-                {
-                    if (RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
-                        RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask))
-                    {
-                        notificationText.ShowNotification(displayName);
-                        ChangeDirection(coll.bounds.center.x < target.position.x);
-                        bossHealthbar.Show(displayName);
-                        bossHealthbar.UpdateHealthbar(health, maxHealth);
-                        SetAggro();
-                    }
-                }
-                break;
             case State.Running:
                 {
                     float yDistToTarget = target.position.y - coll.bounds.center.y;
@@ -232,10 +214,10 @@ public class AI_MaleNagaEnraged : AI_Base
         {
             StopAllCoroutines();
             SetDead(isRight);
-            soundManager.StopPlayingBossMusic();
-            bossHealthbar.Hide();
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);
+            nagaManager.StopPlayingBossMusic();
+            nagaManager.HideHealthbar(false);
         }
         else
         {
@@ -248,8 +230,8 @@ public class AI_MaleNagaEnraged : AI_Base
                 staggerCounter += 1;
                 SetStaggered(isRight);
             }
+            nagaManager.UpdateHealthbar(false, health, maxHealth);
         }
-        bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);

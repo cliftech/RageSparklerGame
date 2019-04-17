@@ -6,7 +6,6 @@ public class AI_FemaleNaga : AI_Base
 {
     private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
-    private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
@@ -38,14 +37,13 @@ public class AI_FemaleNaga : AI_Base
     {
         nagaManager = transform.parent.GetComponent<Naga_Manager>();
         sound = GetComponent<AI_Soundmanager>();
-        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
     void Start()
     {
         movVelocity = 2;
         aggroRange = 5;
-        rangedAttackRange = 10;
+        rangedAttackRange = 50;
         pierceAttackRange = 2;
         timeBetweenRanged = 1;
         staggerVelocity = 0.5f;
@@ -196,12 +194,14 @@ public class AI_FemaleNaga : AI_Base
     public void Aggro()
     {
         ChangeDirection(coll.bounds.center.x < target.position.x);
-        bossHealthbar.Show(displayName);
-        bossHealthbar.UpdateHealthbar(health, maxHealth);
+        nagaManager.ShowHealthbar(true);
+        nagaManager.UpdateHealthbar(true, health, maxHealth);
         SetAggro();
     }
     public void Enrage()
     {
+        state = State.Dead;
+        rb.velocity = Vector2.zero;
         TeleportToMiddle();
         animator.SetTrigger("Transform");
         StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
@@ -233,8 +233,8 @@ public class AI_FemaleNaga : AI_Base
         {
             StopAllCoroutines();
             nagaManager.EnrageMaleNaga();
-            SetDead(isRight);
-            bossHealthbar.UpdateHealthbar(0, maxHealth);
+            SetDead(isRight, 0);
+            nagaManager.HideHealthbar(true);
             this.enabled = false;
         }
         else
@@ -248,8 +248,8 @@ public class AI_FemaleNaga : AI_Base
                 staggerCounter += 1;
                 SetStaggered(isRight);
             }
+            nagaManager.UpdateHealthbar(true, health, maxHealth);
         }
-        bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);

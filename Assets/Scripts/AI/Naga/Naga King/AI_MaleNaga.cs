@@ -6,7 +6,6 @@ public class AI_MaleNaga : AI_Base
 {
     private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
-    private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
@@ -46,7 +45,6 @@ public class AI_MaleNaga : AI_Base
     {
         nagaManager = transform.parent.GetComponent<Naga_Manager>();
         sound = GetComponent<AI_Soundmanager>();
-        bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         Initialize();
     }
     void Start()
@@ -230,13 +228,15 @@ public class AI_MaleNaga : AI_Base
     public void Aggro()
     {
         ChangeDirection(coll.bounds.center.x < target.position.x);
-        bossHealthbar.Show(displayName);
-        bossHealthbar.UpdateHealthbar(health, maxHealth);
+        nagaManager.ShowHealthbar(false);
+        nagaManager.UpdateHealthbar(false, health, maxHealth);
         SetAggro();
     }
     public void Enrage()
     {
         //TeleportToMiddle();
+        state = State.Dead;
+        rb.velocity = Vector2.zero;
         animator.SetTrigger("Transform");
         StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
     }
@@ -268,11 +268,11 @@ public class AI_MaleNaga : AI_Base
         {
             StopAllCoroutines();
             nagaManager.EnrageFemaleNaga();
-            SetDead(isRight);
-            bossHealthbar.UpdateHealthbar(0, maxHealth);
+            SetDead(isRight, 0);
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);
             this.enabled = false;
+            nagaManager.HideHealthbar(false);
         }
         else
         {
@@ -285,8 +285,8 @@ public class AI_MaleNaga : AI_Base
                 staggerCounter += 1;
                 SetStaggered(isRight);
             }
+            nagaManager.UpdateHealthbar(false, health, maxHealth);
         }
-        bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);

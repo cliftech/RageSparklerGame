@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BossArenaGate
+  m_Name: NagaBossArenaGate
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Open
@@ -14,13 +14,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Close
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -149,7 +149,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a87bf64018ae2784ca61d6b899d15600, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0b6067a3d6480a34b83ed445da79d9e2, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -176,7 +176,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ceb48e1ee94bf954aa49f5ac07332212, type: 2}
+  m_Motion: {fileID: 7400000, guid: a18cb40d54297724bbd1fb2bb91bd0f6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -203,7 +203,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a11b058405336bb4f9be18c3eed1638f, type: 2}
+  m_Motion: {fileID: 7400000, guid: bae6385e39866ff4eaa87aa3d5f0eed2, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -230,7 +230,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8878d6c54383d9348b20e80c678d3473, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7ddbae42ea788bd4bbd87f7a28f2a7d7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

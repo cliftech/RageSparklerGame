@@ -232,7 +232,8 @@ MonoBehaviour:
   getHitSound: {fileID: 0}
   moveSound: {fileID: 0}
   shoutLoopSound: {fileID: 0}
-  staffAttackDamage: 0
+  startFacingLeft: 0
+  staffAttackDamage: 10
   rangedAttackDamage: 50
   pierceAttackDamage: 25
   displayName: Queen Naga

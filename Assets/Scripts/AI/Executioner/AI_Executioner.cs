@@ -442,7 +442,7 @@ public class AI_Executioner : AI_Base
             animator.SetBool("Stunned", false);
             soundManager.StopPlayingBossMusic();
             bossHealthbar.Hide();
-            bossArena.OpenGate();
+            bossArena.OpenGate1();
         }
         else
         {

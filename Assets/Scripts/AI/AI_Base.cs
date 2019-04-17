@@ -138,13 +138,12 @@ public class AI_Base : MonoBehaviour
         animator.SetBool("Dead", true);
         itemSpawner.Spawn(dropItemDirRight);
         if (isSummon)
-        {
             summonDiedAction.Invoke();
-        }
     }
     protected IEnumerator DeathRoutine(float time)
     {
         yield return new WaitForSecondsRealtime(time);
+        rb.velocity = Vector2.zero;
         rb.isKinematic = true;
         coll.enabled = false;
     }
