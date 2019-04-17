@@ -12,6 +12,7 @@ public class AI_FemaleNaga : AI_Base
     private LayerMask playerMask;
 
     public GameObject explosionPrefab;
+    public GameObject enragedPrefab;
 
     public AudioClip rangedAttackHitSound;
     public AudioClip pierceAttackHitSound;
@@ -201,6 +202,30 @@ public class AI_FemaleNaga : AI_Base
                 break;
         }
     }
+    private void Enrage()
+    {
+        TeleportToMiddle();
+        animator.SetTrigger("Transform");
+        StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
+    }
+    public void EnterRageState()
+    {
+        Instantiate(enragedPrefab, transform.position, Quaternion.identity, transform.parent);
+        StopAllCoroutines();
+        Destroy(gameObject);
+    }
+
+    private IEnumerator StartIncreasingScale(float delay, float time, float scale)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Vector2 targetScale = new Vector2(isDirRight ? -scale : scale, scale);
+        while (transform.localScale.x < 2)
+        {
+            transform.localScale = Vector2.Lerp(transform.localScale, targetScale, Time.deltaTime / time);
+            yield return null;
+        }
+        transform.localScale = targetScale;
+    }
     protected void GetHit(bool isRight, float damage)
     {
         if (state == State.Dead)
@@ -208,10 +233,11 @@ public class AI_FemaleNaga : AI_Base
         health -= damage;
         if (health <= 0)
         {
+            state = State.Dead;
             StopAllCoroutines();
-            SetDead(isRight);
-            soundManager.StopPlayingBossMusic();
-            bossHealthbar.Hide();
+            Enrage();
+            bossHealthbar.UpdateHealthbar(0, maxHealth);
+            this.enabled = false;
         }
         else
         {
@@ -251,5 +277,4 @@ public class AI_FemaleNaga : AI_Base
     {
         Instantiate(explosionPrefab, target.position, Quaternion.identity, transform.parent).GetComponent<NagaQueenExplosionEffect>().Set(target.position, rangedAttackDamage);
     }
-
 }
