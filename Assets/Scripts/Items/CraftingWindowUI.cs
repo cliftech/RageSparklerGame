@@ -27,7 +27,7 @@ public class CraftingWindowUI : MonoBehaviour
             craftEnabled = true;
             for (int i = 0; i < craftWindow.craftingRecipeUIs.Count; i++)
             {
-                craftWindow.craftingRecipeUIs[i].UpdateOneCraftingRecipe();
+                craftWindow.craftingRecipeUIs[i].UpdateAllCraftingRecipes();
                 if (craftWindow.craftingRecipeUIs[i].gameObject.activeSelf)
                 {
                     EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].slots[0].gameObject);

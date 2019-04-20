@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] List<Item> startingItems;
-
     private static GameManager gameManager;
     private static GameObject toolTip;
     private static GameObject compareToolTip;
@@ -20,8 +18,6 @@ public class Inventory : MonoBehaviour
     private Player player;
 
     private CameraController followCamera;
-
-    public Slot slotC;
 
     public GameObject toolTipObject;
     public Text textBoxObject;
@@ -37,6 +33,7 @@ public class Inventory : MonoBehaviour
     public Transform itemsParent;
 
     public Slot[] slots;
+    public List<Item> startingItems;
 
     public int totalSlots;
     public int invsOpen;
@@ -51,6 +48,11 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
+        if (itemsParent != null)
+        {
+            slots = itemsParent.GetComponentsInChildren<Slot>();
+            SetStartingItems();
+        }
         visualText = visualTextObject;
         textBox = textBoxObject;
         toolTip = toolTipObject;
@@ -59,7 +61,6 @@ public class Inventory : MonoBehaviour
         compareVisualText = compareVisualTextObject;
         plrInter = plrInterObject;
         player = GetComponent<Player>();
-        slotC = GetComponent<Slot>();
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
         invsOpen = 0;
 
@@ -69,14 +70,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void OnValidate()
-    {
-        if(itemsParent !=null)
-        {
-            slots = itemsParent.GetComponentsInChildren<Slot>();
-            SetStartingItems();    
-        }
-    }
 
     private void SetStartingItems()
     {
@@ -187,6 +180,7 @@ public class Inventory : MonoBehaviour
             {
                 previousItem = slots[i].itemas;
                 slots[i].itemas = item;
+                slots[i].Amount = 1;
                 player.SetItemStats();
                 gameManager.SaveGame();
                 return true;
@@ -227,7 +221,7 @@ public class Inventory : MonoBehaviour
             if (slots[i].itemas != null)
             {
                 if (slots[i].itemas.itemName == item.itemName)
-                    amount++;
+                    amount += slots[i].Amount;
             }
         }
         return amount;
@@ -280,7 +274,10 @@ public class Inventory : MonoBehaviour
             {
                 slots[i].Amount--;
                 if (slots[i].Amount == 0)
+                {
                     slots[i].itemas = null;
+                    slots[i].UpdateSlot();
+                }
                 return item;
             }
         }
@@ -293,6 +290,7 @@ public class Inventory : MonoBehaviour
         {
             slots[i].itemas = null;
             slots[i].Amount = 0;
+            slots[i].UpdateSlot();
         }
     }
 
@@ -303,8 +301,11 @@ public class Inventory : MonoBehaviour
             if (slots[i].itemas == item)
             {
                 slots[i].Amount--;
-                if(slots[i].Amount == 0)
-                slots[i].itemas = null;
+                if (slots[i].Amount == 0)
+                {
+                    slots[i].itemas = null;
+                    slots[i].UpdateSlot();
+                }
                 return true;
             }
         }

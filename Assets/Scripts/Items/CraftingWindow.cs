@@ -15,7 +15,7 @@ public class CraftingWindow : MonoBehaviour
 
     public List<CraftingRecipe> craftingRecipes;
 
-    private void OnValidate()
+    private void Awake()
     {
         Init();
     }

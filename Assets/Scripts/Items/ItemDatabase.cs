@@ -13,6 +13,11 @@ public class ItemDatabase : MonoBehaviour
     {
         instance = this;
         itemPlaceholders = new List<ItemPlaceholder>();
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i].ID = i.ToString();
+            itemPlaceholders.Add(new ItemPlaceholder(items[i].ID, items[i]));
+        }
         foreach (var i in items)
             itemPlaceholders.Add(new ItemPlaceholder(i.ID, i));
     }

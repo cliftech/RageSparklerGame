@@ -33,14 +33,5 @@ public class Item : ScriptableObject
     public float healPercent;
     [Space]
     public string description;
-    [SerializeField] string id;
-    public string ID { get { return id; } }
-
-
-
-    private void OnValidate()
-    {
-        string path = AssetDatabase.GetAssetPath(this);
-        id = AssetDatabase.AssetPathToGUID(path);
-    }
+    public string ID;
 }

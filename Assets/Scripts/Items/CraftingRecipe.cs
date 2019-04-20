@@ -20,18 +20,22 @@ public class CraftingRecipe : ScriptableObject
 
     public bool CanCraft(Inventory inventory, Inventory hubchest)
     {
-        int amount = 0;
-        foreach(ItemAmount itemAmount in Materials)
-        {
-            amount = 0;
-            amount += inventory.ItemCount(itemAmount.item);
-            amount += hubchest.ItemCount(itemAmount.item);
-            if(amount < itemAmount.amount)
+        foreach (ItemAmount itemAmount in Materials)
+        {      
+            if (CountAmount(inventory, hubchest, itemAmount) < itemAmount.amount)
             {
                 return false;
             }
         }
         return true;
+    }
+
+    public int CountAmount(Inventory inventory, Inventory hubchest, ItemAmount itemAmount)
+    {
+        int amount = 0;
+        amount += inventory.ItemCount(itemAmount.item);
+        amount += hubchest.ItemCount(itemAmount.item);
+        return amount;
     }
 
     public void Craft(Inventory inventory, Inventory hubchest)

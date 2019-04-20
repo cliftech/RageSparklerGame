@@ -52,8 +52,7 @@ public class CraftingUI : MonoBehaviour
         {
             if (craftWindow.craftingRecipeUIs[i].gameObject.activeSelf)
             {
-                EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].slots[0].gameObject);
-                craftWindow.equipment.ShowToolTip(craftWindow.craftingRecipeUIs[i].slots[0]);
+                EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].transform.Find("CraftButton").gameObject);
                 break;
             }
         }
@@ -61,10 +60,16 @@ public class CraftingUI : MonoBehaviour
 
     public void UpdateOneCraftingRecipe()
     {
-        if (!recipe.CanCraft(Equipment, HubChest))
+        if (!this.Recipe.CanCraft(Equipment, HubChest))
             gameObject.SetActive(false);
         else
+        {
             gameObject.SetActive(true);
+            for (int i = 0; i < recipe.Materials.Count; i++)
+            {
+                slots[i].amountText.text = recipe.Materials[i].amount.ToString()+"/"+ recipe.CountAmount(Equipment, HubChest, recipe.Materials[i]).ToString();
+            }
+        }
     }
 
     private void SetCraftingRecipe(CraftingRecipe newCraftingRecipe, bool force)

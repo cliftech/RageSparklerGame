@@ -9,10 +9,12 @@ public class Slot : MonoBehaviour
     private string diffArm;
     private string diffHp;
 
+    private Button button;
+
     public ItemType equipType;
 
     [SerializeField] Item _itemas;
-    [SerializeField] Text amountText;
+    public Text amountText;
     public Item itemas
     {
         get { return _itemas; }
@@ -22,14 +24,18 @@ public class Slot : MonoBehaviour
 
             if (_itemas == null)
             {
+                button = GetComponent<Button>();
                 slotIcon = transform.GetChild(0);
                 slotIcon.GetComponent<Image>().sprite = defaultIcon;
+                button.targetGraphic = slotIcon.GetComponent<Image>();
                 slotIcon.GetComponent<Image>().color = Color.white;
             }
             else
             {
+                button = GetComponent<Button>();
                 slotIcon = transform.GetChild(0);
                 slotIcon.GetComponent<Image>().sprite = _itemas.icon;
+                button.targetGraphic = GetComponent<Image>();
             }
         }
     }
@@ -48,7 +54,7 @@ public class Slot : MonoBehaviour
 
             if (amountText != null)
             {
-                amountText.enabled = _itemas != null && _amount > 1;
+                amountText.enabled = _itemas != null && name == "Item Slot" || _amount > 1;
                 if (amountText.enabled)
                 {
                     amountText.text = _amount.ToString();
@@ -71,15 +77,26 @@ public class Slot : MonoBehaviour
             slotIcon.GetComponent<Image>().sprite = icon;
         else
         {
-            slotIcon.GetComponent<Image>().sprite = defaultIcon;
-            slotIcon.GetComponent<Image>().color = Color.white;
+            button = GetComponent<Button>();
+            if (itemas == null)
+            {
+                button.targetGraphic = GetComponent<Image>();
+
+                slotIcon.GetComponent<Image>().sprite = defaultIcon;
+                slotIcon.GetComponent<Image>().color = Color.white;
+            }
+            else
+            {
+                slotIcon.GetComponent<Image>().sprite = _itemas.icon;
+                button.targetGraphic = GetComponent<Image>();
+            }
         }
     }
 
     void Update()
     {
         if (Input.GetButtonDown("Swap") && selected && itemas != null && gameObject.name.StartsWith("Slot") && itemas.type.ToString() != "Material")
-        { 
+        {
             inter.swap(itemas, whichSlot);
         }
         if (Input.GetButtonDown("Swap") && selected && itemas != null && !gameObject.name.StartsWith("Slot") && !gameObject.name.StartsWith("Item"))
@@ -90,15 +107,16 @@ public class Slot : MonoBehaviour
 
     private void Awake()
     {
+        button = GetComponent<Button>();
+    }
+
+    void Start()
+    {
         slotIcon = transform.GetChild(0);
         if (amountText == null)
         {
             amountText = GetComponentInChildren<Text>();
         }
-    }
-
-    void Start()
-    {
         diffDmg = string.Empty;
         diffArm = string.Empty;
         diffHp = string.Empty;
