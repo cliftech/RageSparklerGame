@@ -15,9 +15,19 @@ public class LoadProfileSlot : MonoBehaviour
     {
         countText.text = index.ToString();
         lvlText.text = profile.lvl.ToString();
-        essenceText.text = profile.lvl.ToString();
+        essenceText.text = profile.essence.ToString();
         timePlayedText.text = GetFormattedTime(profile.timePlayed);
+        button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => panel.LoadSlot(profile));
+    }
+
+    public void SetNull(int index)
+    {
+        countText.text = index.ToString();
+        lvlText.text = " ";
+        essenceText.text = " ";
+        timePlayedText.text = " H  M";
+        button.onClick.RemoveAllListeners();
     }
 
     private string GetFormattedTime(float time)

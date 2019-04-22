@@ -89,6 +89,7 @@ public class PortalGUI : MonoBehaviour
             optionButtons[i].gameObject.SetActive(false);
         showing = false;
         gameObject.SetActive(false);
+        eventSystem.SetSelectedGameObject(null);
     }
 
     private void UpdateGUI()

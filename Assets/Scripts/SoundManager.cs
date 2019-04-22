@@ -30,8 +30,11 @@ public class SoundManager : MonoBehaviour
     }
     public void StopPlayingBossMusic()
     {
-        audioSource.clip = bgmClip;
-        audioSource.Play();
+        if (bgmClip != null)
+        {
+            audioSource.clip = bgmClip;
+            audioSource.Play();
+        }
     }
     public void PauseMusic()
     {

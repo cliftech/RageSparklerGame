@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 100
+  maxHealth: 20
   touchDamage: 10
   projectilePrefab: {fileID: 6631407245268388319, guid: dd33523801fcd324ca14e275e166f378,
     type: 3}

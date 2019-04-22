@@ -10,6 +10,7 @@ public class LoadPanel : MonoBehaviour
     public RectTransform canvasRect;
     public LoadProfileSlot profileSlot;
     private RectTransform rect;
+    public int minProfilesToShow = 5;
 
     private Vector2 hiddenPos;
     private Vector2 centerPos;
@@ -30,19 +31,6 @@ public class LoadPanel : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, centerScreenPoint, null, out centerPos);
 
         Hide();
-
-        //for (int id = 0; id < 5; id++)
-        //{
-        //    SaveProfile p = new SaveProfile();
-        //    p.id = id;
-        //    p.lvl = id + 3;
-        //    p.timePlayed = id * 6.21f + 0.235f;
-        //    p.essence = id * 50;
-        //    SaveManager.SaveProfile(p);
-        //}        
-
-        //var p = SaveManager.LoadProfile(0);
-        //print(p);
     }
 
     public void Show()
@@ -56,11 +44,22 @@ public class LoadPanel : MonoBehaviour
 
 
         profileSlot.Set(1, SaveManager.LoadProfile(0), this);
-        for (int i = 1; i < slotCount; i++)
+        int i = 1;
+        for (; i < slotCount; i++)
         {
             LoadProfileSlot p = Instantiate(profileSlot.gameObject, profileSlot.transform.position, Quaternion.identity, profileSlot.transform.parent)
                 .GetComponent<LoadProfileSlot>();
             p.Set(i + 1, SaveManager.LoadProfile(i), this);
+            RectTransform r = p.GetComponent<RectTransform>();
+            Vector2 pos = r.anchoredPosition;
+            pos.y -= yOffset * i;
+            r.anchoredPosition = pos;
+        }
+        for(; i < minProfilesToShow; i++)
+        {
+            LoadProfileSlot p = Instantiate(profileSlot.gameObject, profileSlot.transform.position, Quaternion.identity, profileSlot.transform.parent)
+                .GetComponent<LoadProfileSlot>();
+            p.SetNull(i + 1);
             RectTransform r = p.GetComponent<RectTransform>();
             Vector2 pos = r.anchoredPosition;
             pos.y -= yOffset * i;

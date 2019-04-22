@@ -12,12 +12,14 @@ public class EssenceCollector : MonoBehaviour
     private EssenceCollectorGUI collectorGUI;
     private GameManager gameManager;
 
-    public void Initialize()
+    private int[] maxEssenceUpgrades = { 50, 100, 200, 500, 1000, 2000, 5000, 10000 };
+
+    public void Initialize(int maxEssenceUpgrade)
     {
         collectorGUI = Resources.FindObjectsOfTypeAll<EssenceCollectorGUI>()[0];
         gameManager = FindObjectOfType<GameManager>();
         player = FindObjectOfType<Player>(); fill = transform.GetChild(0);
-        maxEssence = 10;
+        this.maxEssence = maxEssenceUpgrades[maxEssenceUpgrade];
     }
 
     public void UpdateEssenceCollector()
@@ -40,8 +42,10 @@ public class EssenceCollector : MonoBehaviour
     }
     private void Deposit()
     {
-        player.storedEssence += player.essence;
-        player.essence = 0;
+        int essenceTaken = (int)Mathf.Clamp(player.essence, 0, maxEssence - player.storedEssence);
+
+        player.storedEssence += essenceTaken;
+        player.essence -= essenceTaken;
         UpdateEssenceCollector();
         player.statusGUI.UpdateEssenceText();
         gameManager.SaveGame();

@@ -15,7 +15,8 @@ public class DialogBox : MonoBehaviour
     void Start()
     {
         rect = GetComponent<RectTransform>();
-        HideText();
+        if(text.text == "")
+            HideText();
     }
 
     public void ShowText(string speakerName, string text, float timeToShow = 5, bool showKeyIcon = false)

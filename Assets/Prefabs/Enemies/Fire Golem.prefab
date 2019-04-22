@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  maxHealth: 100
+  maxHealth: 50
   touchDamage: 10
   attackDamage: 10
   doubleAttackChance: 0.5

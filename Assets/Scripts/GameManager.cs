@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private Player player;
     private ScreenCover screenCover;
     private SoundManager soundManager;
+    private HubManager hubManager;
 
     public GameObject zerothArea;
     public GameObject hubArea;
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         player = FindObjectOfType<Player>();
         screenCover = FindObjectOfType<ScreenCover>();
         soundManager = FindObjectOfType<SoundManager>();
+        hubManager = hubArea.GetComponent<HubManager>();
     }
 
     void Start()
@@ -45,18 +47,18 @@ public class GameManager : MonoBehaviour
         if (SaveManager.profileCount == 0 || profileToLoad >= SaveManager.profileCount)
         {
             // creating a new game save profile
-            Vector3 playerHubPos = (onStartLoadType == OnStartLoadType.loadArea0 ? zerothArea : hubArea).GetComponent<Level>().spawnPoint.position;
             List<int> inventoryAmounts;
             List<string> inventoryItems = player.equipment.GetItemIds(out inventoryAmounts);
             List<int> hubChestAmounts;
             List<string> hubChestItems = player.hubChest.GetItemIds(out hubChestAmounts);
-            player.LoadFromProfile(new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
-                                                         player.checkpoints, playerHubPos.x, playerHubPos.y, false,
+            SaveProfile p = new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
+                                                         player.checkpoints, -1, false,
                                                          player.playerMovement.dashUnlocked, player.playerMovement.midAirDashUnlocked,
                                                          player.playerMovement.downwardAttackUnlocked, player.playerMovement.wallJumpingUnlocked,
                                                          player.playerMovement.maxJumpCount, player.playerMovement.dashDistance,
                                                          player.playerMovement.minDelayBetweenDashes, player.playerMovement.maxMidairDashesCount,
-                                                         player.playerMovement.invincibilityFrameTime), false);
+                                                         player.playerMovement.invincibilityFrameTime, hubManager.DefaultSaveState());
+            player.LoadFromProfile(p);
             SaveGame(true);
         }
 
@@ -67,14 +69,14 @@ public class GameManager : MonoBehaviour
             if (onStartLoadType == OnStartLoadType.loadArea0)
                 LoadLevel(zerothArea);
             else if (onStartLoadType == OnStartLoadType.loadHub)
-                LoadLevel(hubArea);
+                LoadLevel(hubArea, player.GetlastHubPortalID());
         }
         else
         {
             if(!player.hubUnloked)
                 LoadLevel(zerothArea);
             else
-                LoadLevel(hubArea);
+                LoadLevel(hubArea, player.GetlastHubPortalID());
         }
     }
 
@@ -103,7 +105,7 @@ public class GameManager : MonoBehaviour
         SaveProfile profile = SaveManager.LoadProfile(profileID);
 
         //print(profile);
-        player.LoadFromProfile(profile, overideSavedHubPosition);
+        player.LoadFromProfile(profile);
         player.equipment.LoadByIds(profile.itemsInInventory, profile.itemInInventoryAmounts);
         player.hubChest.LoadByIds(profile.itemsInHubChest, profile.itemInHubChestAmounts);
         player.SetItemStats();
@@ -147,13 +149,20 @@ public class GameManager : MonoBehaviour
                 player.hubUnloked = true;
 
             EssenceCollector essenceCollector = currentLevel.GetComponentInChildren<EssenceCollector>();
-            essenceCollector.Initialize();
+            essenceCollector.Initialize(player.hubSaveState.essenceCollectorUpgrade);
             essenceCollector.UpdateEssenceCollector();
+
+            hubManager = currentLevel.GetComponent<HubManager>();
+            hubManager.LoadHub(player.hubSaveState);
+
+            Keera keera = currentLevel.transform.Find("Keera").GetComponent<Keera>();
+            keera.SetState(player.hubSaveState.keeraState);
         }
         
         player.SetRespawnPortal(portalID);
         cameraController.SetBounds(currentLevel.LeftBound, currentLevel.TopBound, currentLevel.RightBound, currentLevel.BottomBound);
         areaNotificationText.ShowNotification(currentLevel.title);
+        soundManager.StopPlayingBossMusic();
         foreach(var h in bossHealthbars)
             h.Hide();
         screenCover.UncoverScreen(.1f);

@@ -14,7 +14,8 @@ public class InteractableGUI : MonoBehaviour
 
     void Start()
     {
-        Hide();
+        if(target == null)
+            Hide();
     }
 
     void LateUpdate()

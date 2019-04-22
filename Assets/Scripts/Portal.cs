@@ -79,7 +79,7 @@ public class Portal : MonoBehaviour
     private void ActivatePortal()
     {
         if(levelToLoad != null)
-            levelManager.LoadLevel(levelToLoad);
+            levelManager.LoadLevel(levelToLoad, !isInHub ? player.GetlastHubPortalID() : -1);
     }
     private void ActivateHubPortal(int indexSelected)
     {
@@ -92,6 +92,10 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
+            if (isInHub)
+            {
+                player.SaveLastHubPortalID(portalId);
+            }
             if (!checkpointActivated)
             {
                 player.SetRespawnPortal(portalId);

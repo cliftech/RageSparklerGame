@@ -97,7 +97,7 @@ public class AI_Executioner : AI_Base
         chargeWindUpTime = .75f;
         maxChargeTime = 3f;
         wallStunTime = 1.5f;
-        
+
         maxJumpRange = 10f;
         minJumpRange = 5f;
 
@@ -158,9 +158,6 @@ public class AI_Executioner : AI_Base
                     }
                     else if (dist < maxJumpRange && dist > minJumpRange)
                         AttackJump();
-                    else if (yDiff > 8)
-                        SetIdle();
-
                 }
                 break;
             case State.Attacking:
@@ -218,14 +215,15 @@ public class AI_Executioner : AI_Base
     }
     void EnterAggro()
     {
-            notificationText.ShowNotification(displayName);
-            soundManager.PlayBossMusic(music);
-            ChangeDirection(coll.bounds.center.x < target.position.x);
-            ShoutAttack();
-            bossHealthbar.Show();
-            hasBeenAggroed = true;
-            SetAggro();
-            aggroRange *= 5;
+        notificationText.ShowNotification(displayName);
+        soundManager.PlayBossMusic(music);
+        ChangeDirection(coll.bounds.center.x < target.position.x);
+        ShoutAttack();
+        bossHealthbar.Show(displayName);
+        bossHealthbar.UpdateHealthbar(health, maxHealth);
+        hasBeenAggroed = true;
+        SetAggro();
+        aggroRange *= 5;
     }
 
     void ShoutAttack()
@@ -432,7 +430,6 @@ public class AI_Executioner : AI_Base
         if (state == State.Dead)
             return;
         health -= damage;
-        print(name + " Health: " + health);
         if (health <= 0)
         {
             SetDead(isRight);
@@ -443,6 +440,14 @@ public class AI_Executioner : AI_Base
             soundManager.StopPlayingBossMusic();
             bossHealthbar.Hide();
             bossArena.OpenGate1();
+            bossArena.OpenGate2();
+
+            Player p = target.GetComponent<Player>();
+            p.hubSaveState.UnlockHubPortal(2);
+            p.hubSaveState.UnlockHubPortal(3);
+            p.hubSaveState.UnlockHubSmithNpc();
+            p.hubSaveState.UnlockEssenceCollector();
+            FindObjectOfType<GameManager>().SaveGame(true);
         }
         else
         {
@@ -455,6 +460,8 @@ public class AI_Executioner : AI_Base
                 staggerCounter += 1;
                 SetStaggered(isRight);
             }
+            else if(staggerCounter + 1 >= maxStaggerCount)
+                ShoutAttack();
         }
         bossHealthbar.UpdateHealthbar(health, maxHealth);
         sound.PlayOneShot(getHitSound);

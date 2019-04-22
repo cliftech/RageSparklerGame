@@ -93,7 +93,7 @@ public class SaveProfile
     public List<string> itemsInHubChest;
     public List<int> itemInHubChestAmounts;
     public List<int> checkpoints;
-    public float xPosInHub, yPosInHub;
+    public int lastHubPortalID;
     public bool hubUnloked;
 
     public bool dashUnlocked;
@@ -106,11 +106,14 @@ public class SaveProfile
     public int maxMidairDashesCount = 1;
     public float invincibilityFrameTime = 0.5f;
 
+    public HubSaveState hubSaveState;
+
     public SaveProfile(int id, int lvl, int essence, int essenceStored, float timePlayed, int numberOfDeaths,
         List<string> itemsInInventory, List<int> itemInInventoryAmounts, List<string> itemsInHubChest, List<int> itemInHubChestAmounts,
-        List<int> checkpoints, float xPosInHub, float yPosInHub, bool hubUnloked,
+        List<int> checkpoints, int lastHubPortalID, bool hubUnloked,
         bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount,
-        float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime)
+        float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime, 
+        HubSaveState hubSaveState)
     {
         this.id = id;
         this.lvl = lvl;
@@ -123,9 +126,8 @@ public class SaveProfile
         this.itemsInHubChest = itemsInHubChest;
         this.itemInHubChestAmounts = itemInHubChestAmounts;
         this.checkpoints = checkpoints;
-        this.xPosInHub = xPosInHub;
-        this.yPosInHub = yPosInHub;
         this.hubUnloked = hubUnloked;
+        this.lastHubPortalID = lastHubPortalID;
 
         this.dashUnlocked = dashUnlocked;
         this.midAirDashUnlocked = midAirDashUnlocked;
@@ -136,6 +138,8 @@ public class SaveProfile
         this.minDelayBetweenDashes = minDelayBetweenDashes;
         this.maxMidairDashesCount = maxMidairDashesCount;
         this.invincibilityFrameTime = invincibilityFrameTime;
+
+        this.hubSaveState = hubSaveState;
     }
 
     public override string ToString()

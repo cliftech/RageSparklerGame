@@ -15,7 +15,8 @@ public class EssenceCollectorGUI : MonoBehaviour
 
     void Start()
     {
-        Hide();
+        if (target == null)
+            Hide();
     }
     private void Update()
     {

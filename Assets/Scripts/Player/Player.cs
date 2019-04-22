@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public CraftingWindow craftWindow;
 
     [HideInInspector] public List<int> checkpoints;
+    [HideInInspector] public HubSaveState hubSaveState;
 
     public float attack1Dam = 5;
     public float attack2Dam = 7.5f;
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public bool isDead;
     [HideInInspector] public int currentProfileID;
     [HideInInspector] public float timePlayed;
-    [HideInInspector] private Vector3 lastPosInHub;
+    [HideInInspector] private int lastHubPortalID;
     [HideInInspector] public int numberOfDeaths;
     [HideInInspector] public bool hubUnloked;
 
@@ -243,34 +244,31 @@ public class Player : MonoBehaviour
 
     public SaveProfile GetCurrentProfile()
     {
-        Vector3 playerHubPos = GetPosInHub();
         List<int> inventoryAmounts;
         List<string> inventoryItems = equipment.GetItemIds(out inventoryAmounts);
         List<int> hubChestAmounts;
         List<string> hubChestItems = hubChest.GetItemIds(out hubChestAmounts);
         SaveProfile p = new SaveProfile(currentProfileID, level, essence, storedEssence, timePlayed, numberOfDeaths, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
-                                        checkpoints, playerHubPos.x, playerHubPos.y, hubUnloked,
+                                        checkpoints, lastHubPortalID, hubUnloked,
                                                          playerMovement.dashUnlocked, playerMovement.midAirDashUnlocked,
                                                          playerMovement.downwardAttackUnlocked, playerMovement.wallJumpingUnlocked,
                                                          playerMovement.maxJumpCount, playerMovement.dashDistance,
                                                          playerMovement.minDelayBetweenDashes, playerMovement.maxMidairDashesCount,
-                                                         playerMovement.invincibilityFrameTime);
+                                                         playerMovement.invincibilityFrameTime, hubSaveState);
         return p;
     }
-    public void LoadFromProfile(SaveProfile profile, bool overideSavedHubPosition)
+    public void LoadFromProfile(SaveProfile profile)
     {
         currentProfileID = profile.id;
-        timePlayed = profile.id;
+        timePlayed = profile.timePlayed;
         level = profile.lvl;
         essence = profile.essence;
         storedEssence = profile.essenceStored;
         numberOfDeaths = profile.numberOfDeaths;
-        lastPosInHub = new Vector3(profile.xPosInHub, profile.yPosInHub, 0);
+        lastHubPortalID = profile.lastHubPortalID;
         hubUnloked = profile.hubUnloked;
         checkpoints = profile.checkpoints;
         numberOfDeaths = profile.numberOfDeaths;
-        if (!overideSavedHubPosition)
-            transform.position = lastPosInHub;
 
         playerMovement.dashUnlocked = profile.dashUnlocked;
         playerMovement.midAirDashUnlocked = profile.midAirDashUnlocked;
@@ -281,21 +279,21 @@ public class Player : MonoBehaviour
         playerMovement.minDelayBetweenDashes = profile.minDelayBetweenDashes;
         playerMovement.maxMidairDashesCount = profile.maxMidairDashesCount;
         playerMovement.invincibilityFrameTime = profile.invincibilityFrameTime;
+
+        hubSaveState = profile.hubSaveState;
         statusGUI.UpdateEssenceText();
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateInventoryStats();
         statusGUI.UpdateLevelText();
     }
 
-    public Vector3 GetPosInHub()
+    public int GetlastHubPortalID()
     {
-        if (gamemanager.isCurrLevelHub)
-            return transform.position;
-        return lastPosInHub;
+        return lastHubPortalID;
     }
-    public void SavePosAsLastInHub()
+    public void SaveLastHubPortalID(int portalID)
     {
-        lastPosInHub = transform.position;
+        lastHubPortalID = portalID;
     }
 
     #region Upgrading skills
