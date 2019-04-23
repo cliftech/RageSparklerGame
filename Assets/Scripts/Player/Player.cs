@@ -4,14 +4,14 @@ using UnityEngine;
 using System;
 public class Player : MonoBehaviour
 {
-    private CameraController cameraController;
-    private PlayerInteract plrInter;
+    private CameraController cameraController;  
     private GameManager gamemanager;
     [HideInInspector] public Inventory equipment;
     [HideInInspector] public Inventory hubChest;
     [HideInInspector] public PlayerSoundController soundController;
     [HideInInspector] public PlayerDashParticleController playerDashParticleController;
     [HideInInspector] public PlayerMovement playerMovement;
+    [HideInInspector] public PlayerInteract plrInter;
     [HideInInspector] public TheFirstFlash AmuletFlash;
     [HideInInspector] public StatusGUI statusGUI;
 

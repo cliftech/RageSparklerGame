@@ -15,6 +15,11 @@ public class CraftingWindow : MonoBehaviour
 
     public List<CraftingRecipe> craftingRecipes;
 
+    private void OnValidate()
+    {
+        Init();
+    }
+
     private void Awake()
     {
         Init();
@@ -23,6 +28,8 @@ public class CraftingWindow : MonoBehaviour
     private void Start()
     {
         Init();
+        for (int i = 0; i < craftingRecipes.Count; i++)
+            craftingRecipeUIs[i].slots[craftingRecipeUIs[i].slots.Length-1].craftRecipe = craftingRecipes[i];
     }
 
     private void Init()
@@ -60,7 +67,7 @@ public class CraftingWindow : MonoBehaviour
         Transform panel;
         for (int i = 0; i < craftingRecipeUIs.Count; i++)
         {
-            for (int j = 0; j < craftingRecipeUIs[i].slots.Length; j++)
+            for (int j = 0; j < craftingRecipeUIs[i].slots.Length-1; j++)
             {
                 panel = craftingRecipeUIs[i].slots[j].transform.GetChild(0);
                 if (panel.GetComponent<Image>().color == Color.grey)

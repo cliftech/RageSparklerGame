@@ -25,7 +25,7 @@ public class CraftingUI : MonoBehaviour
         slots = GetComponentsInChildren<Slot>(includeInactive: true);
     }
 
-    public void OnCraftButtonClick()
+    public void OnCraftButtonClick(CraftingRecipe recipe)
     {
         recipe.Craft(Equipment, HubChest);
         UpdateAllCraftingRecipes();

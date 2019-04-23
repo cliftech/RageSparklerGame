@@ -325,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipType: 11
   _itemas: {fileID: 0}
+  craftRecipe: {fileID: 0}
   amountText: {fileID: 8013629382522269207}
   selected: 0
   icon: {fileID: 0}
@@ -417,7 +418,7 @@ MonoBehaviour:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
-    m_SelectedTrigger: Highlighted
+    m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 8112584266475956249}
@@ -747,6 +748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipType: 11
   _itemas: {fileID: 0}
+  craftRecipe: {fileID: 0}
   amountText: {fileID: 2005866939630340545}
   selected: 0
   icon: {fileID: 0}
@@ -839,7 +841,7 @@ MonoBehaviour:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
-    m_SelectedTrigger: Highlighted
+    m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 3331884349076047963}
@@ -1044,6 +1046,7 @@ MonoBehaviour:
   - {fileID: 1981986129066943667}
   - {fileID: 3776012278149124455}
   - {fileID: 2880031726210859842}
+  - {fileID: 8685442830007763719}
   HubChest: {fileID: 0}
   Equipment: {fileID: 0}
 --- !u!1 &3331884350240433981
@@ -1133,6 +1136,8 @@ GameObject:
   - component: {fileID: 3331884350768945927}
   - component: {fileID: 3331884350768945926}
   - component: {fileID: 3331884350768945921}
+  - component: {fileID: 8685442830007763719}
+  - component: {fileID: 6072306692100175264}
   m_Layer: 5
   m_Name: CraftButton
   m_TagString: Untagged
@@ -1239,20 +1244,78 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3331884350768945926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7678511951698808469}
-        m_MethodName: OnCraftButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &8685442830007763719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331884350768945923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb9b7cd1feb36d46a42d7480a9886b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipType: 0
+  _itemas: {fileID: 0}
+  craftRecipe: {fileID: 0}
+  amountText: {fileID: 0}
+  selected: 0
+  icon: {fileID: 0}
+  defaultIcon: {fileID: 0}
+  slotIcon: {fileID: 0}
+  whichSlot: 0
+  inter: {fileID: 0}
+--- !u!114 &6072306692100175264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331884350768945923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8685442830007763719}
+          m_MethodName: Select
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 10
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8685442830007763719}
+          m_MethodName: Deselect
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &3373300083913150748
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,6 +1562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipType: 11
   _itemas: {fileID: 0}
+  craftRecipe: {fileID: 0}
   amountText: {fileID: 2293442156485154183}
   selected: 0
   icon: {fileID: 0}
@@ -1591,7 +1655,7 @@ MonoBehaviour:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
-    m_SelectedTrigger: Highlighted
+    m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 6620380389593651087}
@@ -1922,6 +1986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipType: 11
   _itemas: {fileID: 0}
+  craftRecipe: {fileID: 0}
   amountText: {fileID: 4673118936433638888}
   selected: 0
   icon: {fileID: 0}
@@ -2014,7 +2079,7 @@ MonoBehaviour:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
-    m_SelectedTrigger: Highlighted
+    m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 4483473728436821772}

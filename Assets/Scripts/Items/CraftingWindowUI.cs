@@ -9,6 +9,7 @@ public class CraftingWindowUI : MonoBehaviour
     private Player player;
     private CameraController followCamera;
     private CraftingWindow craftWindow;
+    private PlayerInteract plrInter;
 
 
     private void Awake()
@@ -16,11 +17,12 @@ public class CraftingWindowUI : MonoBehaviour
         player = FindObjectOfType<Player>();
         followCamera = FindObjectOfType<CameraController>();
         craftWindow = player.craftWindow;
+        plrInter = player.plrInter;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) && !craftEnabled)
+        if (plrInter.currentInterObj && plrInter.currentInterObj.name == "CraftingNPC" && Input.GetButtonDown("Interact") && !craftEnabled)
         {
             Slot current = null;
             craftWindow.gameObject.SetActive(true);
@@ -46,7 +48,7 @@ public class CraftingWindowUI : MonoBehaviour
             if(current != null)
                 craftWindow.equipment.ShowToolTip(current);
         }
-        else if (Input.GetKeyDown(KeyCode.C) && craftEnabled)
+        else if (plrInter.currentInterObj && plrInter.currentInterObj.name == "CraftingNPC" && Input.GetButtonDown("Interact") && craftEnabled)
         {
             craftWindow.gameObject.SetActive(false);
             craftEnabled = false;

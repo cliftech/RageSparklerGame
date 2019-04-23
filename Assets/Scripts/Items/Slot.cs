@@ -9,11 +9,14 @@ public class Slot : MonoBehaviour
     private string diffArm;
     private string diffHp;
 
-    private Button button;
+    private string once = null;
+
+    private CraftingWindow craftWinow;
 
     public ItemType equipType;
 
     [SerializeField] Item _itemas;
+    public CraftingRecipe craftRecipe;
     public Text amountText;
     public Item itemas
     {
@@ -24,18 +27,14 @@ public class Slot : MonoBehaviour
 
             if (_itemas == null)
             {
-                button = GetComponent<Button>();
                 slotIcon = transform.GetChild(0);
                 slotIcon.GetComponent<Image>().sprite = defaultIcon;
-                button.targetGraphic = slotIcon.GetComponent<Image>();
                 slotIcon.GetComponent<Image>().color = Color.white;
             }
             else
             {
-                button = GetComponent<Button>();
                 slotIcon = transform.GetChild(0);
                 slotIcon.GetComponent<Image>().sprite = _itemas.icon;
-                button.targetGraphic = GetComponent<Image>();
             }
         }
     }
@@ -77,18 +76,14 @@ public class Slot : MonoBehaviour
             slotIcon.GetComponent<Image>().sprite = icon;
         else
         {
-            button = GetComponent<Button>();
             if (itemas == null)
-            {
-                button.targetGraphic = GetComponent<Image>();
-
+            {            
                 slotIcon.GetComponent<Image>().sprite = defaultIcon;
                 slotIcon.GetComponent<Image>().color = Color.white;
             }
             else
             {
                 slotIcon.GetComponent<Image>().sprite = _itemas.icon;
-                button.targetGraphic = GetComponent<Image>();
             }
         }
     }
@@ -103,11 +98,21 @@ public class Slot : MonoBehaviour
         {
             inter.Unequip(itemas, this);
         }
+        if (Input.GetButtonDown("Swap") && selected && gameObject.name == "CraftButton" && once == null)
+        {
+            once = craftRecipe.name;
+            this.GetComponentInParent<CraftingUI>().OnCraftButtonClick(craftRecipe);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        once = null;
     }
 
     private void Awake()
     {
-        button = GetComponent<Button>();
+        craftWinow = FindObjectOfType<CraftingWindow>();
     }
 
     void Start()
@@ -120,6 +125,16 @@ public class Slot : MonoBehaviour
         diffDmg = string.Empty;
         diffArm = string.Empty;
         diffHp = string.Empty;
+    }
+
+    public void Select()
+    {
+        selected = true;
+    }
+
+    public void Deselect()
+    {
+        selected = false;
     }
 
     public void CompareItems(Slot compare)

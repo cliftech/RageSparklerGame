@@ -233,7 +233,10 @@ public class PlayerInteract : MonoBehaviour
             currentInterObj = other.gameObject;
             if (currentInterObj.name == "LevelUpNPC")
                 interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
-          
+
+            if (currentInterObj.name == "CraftingNPC")
+                interactableGUI.Show("Craft", transform, new Vector2(0, 2f));
+
             currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
             if (currentInterObjScript.openable)
                 interactableGUI.Show("Open", transform, new Vector2(0, 2f));
