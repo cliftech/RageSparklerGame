@@ -28,12 +28,14 @@ public class Slot : MonoBehaviour
             if (_itemas == null)
             {
                 slotIcon = transform.GetChild(0);
+                slotIcon.GetComponent<Image>().sprite = null;
                 slotIcon.GetComponent<Image>().sprite = defaultIcon;
                 slotIcon.GetComponent<Image>().color = Color.white;
             }
             else
             {
                 slotIcon = transform.GetChild(0);
+                slotIcon.GetComponent<Image>().sprite = null;
                 slotIcon.GetComponent<Image>().sprite = _itemas.icon;
             }
         }
@@ -69,24 +71,6 @@ public class Slot : MonoBehaviour
     public int whichSlot;
 
     public PlayerInteract inter;
-
-    public void UpdateSlot()
-    {
-        if (icon != null)
-            slotIcon.GetComponent<Image>().sprite = icon;
-        else
-        {
-            if (itemas == null)
-            {            
-                slotIcon.GetComponent<Image>().sprite = defaultIcon;
-                slotIcon.GetComponent<Image>().color = Color.white;
-            }
-            else
-            {
-                slotIcon.GetComponent<Image>().sprite = _itemas.icon;
-            }
-        }
-    }
 
     void Update()
     {

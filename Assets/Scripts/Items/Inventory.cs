@@ -41,6 +41,15 @@ public class Inventory : MonoBehaviour
     public float slotPaddingHorizontal;
     public float slotPaddingVertical;
 
+    private void OnValidate()
+    {
+        if (itemsParent != null)
+        {
+            slots = itemsParent.GetComponentsInChildren<Slot>();
+            SetStartingItems();
+        }
+    }
+
     void Awake()
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
@@ -128,7 +137,7 @@ public class Inventory : MonoBehaviour
         Slot tmpslot = slot;
         Slot equipped;
         Transform panel = tmpslot.transform.GetChild(0);
-        tmpslot.selected = true;
+        //tmpslot.selected = true;
         panel.GetComponent<Image>().color = Color.grey;
 
         if (tmpslot.itemas != null)
@@ -165,7 +174,7 @@ public class Inventory : MonoBehaviour
         Transform panel = tmpslot.transform.GetChild(0);
         panel.GetComponent<Image>().color = Color.white;
         toolTip.SetActive(false);
-        tmpslot.selected = false;
+        //tmpslot.selected = false;
     }
     public void HideCompareToolTips()
     {
@@ -276,7 +285,6 @@ public class Inventory : MonoBehaviour
                 if (slots[i].Amount == 0)
                 {
                     slots[i].itemas = null;
-                    slots[i].UpdateSlot();
                 }
                 return item;
             }
@@ -290,7 +298,6 @@ public class Inventory : MonoBehaviour
         {
             slots[i].itemas = null;
             slots[i].Amount = 0;
-            slots[i].UpdateSlot();
         }
     }
 
@@ -304,7 +311,6 @@ public class Inventory : MonoBehaviour
                 if (slots[i].Amount == 0)
                 {
                     slots[i].itemas = null;
-                    slots[i].UpdateSlot();
                 }
                 return true;
             }

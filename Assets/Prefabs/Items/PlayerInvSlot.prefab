@@ -166,13 +166,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipType: 0
   _itemas: {fileID: 0}
+  craftRecipe: {fileID: 0}
   amountText: {fileID: 0}
   selected: 0
   icon: {fileID: 0}
   defaultIcon: {fileID: 21300000, guid: d78bedb895899aa4385b48fd2f48220b, type: 3}
   slotIcon: {fileID: 798206895791398620}
   whichSlot: 0
-  inter: {fileID: 0}
+  inter: {fileID: 7958124925400199662, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
 --- !u!114 &933102793025179631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +248,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 933102793025179628}
+          m_MethodName: Deselect
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   - eventID: 9
@@ -260,6 +272,17 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 933102793025179629}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 933102793025179628}
+          m_MethodName: Select
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
