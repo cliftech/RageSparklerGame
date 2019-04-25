@@ -137,7 +137,6 @@ public class Inventory : MonoBehaviour
         Slot tmpslot = slot;
         Slot equipped;
         Transform panel = tmpslot.transform.GetChild(0);
-        //tmpslot.selected = true;
         panel.GetComponent<Image>().color = Color.grey;
 
         if (tmpslot.itemas != null)
@@ -174,7 +173,6 @@ public class Inventory : MonoBehaviour
         Transform panel = tmpslot.transform.GetChild(0);
         panel.GetComponent<Image>().color = Color.white;
         toolTip.SetActive(false);
-        //tmpslot.selected = false;
     }
     public void HideCompareToolTips()
     {

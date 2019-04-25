@@ -173,7 +173,7 @@ MonoBehaviour:
   defaultIcon: {fileID: 21300000, guid: d78bedb895899aa4385b48fd2f48220b, type: 3}
   slotIcon: {fileID: 798206895791398620}
   whichSlot: 0
-  inter: {fileID: 7958124925400199662, guid: 8e19d10d787e598449b793ee124a129b, type: 3}
+  inter: {fileID: 0}
 --- !u!114 &933102793025179631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +241,8 @@ MonoBehaviour:
           m_MethodName: HideToolTip
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 933102793025179629}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_ObjectArgument: {fileID: 933102793025179628}
+            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -270,8 +270,8 @@ MonoBehaviour:
           m_MethodName: ShowToolTip
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 933102793025179629}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_ObjectArgument: {fileID: 933102793025179628}
+            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
