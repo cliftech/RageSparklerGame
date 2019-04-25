@@ -98,7 +98,7 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
+        if (Input.GetButtonDown("OpenInventory") && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
             inventoryEnabled = true;
             EventSystem.current.SetSelectedGameObject(slots[0].gameObject);
@@ -110,7 +110,7 @@ public class Inventory : MonoBehaviour
             ShowToolTip(slots[0]);
             invsOpen++;
         }
-        else if (Input.GetButtonDown("OpenInv") && inventoryUI.name == "EquipmentUI" && inventoryEnabled)
+        else if (Input.GetButtonDown("OpenInventory") && inventoryUI.name == "EquipmentUI" && inventoryEnabled)
         {
             inventoryUI.SetActive(false);
             invsOpen--;
@@ -329,6 +329,20 @@ public class Inventory : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public int FindGrayIndex()
+    {
+        Transform panel;
+        for (int i = 0; i < slots.Length; i++)
+        {
+            panel = slots[i].transform.GetChild(0);
+            if (panel.GetComponent<Image>().color == Color.grey)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void FindGrey()

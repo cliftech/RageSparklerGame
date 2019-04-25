@@ -38,6 +38,7 @@ public class Keera : MonoBehaviour
         this.state = state;
         dialogueLines = stateDialogueLines[state].Split('\n');
         lineIndex = 0;
+        allLinesShown = false;
         if (state == 0)
             ShowNextLine();
         else
@@ -64,10 +65,9 @@ public class Keera : MonoBehaviour
             player.hubSaveState.SetKeeraState(1);
             gameManager.SaveGame();
             hubManager.LoadHub(player.hubSaveState);
-
         }
+        SetState(1);
         dialogBox.HideText();
-        this.enabled = false;
     }
 
     private void ShowNextLine()

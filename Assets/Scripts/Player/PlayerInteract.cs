@@ -36,7 +36,7 @@ public class PlayerInteract : MonoBehaviour
                         player.SetItemStats();
                         player.statusGUI.UpdateHealthbar();
                         interactableGUI.Hide();
-                        interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
+                        interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), currentInterObjScript.transform, new Vector2(0, 2f));
                     }
                 }
             }
@@ -90,7 +90,7 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
-        if(Input.GetKeyDown(KeyCode.Y) && hubChest.inventoryEnabled)
+        if(Input.GetButtonDown("SortInventory") && hubChest.inventoryEnabled)
         {
             Sort();
         }
@@ -109,6 +109,9 @@ public class PlayerInteract : MonoBehaviour
     //swap player inventory item with hub chest inventory item
     public void swap(Item item, int whichSlot)
     {
+        int chestSelectedSlotIndex = hubChest.FindGrayIndex();
+        int equipSelectedSlotIndex = equipment.FindGrayIndex();
+
         if (hubChest.RemoveItem(item))
         {
             Item previousItem;
@@ -128,10 +131,18 @@ public class PlayerInteract : MonoBehaviour
         {
             hubChest.AddItemToHubChest(item);
         }
+
+        if (chestSelectedSlotIndex != -1)
+            hubChest.slots[chestSelectedSlotIndex].slotIcon.GetComponent<Image>().color = Color.gray;
+
+        if (equipSelectedSlotIndex != -1)
+            equipment.slots[equipSelectedSlotIndex].slotIcon.GetComponent<Image>().color = Color.gray;
     }
 
     public void Unequip(Item item, Slot slot)
     {
+        int equipSelectedSlotIndex = equipment.FindGrayIndex();
+
         Item tempItem = null;
         tempItem = equipment.RemoveItemByID(item.ID);
         if(tempItem != null)
@@ -140,14 +151,20 @@ public class PlayerInteract : MonoBehaviour
             equipment.HideToolTip(slot);
             hubChest.AddItemToHubChest(tempItem);
         }
+
+        if (equipSelectedSlotIndex != -1)
+            equipment.slots[equipSelectedSlotIndex].slotIcon.GetComponent<Image>().color = Color.gray;
     }
 
     public void Sort()
     {
+        int selectedSlotIndex = hubChest.FindGrayIndex();
         hubChest.slots = (from x in hubChest.slots
                           where x.itemas != null
                           select x).OrderBy(x => x.itemas.type).ThenBy(x => x.itemas.name).ToArray();
         Refresh();
+        if (selectedSlotIndex != -1)
+            hubChest.slots[selectedSlotIndex].slotIcon.GetComponent<Image>().color = Color.gray;
 
     }
     public void Refresh()
@@ -232,14 +249,14 @@ public class PlayerInteract : MonoBehaviour
         {
             currentInterObj = other.gameObject;
             if (currentInterObj.name == "LevelUpNPC")
-                interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), transform, new Vector2(0, 2f));
+                interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), currentInterObj.transform, new Vector2(0, 2f));
 
             if (currentInterObj.name == "CraftingNPC")
-                interactableGUI.Show("Craft", transform, new Vector2(0, 2f));
+                interactableGUI.Show("Craft", currentInterObj.transform, new Vector2(0, 2f));
 
             currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
             if (currentInterObjScript.openable)
-                interactableGUI.Show("Open", transform, new Vector2(0, 2f));
+                interactableGUI.Show("Open", currentInterObj.transform, new Vector2(0, 2f));
 
             if (currentInterObjScript.collectable)
             {

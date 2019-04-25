@@ -78,14 +78,20 @@ public class Portal : MonoBehaviour
 
     private void ActivatePortal()
     {
-        if(levelToLoad != null)
+        if (levelToLoad != null)
+        {
             levelManager.LoadLevel(levelToLoad, !isInHub ? player.GetlastHubPortalID() : -1);
+            player.ClearInteractAction(interactAction);
+        }
     }
     private void ActivateHubPortal(int indexSelected)
     {
 
         if (levelToLoad != null)
+        {
             levelManager.LoadLevel(levelToLoad, indexSelected);
+            player.ClearInteractAction(interactAction);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
