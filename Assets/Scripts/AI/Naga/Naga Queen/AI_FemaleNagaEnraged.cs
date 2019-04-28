@@ -192,6 +192,7 @@ public class AI_FemaleNagaEnraged : AI_Base
         {
             StopAllCoroutines();
             SetDead(isRight);
+            nagaManager.Died(true);
             nagaManager.StopPlayingBossMusic();
             nagaManager.HideHealthbar(true);
         }

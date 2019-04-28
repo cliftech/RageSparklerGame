@@ -214,6 +214,7 @@ public class AI_MaleNagaEnraged : AI_Base
         {
             StopAllCoroutines();
             SetDead(isRight);
+            nagaManager.Died(false);
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);
             nagaManager.StopPlayingBossMusic();

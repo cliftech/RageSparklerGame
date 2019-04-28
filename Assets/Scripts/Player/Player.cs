@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public PlayerInteract plrInter;
     [HideInInspector] public TheFirstFlash AmuletFlash;
     [HideInInspector] public StatusGUI statusGUI;
+    [HideInInspector] public ParticleSystem footPrintParticles;
+    [HideInInspector] public ParticleSystem landParticles;
 
     [HideInInspector] public int level;
     [HideInInspector] public float activeMaxHealth;
@@ -58,6 +60,9 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         AmuletFlash = FindObjectOfType<TheFirstFlash>();
         statusGUI = FindObjectOfType<StatusGUI>();
+        footPrintParticles = transform.Find("FootprintParticles").GetComponent<ParticleSystem>();
+        landParticles = transform.Find("LandParticles").GetComponent<ParticleSystem>();
+
         Inventory[] equipments = GetComponents<Inventory>();
         for (int i = 0; i < equipments.Length; i++)
         {
@@ -231,6 +236,7 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
             essence++;
             statusGUI.UpdateEssenceText();
+            gamemanager.SaveGame(false);
         }
     }
 
@@ -341,6 +347,7 @@ public class Player : MonoBehaviour
     public void FootstepEffectEvent()
     {
         soundController.PlayFootstepSound();
+        footPrintParticles.Play();
     }
     public void AttackEffectEvent(int attacknum)
     {

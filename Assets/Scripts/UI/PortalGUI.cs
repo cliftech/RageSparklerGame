@@ -14,7 +14,7 @@ public class PortalGUI : MonoBehaviour
     private Vector2 offset;
 
     public GameObject option;
-    public int optionsToGenerate;
+    private int optionsToGenerate = 20;
     private List<Button> optionButtons;
     private List<Text> optionTexts;
     private float buttonHeight;
@@ -75,12 +75,12 @@ public class PortalGUI : MonoBehaviour
         eventSystem.SetSelectedGameObject(optionButtons[0].gameObject);
     }
 
-    public void SetOption(int index, UnityEngine.Events.UnityAction onClickAction, string optionText)
+    public void SetOption(int index, UnityEngine.Events.UnityAction onClickAction, string optionTextMain, string optionTextSecondary)
     {
         optionButtons[index].gameObject.SetActive(true);
         optionButtons[index].onClick.RemoveAllListeners();
         optionButtons[index].onClick.AddListener(onClickAction);
-        optionTexts[index].text = optionText;
+        optionTexts[index].text = optionTextMain + " - " + optionTextSecondary;
     }
 
     public void Hide()

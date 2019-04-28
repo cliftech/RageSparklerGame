@@ -15,6 +15,7 @@ TagManager:
   - Item
   - StoryEvent
   - Projectile
+  - Destroyable
   layers:
   - Default
   - TransparentFX

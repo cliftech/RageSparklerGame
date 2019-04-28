@@ -288,6 +288,8 @@ public class PlayerMovement : MonoBehaviour {
         Vector2 origin = capsColl.bounds.center;
         //if (DoesGroundInFrontExists() && !Physics2D.Raycast(origin, Vector2.right * (isDirRight ? 1 : -1), xRaylength, unDashableMask))
         rb.velocity = new Vector2((isDirRight ? 1 : -1) * groundedAttackHorizontalVel, rb.velocity.y);
+        player.footPrintParticles.Play();
+        player.landParticles.Play();
     }
     //called in animator events
     public void EndAttack()
@@ -446,6 +448,8 @@ public class PlayerMovement : MonoBehaviour {
         ForceEndAttack();
         Physics2D.IgnoreLayerCollision(gameObject.layer, enemyWeaponLayer, false);
 
+        player.landParticles.Play();
+        player.footPrintParticles.Play();
         player.soundController.PlayLandSound();
     }
     #endregion

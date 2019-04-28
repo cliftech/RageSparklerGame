@@ -42,7 +42,7 @@ public class Portal : MonoBehaviour
     private void playerEnteredBounds()
     {
         Level level = levelToLoad.GetComponent<Level>();
-        portalGUI.SetOption(0, () => ActivateHubPortal(-1), level.title + " - Start");
+        portalGUI.SetOption(0, () => ActivateHubPortal(-1), level.title, "Start");
         if (isInHub && level.checkPoints.Count > 0)
         {
             int index = 1;
@@ -50,7 +50,7 @@ public class Portal : MonoBehaviour
             {
                 if(player.checkpoints.Contains(Checkpoint.portalId))
                 {
-                    portalGUI.SetOption(index, () => ActivateHubPortal(Checkpoint.portalId), level.title + " - " + index);
+                    portalGUI.SetOption(index, () => ActivateHubPortal(Checkpoint.portalId), level.title, index.ToString());
                     index++;
                 }
             }

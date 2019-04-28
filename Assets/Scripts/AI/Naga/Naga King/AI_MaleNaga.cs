@@ -269,6 +269,7 @@ public class AI_MaleNaga : AI_Base
             StopAllCoroutines();
             nagaManager.EnrageFemaleNaga();
             SetDead(isRight, 0);
+            nagaManager.Died(false);
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);
             this.enabled = false;

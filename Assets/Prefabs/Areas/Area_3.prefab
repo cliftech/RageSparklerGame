@@ -148,7 +148,7 @@ Animator:
   m_GameObject: {fileID: 1351492486140057860}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 43549f66d7d527c4d834a8f6b122c90f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 34eac1a6d9d7f3e4cbdbe88b680efd72, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -17163,7 +17163,7 @@ Animator:
   m_GameObject: {fileID: 4672697471640876464}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 43549f66d7d527c4d834a8f6b122c90f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 34eac1a6d9d7f3e4cbdbe88b680efd72, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -17710,8 +17710,8 @@ MonoBehaviour:
   femaleNaga: {fileID: 976517731203947894}
   maleNaga: {fileID: 5929725013959178942}
   bossArena: {fileID: 8790987003593262062}
-  bossMusic: {fileID: 0}
-  enragedBossMusic: {fileID: 0}
+  bossMusic: {fileID: 8300000, guid: 03e8efd285824fb48be0528694c9b1f6, type: 3}
+  enragedBossMusic: {fileID: 8300000, guid: 03e8efd285824fb48be0528694c9b1f6, type: 3}
 --- !u!1 &6816478260131245932
 GameObject:
   m_ObjectHideFlags: 0
@@ -19288,6 +19288,37 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Portal
       objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: levelToLoad
+      value: 
+      objectReference: {fileID: 316683854749628759, guid: 656eca0976f1f0f4b9b39f6c4168bf31,
+        type: 3}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: textToDisplay
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: forceEntry
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: interactTextToDisplay
+      value: to hub
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: checkPointName
+      value: 1-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
+        type: 3}
+      propertyPath: portalId
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8201130216592941175, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19347,37 +19378,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: levelToLoad
-      value: 
-      objectReference: {fileID: 316683854749628759, guid: 656eca0976f1f0f4b9b39f6c4168bf31,
-        type: 3}
-    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: textToDisplay
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: forceEntry
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: interactTextToDisplay
-      value: to hub
-      objectReference: {fileID: 0}
-    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: checkPointName
-      value: 1-1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8986861041496782971, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
-        type: 3}
-      propertyPath: portalId
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2979223128981230660, guid: 5ede2663efdcce7468ab4fd0ec2ccb0f,
         type: 3}
