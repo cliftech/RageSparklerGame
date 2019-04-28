@@ -20,6 +20,8 @@ public class AI_Executioner : AI_Base
     public AudioClip shoutLoopSound;
     public AudioClip slamIntoWallSound;
 
+    private ParticleSystem footPrintParticles;
+    private ParticleSystem attackParticles;
     private BossArena bossArena;
     private AI_Soundmanager sound;
     private SoundManager soundManager;
@@ -69,6 +71,8 @@ public class AI_Executioner : AI_Base
         notificationText = GameObject.FindObjectOfType<AreaNotificationText>();
         bossHealthbar = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>()[0];
         bossArena = FindObjectOfType<BossArena>();
+        footPrintParticles = transform.Find("FootprintParticles").GetComponent<ParticleSystem>();
+        attackParticles = transform.Find("AttackParticles").GetComponent<ParticleSystem>();
         Initialize();
     }
 
@@ -482,17 +486,20 @@ public class AI_Executioner : AI_Base
     void PlayFootstep()
     {
         sound.PlayOneShot(footStepSound);
+        footPrintParticles.Play();
         cameraController.Shake(3);
     }
 
     void PlayAttackEffect()
     {
         sound.PlayOneShot(attackHitGroundSound);
+        attackParticles.Play();
         cameraController.Shake(3);
     }
     void PlayStronkAttackEffect()
     {
         sound.PlayOneShot(stronkAttackHitGroundSound);
+        attackParticles.Play();
         cameraController.Shake(20);
     }
 }
