@@ -35,7 +35,7 @@ public class AI_Soundmanager : MonoBehaviour
         yield return new WaitForSecondsRealtime(time);
         while (loopAudioSource.volume > 0.01)
         {
-            loopAudioSource.volume -= Time.fixedDeltaTime * 5;
+            loopAudioSource.volume -= Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
         loopAudioSource.volume = 0;

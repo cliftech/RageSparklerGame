@@ -168,7 +168,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 6.6
+      value: 3.47
       mode: 0
       spread: 0
       speed:
@@ -4782,7 +4782,7 @@ GameObject:
   - component: {fileID: 568752421635821413}
   - component: {fileID: 5402856810487118083}
   m_Layer: 0
-  m_Name: NagaWhirlwind_enraged
+  m_Name: NagaKingWhirlwind_normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4796,7 +4796,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4976682580291618496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -11.487459, y: -9.897062, z: 0.7271782}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1451899055168941931}
@@ -4818,10 +4818,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loop: {fileID: 5671198304667387747}
   burst: {fileID: 6092400649313013669}
-  soundLoop: {fileID: 0}
+  soundLoop: {fileID: 8300000, guid: f76f0a5f028bb5943bf20b2afe4c284f, type: 3}
   suctionDelay: 0.5
-  maxSuctionDistance: 10
-  suctionStrength: 3
+  maxSuctionDistance: 5
+  suctionStrength: 2
 --- !u!82 &5402856810487118083
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4841,7 +4841,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 251
+  Priority: 50
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -5087,7 +5087,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5665,7 +5665,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 6.6
+      value: 3.47
       mode: 0
       spread: 0
       speed:

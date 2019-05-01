@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 656864813983991189}
   - component: {fileID: 2177717010242699617}
   m_Layer: 11
-  m_Name: King Naga
+  m_Name: Naga King
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,15 +200,15 @@ MonoBehaviour:
   state: 0
   maxHealth: 200
   touchDamage: 10
-  simpleAttackSound: {fileID: 0}
-  whirlwindAttackSound: {fileID: 0}
-  getHitSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  shoutLoopSound: {fileID: 0}
+  simpleAttackSound: {fileID: 8300000, guid: 8fde8149cd3fef8469510074128a35f6, type: 3}
+  whirlwindAttackSound: {fileID: 8300000, guid: faf2f8bfb0f3371429fcad7b565e9432,
+    type: 3}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
   whirlwindEffectPrefab: {fileID: 4976682580291618496, guid: 8e94ccbf8ea828845a4a14a6c65e4a0c,
     type: 3}
   enragedPrefab: {fileID: 4744467962148257388, guid: ebee039a5c42e1e4683982cd06968210,
     type: 3}
+  startFacingLeft: 0
   simpleAttackDamage: 30
   whirlwindAttackDamage: 70
   displayName: Naga King
@@ -313,7 +313,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -410,7 +410,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 50
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

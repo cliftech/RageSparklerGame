@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 3936290106390092740}
   - component: {fileID: 2415596239672024880}
   m_Layer: 11
-  m_Name: King Naga Enraged
+  m_Name: Naga King Enraged
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,15 +153,21 @@ MonoBehaviour:
   state: 0
   maxHealth: 100
   touchDamage: 10
-  simpleAttackSound: {fileID: 0}
-  whirlwindAttackSound: {fileID: 0}
-  getHitSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  shoutLoopSound: {fileID: 0}
+  simpleAttackSound: {fileID: 8300000, guid: 8fde8149cd3fef8469510074128a35f6, type: 3}
+  whirlwindAttackSound: {fileID: 8300000, guid: faf2f8bfb0f3371429fcad7b565e9432,
+    type: 3}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
+  shockwaveExplosionSound: {fileID: 8300000, guid: 4b981f1d2724fa641bbbf7e9cde6de52,
+    type: 3}
   whirlwindEffectPrefab: {fileID: 4976682580291618496, guid: dd2d97c170713e14db9e9f9c92c66fe2,
+    type: 3}
+  explosionBeforeShockwavePrefab: {fileID: 4714841504026836667, guid: 3acee939c1d1022498d00e8a0b34a271,
+    type: 3}
+  shockwavePrefab: {fileID: 338336856533553160, guid: f07109b9232ed4749870cdb49e7e9c1e,
     type: 3}
   simpleAttackDamage: 20
   whirlwindAttackDamage: 50
+  shockwaveDamage: 15
   displayName: King Naga
 --- !u!95 &9133697626996402175
 Animator:
@@ -264,7 +270,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -361,7 +367,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 50
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

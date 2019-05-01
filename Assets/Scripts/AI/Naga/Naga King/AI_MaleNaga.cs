@@ -12,8 +12,6 @@ public class AI_MaleNaga : AI_Base
     public AudioClip simpleAttackSound;
     public AudioClip whirlwindAttackSound;
     public AudioClip getHitSound;
-    public AudioClip moveSound;
-    public AudioClip shoutLoopSound;
     public GameObject whirlwindEffectPrefab;
     public GameObject enragedPrefab;
 
@@ -237,7 +235,10 @@ public class AI_MaleNaga : AI_Base
         //TeleportToMiddle();
         state = State.Dead;
         rb.velocity = Vector2.zero;
+        animator.SetBool("IsChannellingWhirlwind", false);
+        animator.SetBool("IsWindingUpWhirlwind", false);
         animator.SetTrigger("Transform");
+        StopAllCoroutines();
         StartCoroutine(StartIncreasingScale(0.5f, 2f, 2f));
     }
     private void EnterRageState()
@@ -304,9 +305,11 @@ public class AI_MaleNaga : AI_Base
     void PlaySimpleAttackEffect()
     {
         cameraController.Shake(3);
+        sound.PlayOneShot(simpleAttackSound);
     }
     void PlayWhirlwindAttackEffect()
     {
         cameraController.Shake(3);
+        sound.PlayOneShot(whirlwindAttackSound);
     }
 }

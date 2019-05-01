@@ -18,10 +18,13 @@ public class SoundManager : MonoBehaviour
         audioSource.loop = true;
         audioSource.Stop();
     }
-    public void PlayMusic(AudioClip audioClip)
+    public void PlayMusic(AudioClip audioClip, bool forceRestart = false)
     {
-        audioSource.clip = bgmClip = audioClip;
-        audioSource.Play();
+        if (forceRestart || audioClip != audioSource.clip)
+        {
+            audioSource.clip = bgmClip = audioClip;
+            audioSource.Play();
+        }
     }
     public void PlayBossMusic(AudioClip audioClip)
     {
@@ -35,6 +38,8 @@ public class SoundManager : MonoBehaviour
             audioSource.clip = bgmClip;
             audioSource.Play();
         }
+        else
+            audioSource.Stop();
     }
     public void PauseMusic()
     {

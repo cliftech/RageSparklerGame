@@ -12,9 +12,10 @@ public class AI_MaleNagaEnraged : AI_Base
     public AudioClip simpleAttackSound;
     public AudioClip whirlwindAttackSound;
     public AudioClip getHitSound;
-    public AudioClip moveSound;
-    public AudioClip shoutLoopSound;
+    public AudioClip shockwaveExplosionSound;
     public GameObject whirlwindEffectPrefab;
+    public GameObject explosionBeforeShockwavePrefab;
+    public GameObject shockwavePrefab;
 
     public float simpleAttackDamage;
     private float simpleAttackRange;
@@ -27,6 +28,8 @@ public class AI_MaleNagaEnraged : AI_Base
     private float immobilizedTimeAfterWhirlwind;
     private float whirlwindCooldownTime;
     private bool canCastWirldwind = true;
+
+    public float shockwaveDamage;
 
     private float staggerCounter;
     private float staggerFalloff;
@@ -46,6 +49,8 @@ public class AI_MaleNagaEnraged : AI_Base
     }
     void Start()
     {
+        if (sound == null)
+            Awake();
         movVelocity = 4;
         aggroRange = 10;
 
@@ -71,6 +76,7 @@ public class AI_MaleNagaEnraged : AI_Base
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
+        ChangeDirection(coll.bounds.center.x < target.position.x);
         SetAggro();
     }
 
@@ -165,15 +171,23 @@ public class AI_MaleNagaEnraged : AI_Base
         animator.SetBool("IsChannellingWhirlwind", true);
         animator.SetBool("IsWindingUpWhirlwind", false);
         SetImmobilized();
+        PlayWhirlwindAttackEffect();
         yield return new WaitForSecondsRealtime(castTime);
 
         animator.SetBool("IsChannellingWhirlwind", false);
         damageContainer.SetDamageCall(() => touchDamage);
 
+        Instantiate(explosionBeforeShockwavePrefab, coll.bounds.center, Quaternion.identity, transform.parent).GetComponent<ParticleSystem>().Play();
+        Vector2 shockwaveOrigin = coll.bounds.center;
+        shockwaveOrigin.y = coll.bounds.min.y;
+        Instantiate(shockwavePrefab, transform.parent).GetComponent<Shockwave>().Set(shockwaveOrigin, 3f, Vector2.right, shockwaveDamage);
+        Instantiate(shockwavePrefab, transform.parent).GetComponent<Shockwave>().Set(shockwaveOrigin, 3f, Vector2.left, shockwaveDamage);
+
+        sound.PlayOneShot(shockwaveExplosionSound);
+
         canCastWirldwind = false;
         yield return new WaitForSecondsRealtime(cooldownTime);
         canCastWirldwind = true;
-
     }
 
     void EndWhirlwindAttack()
@@ -249,9 +263,11 @@ public class AI_MaleNagaEnraged : AI_Base
     void PlaySimpleAttackEffect()
     {
         cameraController.Shake(3);
+        sound.PlayOneShot(simpleAttackSound);
     }
     void PlayWhirlwindAttackEffect()
     {
         cameraController.Shake(3);
+        sound.PlayOneShot(whirlwindAttackSound);
     }
 }
