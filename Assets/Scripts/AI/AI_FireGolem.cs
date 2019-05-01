@@ -10,7 +10,6 @@ public class AI_FireGolem : AI_Base
     public float jumpDamage;
 
     public AudioClip attackSound;
-    public AudioClip doubleAttackSound;
     public AudioClip getHitSound;
     public AudioClip jumpSound;
     public AudioClip landSound;
@@ -298,10 +297,6 @@ public class AI_FireGolem : AI_Base
     private void PlaySingleAttackEffect()
     {
         soundManager.PlayOneShot(attackSound);
-    }
-
-    private void PlayDoubleAttackEffect()
-    {
-        soundManager.PlayOneShot(doubleAttackSound);
+        cameraController.Shake(3f);
     }
 }

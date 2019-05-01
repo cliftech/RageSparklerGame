@@ -263,8 +263,8 @@ MonoBehaviour:
   touchDamage: 10
   attackDamage: 10
   jumpDamage: 10
-  attackSound: {fileID: 0}
-  getHitSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 98d7638830a05db4098267bf0621f40e, type: 3}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
 --- !u!114 &4124452864823428154
 MonoBehaviour:
   m_ObjectHideFlags: 0

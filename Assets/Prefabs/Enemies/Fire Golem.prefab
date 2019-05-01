@@ -210,11 +210,10 @@ MonoBehaviour:
   doubleAttackChance: 0.5
   doubleAttackDamage: 10
   jumpDamage: 10
-  attackSound: {fileID: 0}
-  doubleAttackSound: {fileID: 0}
-  getHitSound: {fileID: 0}
-  jumpSound: {fileID: 0}
-  landSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: d045e79f876f0894a8fc43d821cc7c2e, type: 3}
+  getHitSound: {fileID: 8300000, guid: f473b5a04b4e8f64a8bbcf3f0f0c83d5, type: 3}
+  jumpSound: {fileID: 8300000, guid: db5fcdebcbc3e9545a5d8c7bf30cfa31, type: 3}
+  landSound: {fileID: 8300000, guid: fe06d29b3d0db2e47ab74e577757c45b, type: 3}
 --- !u!114 &1343524748284909277
 MonoBehaviour:
   m_ObjectHideFlags: 0

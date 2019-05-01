@@ -330,8 +330,9 @@ MonoBehaviour:
   maxHealth: 100
   touchDamage: 10
   attackDamage: 10
-  getHitSound: {fileID: 0}
-  summonProjectileSound: {fileID: 0}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
+  summonProjectileSound: {fileID: 8300000, guid: 02090233d8e70674e9f8b5659cb63c3d,
+    type: 3}
   projectilePrefab: {fileID: 6631407245268388319, guid: b082043a8a307dc438047fb409f6db32,
     type: 3}
   projectileSpawnPoint: {fileID: 7115571527237331198}

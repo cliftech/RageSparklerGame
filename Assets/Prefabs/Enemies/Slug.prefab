@@ -287,9 +287,9 @@ MonoBehaviour:
   attackDamage: 10
   vomitAttackChance: 0.2
   vomitAttackDamage: 20
-  attackSound: {fileID: 0}
-  vomitSound: {fileID: 0}
-  getHitSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 3c79eb9f8560d5c4286a043bdcbd0165, type: 3}
+  vomitSound: {fileID: 8300000, guid: 8b4b55cacd590d54e9c38439949fad7f, type: 3}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
 --- !u!114 &7334161040144605244
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -290,9 +290,10 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 8866829654079731470}
   projectileSpeed: 6
   projectileDamage: 10
-  summonSound: {fileID: 0}
-  projectileSummonSound: {fileID: 0}
-  getHitSound: {fileID: 0}
+  summonSound: {fileID: 8300000, guid: 98c1c7a606f0ca0499906dfc48a190ae, type: 3}
+  projectileSummonSound: {fileID: 8300000, guid: 02090233d8e70674e9f8b5659cb63c3d,
+    type: 3}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
   summonPrefab: {fileID: 699006727062655807, guid: 5d386ee6f8414834ca5efd351b52722d,
     type: 3}
   summonSpawnPoint: {fileID: 247793280402564025}
