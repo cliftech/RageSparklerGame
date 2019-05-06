@@ -33,5 +33,6 @@ public class Item : ScriptableObject
     public float healPercent;
     [Space]
     public string description;
+    [HideInInspector]
     public string ID;
 }

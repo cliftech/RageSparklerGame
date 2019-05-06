@@ -16,6 +16,7 @@ TagManager:
   - StoryEvent
   - Projectile
   - Destroyable
+  - Rune
   layers:
   - Default
   - TransparentFX

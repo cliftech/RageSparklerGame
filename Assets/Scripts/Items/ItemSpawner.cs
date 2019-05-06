@@ -40,5 +40,15 @@ public class ItemSpawner : MonoBehaviour
             spawnObject = Instantiate(allDrops.GetComponent<LootTable>().essence[i], this.transform.position, Quaternion.identity, transform.parent);
             spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
         }
+
+        for (int i = 0; i < allDrops.GetComponent<LootTable>().rune.Length; i++)
+        {
+            if (directionLeft)
+                dropDirection = Random.Range(-3.0f, -1.0f);
+            else dropDirection = Random.Range(1.0f, 3.0f);
+
+            spawnObject = Instantiate(allDrops.GetComponent<LootTable>().rune[i], this.transform.position, Quaternion.identity, transform.parent);
+            spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
+        }
     }
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b74eb738ac46d548913ea2b8634f1c6, type: 3}
+  m_Name: ObsidianGloves
+  m_EditorClassIdentifier: 
+  Materials:
+  - item: {fileID: 11400000, guid: 2a4c748479268c1409c1bdf842c1f219, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
+    amount: 1
+  Results:
+  - item: {fileID: 11400000, guid: 950ac2ea5b10ced428bd6fa5a1340037, type: 2}
+    amount: 1

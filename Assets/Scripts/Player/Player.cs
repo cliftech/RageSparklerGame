@@ -238,6 +238,57 @@ public class Player : MonoBehaviour
             statusGUI.UpdateEssenceText();
             gamemanager.SaveGame(false);
         }
+
+        if(other.gameObject.CompareTag("Rune"))
+        {
+            if(other.gameObject.name.StartsWith("DuobleJumpRune") || other.gameObject.name.StartsWith("TripleJumpRune"))
+            {
+                UpgradeAirJumpCount(playerMovement.maxJumpCount);
+            }
+
+            if (other.gameObject.name.StartsWith("DashRune"))
+            {
+                UnlockDash();
+            }
+
+            if (other.gameObject.name.StartsWith("WallClimbingRune"))
+            {
+                UnlockWallClimbing();
+            }
+
+            if (other.gameObject.name.StartsWith("AirDashRune"))
+            {
+                UnlockMidAirDash();
+            }
+
+            if (other.gameObject.name.StartsWith("DownwardAttackRune"))
+            {
+                UnlockDownwardAttack();
+            }
+
+            if (other.gameObject.name.StartsWith("DoubleAirDashRune") || other.gameObject.name.StartsWith("TripleAirDashRune"))
+            {
+                UpgradeMaxMidAirDashCount(++playerMovement.maxMidairDashesCount);
+            }
+
+            if (other.gameObject.name.StartsWith("DashDistanceRune"))
+            {
+                UpgradeDashDistance(++playerMovement.dashDistance);
+            }
+
+            if (other.gameObject.name.StartsWith("NoDashDelayRune"))
+            {
+                UpgradeDelayBetweenDashed(0);
+            }
+
+            if (other.gameObject.name.StartsWith("InvincibilityRune"))
+            {
+                UpgradeInvincibilityFrame(playerMovement.invincibilityFrameTime + 0.2f);
+            }
+
+            Destroy(other.gameObject);
+            gamemanager.SaveGame(false);
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -316,6 +367,11 @@ public class Player : MonoBehaviour
     public void UnlockDownwardAttack()
     {
         playerMovement.downwardAttackUnlocked = true;
+    }
+
+    public void UnlockWallClimbing()
+    {
+        playerMovement.wallJumpingUnlocked = true;
     }
 
     public void UpgradeAirJumpCount(int airJumpCount)

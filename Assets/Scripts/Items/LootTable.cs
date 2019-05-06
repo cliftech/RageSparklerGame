@@ -6,4 +6,5 @@ public class LootTable : MonoBehaviour
 {
     public Loot[] lootTable;
     public GameObject[] essence;
+    public GameObject[] rune;
 }
