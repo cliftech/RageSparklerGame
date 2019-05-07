@@ -24,9 +24,9 @@ public class LoadProfileSlot : MonoBehaviour
     public void SetNull(int index)
     {
         countText.text = index.ToString();
-        lvlText.text = " ";
-        essenceText.text = " ";
-        timePlayedText.text = " H  M";
+        lvlText.text = "-";
+        essenceText.text = "-";
+        timePlayedText.text = "-H -M";
         button.onClick.RemoveAllListeners();
     }
 

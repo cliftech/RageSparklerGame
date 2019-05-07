@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class UIScrollToSelection : MonoBehaviour
 {
+    public enum Type { crafting, loadPanel}
+    public Type type;
 
     //*** ATTRIBUTES ***//
     [Header("[ Settings ]")]
@@ -163,7 +165,15 @@ public class UIScrollToSelection : MonoBehaviour
     {
         // move the current scroll rect to correct position
         float selectionPosition = -selection.parent.parent.GetComponent<RectTransform>().anchoredPosition.y;
-        if(selection.name == "CraftButton")
+        if (type == Type.crafting)
+        {
+            selectionPosition = -selection.parent.parent.GetComponent<RectTransform>().anchoredPosition.y;
+            if (selection.name == "CraftButton")
+            {
+                selectionPosition = -selection.parent.GetComponent<RectTransform>().anchoredPosition.y;
+            }
+        }
+        else if (type == Type.loadPanel)
         {
             selectionPosition = -selection.parent.GetComponent<RectTransform>().anchoredPosition.y;
         }
