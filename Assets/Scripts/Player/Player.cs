@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public StatusGUI statusGUI;
     [HideInInspector] public ParticleSystem footPrintParticles;
     [HideInInspector] public ParticleSystem landParticles;
+    [HideInInspector] public ParticleSystem jumpParticles;
 
     [HideInInspector] public int level;
     [HideInInspector] public float activeMaxHealth;
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     public float downwardAttackDam = 7.5f;
     public int essence;
     public int storedEssence;
+    public int priceToLevelUp;
 
     private float health;
     //private int level;
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
         statusGUI = FindObjectOfType<StatusGUI>();
         footPrintParticles = transform.Find("FootprintParticles").GetComponent<ParticleSystem>();
         landParticles = transform.Find("LandParticles").GetComponent<ParticleSystem>();
+        jumpParticles = transform.Find("JumpParticles").GetComponent<ParticleSystem>();
 
         Inventory[] equipments = GetComponents<Inventory>();
         for (int i = 0; i < equipments.Length; i++)
@@ -184,7 +187,12 @@ public class Player : MonoBehaviour
     public void LevelUp()
     {
         level++;
+        CalculateLevelUpPrice();
         statusGUI.UpdateLevelText();
+    }
+    private void CalculateLevelUpPrice()
+    {
+        priceToLevelUp = (int)((level * level * 1f) / 10f + 20f + 5 * level);
     }
     public float GetDamage()
     {
@@ -338,6 +346,7 @@ public class Player : MonoBehaviour
         playerMovement.invincibilityFrameTime = profile.invincibilityFrameTime;
 
         hubSaveState = profile.hubSaveState;
+        CalculateLevelUpPrice();
         statusGUI.UpdateEssenceText();
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateInventoryStats();
@@ -417,5 +426,10 @@ public class Player : MonoBehaviour
     public void DownwardAttackSlamEffectEvent()
     {
         soundController.PlayDownwardAttackCommence();
+    }
+    public void PlayJumpEffect()
+    {
+        soundController.PlayJumpSound();
+        jumpParticles.Play();
     }
 }

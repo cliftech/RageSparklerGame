@@ -431,7 +431,7 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetTrigger("Jump");
         ForceEndAttack();
 
-        player.soundController.PlayJumpSound();
+        player.PlayJumpEffect();
     }
     void EndJump()
     {

@@ -16,29 +16,13 @@ public class PlayerInteract : MonoBehaviour
     private Player player;
     private CameraController followCamera;
     private Canvas canvas;
-    private int priceToLevelUp;
 
     void Update()
     {
         if (Input.GetButtonDown("Interact") && currentInterObj)
         {
             if(currentInterObjScript.talks)
-            {
-                if(currentInterObj.name == "LevelUpNPC")
-                {
-                    if (player.essence >= priceToLevelUp)
-                    {                
-                        if(player.essence > 0)
-                        player.essence -= priceToLevelUp;
-                        player.LevelUp();
-                        priceToLevelUp++;
-                        player.statusGUI.UpdateEssenceText();
-                        player.SetItemStats();
-                        player.statusGUI.UpdateHealthbar();
-                        interactableGUI.Hide();
-                        interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), currentInterObjScript.transform, new Vector2(0, 2f));
-                    }
-                }
+            {                
             }
             if(currentInterObjScript.openable)
             {
@@ -103,7 +87,6 @@ public class PlayerInteract : MonoBehaviour
         player = GetComponent<Player>();
         followCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
         interactableGUI = Resources.FindObjectsOfTypeAll<InteractableGUI>()[0];
-        priceToLevelUp = 0;
     }
 
     //swap player inventory item with hub chest inventory item
@@ -248,8 +231,6 @@ public class PlayerInteract : MonoBehaviour
         if (other.CompareTag("InterObject") || other.CompareTag("Item"))
         {
             currentInterObj = other.gameObject;
-            if (currentInterObj.name == "LevelUpNPC")
-                interactableGUI.Show("Level up for: " + priceToLevelUp.ToString(), currentInterObj.transform, new Vector2(0, 2f));
 
             if (currentInterObj.name == "CraftingNPC")
                 interactableGUI.Show("Craft", currentInterObj.transform, new Vector2(0, 2f));

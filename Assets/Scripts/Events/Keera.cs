@@ -9,6 +9,8 @@ public class Keera : MonoBehaviour
     [Header("each element is a seperate dialogue")]
     [TextArea(1, 5)]
     public List<string> stateDialogueLines;
+    [TextArea(1, 5)]
+    public string levelUpLines;
     private string[] dialogueLines;
     public int lineIndex;
     private bool allLinesShown;
@@ -36,18 +38,22 @@ public class Keera : MonoBehaviour
     {
         Awake();
         this.state = state;
-        dialogueLines = stateDialogueLines[state].Split('\n');
+        if (state != -1)
+            dialogueLines = stateDialogueLines[state].Split('\n');
+        else
+            dialogueLines = levelUpLines.Split('\n');
         lineIndex = 0;
         allLinesShown = false;
         if (state == 0)
             ShowNextLine();
-        else
+        else if(!playerInRange)
             dialogBox.HideText();
     }
 
     void Update()
     {
-        if((state == 0 || playerInRange) && Input.GetButtonDown("Interact"))
+
+        if ((state == 0 || playerInRange) && Input.GetButtonDown("Interact"))
         {
             if (!allLinesShown)
                 ShowNextLine();
@@ -65,16 +71,44 @@ public class Keera : MonoBehaviour
             player.hubSaveState.SetKeeraState(1);
             gameManager.SaveGame();
             hubManager.LoadHub(player.hubSaveState);
+            SetState(1);
         }
-        SetState(1);
+        else if (state == 1)
+        {
+            SetState(-1);
+        }
+        else if (state == -1)
+        {
+            PlayerLevelUp();
+            AskToLevelUp();
+        }
         dialogBox.HideText();
+    }
+
+    private void AskToLevelUp()
+    {
+        interactableGUI.Show("Level up\n", transform, new Vector2(0, 2), player.priceToLevelUp.ToString(), "essence");
+    }
+    private void PlayerLevelUp()
+    {
+        if (player.essence >= player.priceToLevelUp)
+        {
+            if (player.essence > 0)
+                player.essence -= player.priceToLevelUp;
+            player.LevelUp();
+            player.statusGUI.UpdateEssenceText();
+            player.SetItemStats();
+            player.statusGUI.UpdateHealthbar();
+            gameManager.SaveGame(true);
+            AskToLevelUp();
+        }
     }
 
     private void ShowNextLine()
     {
         dialogBox.ShowText(displayName, dialogueLines[lineIndex], -1, true);
         lineIndex++;
-        if(lineIndex >= dialogueLines.Length)
+        if (lineIndex >= dialogueLines.Length)
             allLinesShown = true;
     }
 
@@ -98,7 +132,7 @@ public class Keera : MonoBehaviour
             {
                 dialogBox.HideText();
                 interactableGUI.Hide();
-                lineIndex = 0;
+                SetState(state);
             }
         }
     }

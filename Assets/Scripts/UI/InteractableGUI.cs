@@ -7,6 +7,9 @@ public class InteractableGUI : MonoBehaviour
 {
     public RectTransform canvasRect;
     public Text interactText;
+    public Text secondaryText;
+    public Image icon;
+    public Sprite essenceIcon;
 
     private bool showing;
     private Transform target;
@@ -37,13 +40,23 @@ public class InteractableGUI : MonoBehaviour
         }
     }
 
-    public void Show(string interactMessage, Transform target, Vector2 offset)
+    public void Show(string interactMessage, Transform target, Vector2 offset, string secondaryText = "", string iconToShow = "")
     {
         gameObject.SetActive(true);
         interactText.text = interactMessage;
         this.target = target;
         this.offset = offset;
         showing = true;
+
+        if (secondaryText != "" && iconToShow != "")
+        {
+            icon.gameObject.SetActive(true);
+            this.secondaryText.text = secondaryText;
+            if (iconToShow == "essence")
+                icon.sprite = essenceIcon;
+        }
+        else
+            icon.gameObject.SetActive(false);
     }
 
     public void Hide()
