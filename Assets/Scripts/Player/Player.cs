@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public StatusGUI statusGUI;
     [HideInInspector] public ParticleSystem footPrintParticles;
     [HideInInspector] public ParticleSystem landParticles;
-    [HideInInspector] public ParticleSystem jumpParticles;
+    [HideInInspector] public ParticleSystem jumpParticles, wallJumpParticles_left, wallJumpParticles_right;
 
     [HideInInspector] public int level;
     [HideInInspector] public float activeMaxHealth;
@@ -65,6 +65,8 @@ public class Player : MonoBehaviour
         footPrintParticles = transform.Find("FootprintParticles").GetComponent<ParticleSystem>();
         landParticles = transform.Find("LandParticles").GetComponent<ParticleSystem>();
         jumpParticles = transform.Find("JumpParticles").GetComponent<ParticleSystem>();
+        wallJumpParticles_left = transform.Find("WallJumpParticlesLeft").GetComponent<ParticleSystem>();
+        wallJumpParticles_right = transform.Find("WallJumpParticlesRight").GetComponent<ParticleSystem>();
 
         Inventory[] equipments = GetComponents<Inventory>();
         for (int i = 0; i < equipments.Length; i++)
@@ -430,6 +432,20 @@ public class Player : MonoBehaviour
     public void PlayJumpEffect()
     {
         soundController.PlayJumpSound();
-        jumpParticles.Play();
+        if (playerMovement.isGrounded)
+        {
+            jumpParticles.Play();
+            landParticles.Play();
+        }
+        else
+        {
+            if (playerMovement.isStuckToWall_L)
+                wallJumpParticles_right.Play();
+            else if (playerMovement.isStuckToWall_R)
+                wallJumpParticles_left.Play();
+            else
+                jumpParticles.Play();
+
+        }
     }
 }

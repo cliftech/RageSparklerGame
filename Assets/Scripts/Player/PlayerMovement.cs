@@ -51,8 +51,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private bool isDashing;
     [SerializeField] private bool isAttacking;
     [SerializeField] public bool isDownwardAttacking;
-    [SerializeField] private bool isStuckToWall_L;
-    [SerializeField] private bool isStuckToWall_R;
+    [SerializeField] public bool isStuckToWall_L;
+    [SerializeField] public bool isStuckToWall_R;
     [SerializeField] private bool isKnockedBack;
     [SerializeField] public bool isInvulnerable;
     [SerializeField] public bool isDisabled;
@@ -426,12 +426,13 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = jumpDir * (isGrounded || isStuckToWall_L || isStuckToWall_R ? jumpVel : jumpVel * inAirJumpVelMult);
         if(!isGrounded && !isStuckToWall_L && !isStuckToWall_R)
             jumpCounter++;
+
+        player.PlayJumpEffect();
+
         UnstickFromWall();
 
         animator.SetTrigger("Jump");
         ForceEndAttack();
-
-        player.PlayJumpEffect();
     }
     void EndJump()
     {
