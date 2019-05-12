@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CraftingWindowUI : MonoBehaviour
 {
@@ -22,6 +23,29 @@ public class CraftingWindowUI : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetButtonDown("SortInventory") && craftWindow.gameObject.activeSelf)
+        {
+            Slot current = null;
+            craftWindow.showAll = !craftWindow.showAll;
+            if (craftWindow.showAll)
+                craftWindow.transform.Find("Text").GetComponent<Text>().text = "Craft : R    Hide all recipes: Y";
+            else
+                craftWindow.transform.Find("Text").GetComponent<Text>().text = "Craft : R    Show all recipes: Y";
+            for (int i = 0; i < craftWindow.craftingRecipeUIs.Count; i++)
+            {
+                craftWindow.craftingRecipeUIs[i].UpdateAllCraftingRecipes();
+                if (craftWindow.craftingRecipeUIs[i].gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].slots[0].gameObject);
+                    craftWindow.equipment.ShowToolTip(craftWindow.craftingRecipeUIs[i].slots[0]);
+                    current = craftWindow.craftingRecipeUIs[i].slots[0];
+                    break;
+                }
+            }
+            if (current != null)
+                craftWindow.equipment.ShowToolTip(current);
+        }
+
         if (plrInter.currentInterObj && plrInter.currentInterObj.name == "CraftingNPC" && Input.GetButtonDown("Interact") && !craftEnabled)
         {
             Slot current = null;

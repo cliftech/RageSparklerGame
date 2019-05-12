@@ -12,6 +12,7 @@ public class CraftingWindow : MonoBehaviour
     public List<CraftingUI> craftingRecipeUIs;
     public Inventory hubChest;
     public Inventory equipment;
+    public bool showAll;
 
     public List<CraftingRecipe> craftingRecipes;
 
@@ -36,6 +37,7 @@ public class CraftingWindow : MonoBehaviour
     {
         recipeUIParent.GetComponentsInChildren<CraftingUI>(includeInactive: true, result: craftingRecipeUIs);
         UpdateCraftingRecipes();
+        showAll = false;
     }
 
     public void UpdateCraftingRecipes()

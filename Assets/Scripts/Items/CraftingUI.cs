@@ -60,7 +60,7 @@ public class CraftingUI : MonoBehaviour
 
     public void UpdateOneCraftingRecipe()
     {
-        if (!this.Recipe.CanCraft(Equipment, HubChest))
+        if (!this.Recipe.CanCraft(Equipment, HubChest) && !craftWindow.showAll)
             gameObject.SetActive(false);
         else
         {
@@ -68,6 +68,10 @@ public class CraftingUI : MonoBehaviour
             for (int i = 0; i < recipe.Materials.Count; i++)
             {
                 slots[i].amountText.text = recipe.Materials[i].amount.ToString()+"/"+ recipe.CountAmount(Equipment, HubChest, recipe.Materials[i]).ToString();
+                if (recipe.CountAmount(Equipment, HubChest, recipe.Materials[i]) < recipe.Materials[i].amount)
+                    slots[i].amountText.color = Color.red;
+                else
+                    slots[i].amountText.color = Color.white;
             }
         }
     }

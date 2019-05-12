@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b74eb738ac46d548913ea2b8634f1c6, type: 3}
-  m_Name: Test 2
+  m_Name: MediumPotion
   m_EditorClassIdentifier: 
   Materials:
   - item: {fileID: 11400000, guid: ddcbb67dea82ab14d885dd1455012337, type: 2}
-    amount: 2
+    amount: 1
+  - item: {fileID: 11400000, guid: 418c032a4e7c5c94e9c4f5da729c5f7c, type: 2}
+    amount: 5
   Results:
   - item: {fileID: 11400000, guid: 7c41a759014e6734aa028a9252e9c56f, type: 2}
     amount: 1

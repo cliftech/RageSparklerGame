@@ -29,9 +29,17 @@ public class Item : ScriptableObject
     public float armor;
     public float health;
     [Space]
+    [Header("Potion stats")]
+    public Sprite Empty;
+    public Sprite TwoThirds;
+    public Sprite OneThird;
+    public Sprite Full;
     [Range(0, 100)]
     public float healPercent;
+    public int maxUses;
+    public int currentUses;
     [Space]
+    [Header("Other")]
     public string description;
     [HideInInspector]
     public string ID;

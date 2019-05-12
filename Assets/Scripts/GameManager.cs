@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour
         player.hubChest.LoadByIds(profile.itemsInHubChest, profile.itemInHubChestAmounts);
         player.SetItemStats();
         player.statusGUI.UpdateInventoryStats();
+        player.statusGUI.UpdatePotionCharges();
     }
 
 

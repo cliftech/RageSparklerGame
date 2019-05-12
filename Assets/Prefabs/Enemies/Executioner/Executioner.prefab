@@ -9842,7 +9842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTable:
-  - item: {fileID: 11400000, guid: ddcbb67dea82ab14d885dd1455012337, type: 2}
+  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
     dropChance: 100
   - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
     dropChance: 100

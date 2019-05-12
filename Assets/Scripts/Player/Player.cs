@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+
 public class Player : MonoBehaviour
 {
     private CameraController cameraController;
@@ -91,6 +93,7 @@ public class Player : MonoBehaviour
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateLevelText();
         statusGUI.UpdateInventoryStats();
+        statusGUI.UpdatePotionCharges();
     }
 
     void Update()
@@ -464,14 +467,40 @@ public class Player : MonoBehaviour
     public void UsePotionActivation()
     {
         Item potion = equipment.GetPotion();
-        if (potion != null)
+        if (potion != null && potion.currentUses > 0)
         {
+            potion.currentUses--;
             float heal = potion.healPercent;
-            equipment.RemoveItem(potion);
             AddHealth(heal);
             soundController.PlayPotionUseSound();
+            UpdatePotionSprite(potion);
+            statusGUI.UpdatePotionCharges();
             gamemanager.SaveGame(true);
         }
         playerMovement.SetEnabled(true);
+    }
+
+    public void UpdatePotionSprite(Item potion)
+    {
+        if (potion.currentUses == 0)
+        {
+            equipment.slots[8].slotIcon.GetComponent<Image>().sprite = potion.Empty;
+            potion.icon = potion.Empty;
+        }
+        if (potion.currentUses > potion.maxUses * 2 / 3)
+        {
+            equipment.slots[8].slotIcon.GetComponent<Image>().sprite = potion.Full;
+            potion.icon = potion.Full;
+        }
+        if (potion.currentUses > 0 && potion.currentUses <= potion.maxUses * 1 / 3)
+        {
+            equipment.slots[8].slotIcon.GetComponent<Image>().sprite = potion.OneThird;
+            potion.icon = potion.OneThird;
+        }
+        if (potion.currentUses > potion.maxUses * 1 / 3 && potion.currentUses <= potion.maxUses * 2 / 3)
+        {
+            equipment.slots[8].slotIcon.GetComponent<Image>().sprite = potion.TwoThirds;
+            potion.icon = potion.TwoThirds;
+        }
     }
 }

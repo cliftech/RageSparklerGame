@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
+    private Player plr;
+
     private string diffDmg;
     private string diffArm;
     private string diffHp;
@@ -77,10 +79,12 @@ public class Slot : MonoBehaviour
         if (Input.GetButtonDown("Swap") && selected && itemas != null && gameObject.name.StartsWith("Slot") && itemas.type.ToString() != "Material")
         {
             inter.swap(itemas, whichSlot);
+            plr.statusGUI.UpdatePotionCharges();
         }
         if (Input.GetButtonDown("Swap") && selected && itemas != null && !gameObject.name.StartsWith("Slot") && !gameObject.name.StartsWith("Item"))
         {
             inter.Unequip(itemas, this);
+            plr.statusGUI.UpdatePotionCharges();
         }
         if (Input.GetButtonDown("Swap") && selected && gameObject.name == "CraftButton" && once == null)
         {
@@ -96,6 +100,7 @@ public class Slot : MonoBehaviour
 
     private void Awake()
     {
+        plr = FindObjectOfType<Player>();
         craftWinow = FindObjectOfType<CraftingWindow>();
     }
 

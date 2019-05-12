@@ -14,6 +14,7 @@ public class AI_Base : MonoBehaviour
     protected DamageContainer damageContainer;
     protected Collider2D[] bodyWeaponColliders;
     protected ItemSpawner itemSpawner;
+    protected Player plr;
 
     public enum State { Patrol, Aggro, Attacking, KnockedBack, Dead, Idle, Awakening, Running, Jumping, Immobilized, Falling, Staggered, Charging, Stunned };
     [Header ("for debugging")][SerializeField] protected State state;
@@ -46,6 +47,7 @@ public class AI_Base : MonoBehaviour
 
     protected void Initialize()
     {
+        plr = FindObjectOfType<Player>();
         cameraController = FindObjectOfType<CameraController>();
         rb = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
@@ -137,6 +139,12 @@ public class AI_Base : MonoBehaviour
         StartCoroutine(DeathRoutine(colliderDisableDelay));
         animator.SetBool("Dead", true);
         itemSpawner.Spawn(dropItemDirRight);
+        if (plr.equipment.slots[8].itemas != null && plr.equipment.slots[8].itemas.currentUses < plr.equipment.slots[8].itemas.maxUses)
+        {
+            plr.equipment.slots[8].itemas.currentUses++;
+            plr.UpdatePotionSprite(plr.equipment.slots[8].itemas);
+            plr.statusGUI.UpdatePotionCharges();
+        }
         if (isSummon)
             summonDiedAction.Invoke();
     }

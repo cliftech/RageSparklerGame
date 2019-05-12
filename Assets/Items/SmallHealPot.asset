@@ -15,14 +15,20 @@ MonoBehaviour:
   Object2D: {fileID: 8899865901792235539, guid: 693c2c8857d5a91488540fbf462ed228,
     type: 3}
   quality: 0
-  id: ddcbb67dea82ab14d885dd1455012337
-  itemName: Small Healing Potion
-  description: Heals the player for 25% health
-  icon: {fileID: 21300000, guid: eca58610b88601e4e87287d4f9566c0e, type: 3}
-  pickedUp: 0
   equipable: 1
+  icon: {fileID: 21300000, guid: eca58610b88601e4e87287d4f9566c0e, type: 3}
+  itemName: Small Healing Potion
+  type: 8
+  MaximumStack: 1
   damage: 0
   armor: 0
   health: 0
-  type: 8
-  healPercent: 25
+  Empty: {fileID: 21300000, guid: 02631b5caca9ec44fafad23f554495a1, type: 3}
+  TwoThirds: {fileID: 21300000, guid: 2300b9f424a54024a88ba0fb7b820385, type: 3}
+  OneThird: {fileID: 21300000, guid: d0aedf000b29e9d48947f912bcdd7b6f, type: 3}
+  Full: {fileID: 21300000, guid: eca58610b88601e4e87287d4f9566c0e, type: 3}
+  healPercent: 10
+  maxUses: 4
+  currentUses: 4
+  description: Heals for 10% hp, 4 uses
+  ID: 12
