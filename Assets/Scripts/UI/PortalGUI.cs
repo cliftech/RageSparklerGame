@@ -19,8 +19,12 @@ public class PortalGUI : MonoBehaviour
     private List<Text> optionTexts;
     private float buttonHeight;
 
+    private bool isInitialized = false;
+
     void Awake()
     {
+        if (isInitialized)
+            return;
         eventSystem = FindObjectOfType<EventSystem>();
         optionButtons = new List<Button>();
         optionTexts = new List<Text>();
@@ -44,6 +48,7 @@ public class PortalGUI : MonoBehaviour
             optionButtons.Add(b);
             optionTexts.Add(t);
         }
+        isInitialized = true;
     }
 
     void LateUpdate()

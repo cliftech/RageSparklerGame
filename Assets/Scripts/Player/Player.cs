@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 public class Player : MonoBehaviour
 {
-    private CameraController cameraController;  
+    private CameraController cameraController;
     private GameManager gamemanager;
     [HideInInspector] public Inventory equipment;
     [HideInInspector] public Inventory hubChest;
@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
     /// <param name="knockBackDirection">set to 1 if attack came from right of PC, -1 if from left, leave 0 if no knockback</param>
     public void GetHit(float damage, int knockBackDirection = 0)
     {
-        float damageReduction = 1 - (0.052f * Armor)/(0.9f+0.048f * Armor);    
+        float damageReduction = 1 - (0.052f * Armor) / (0.9f + 0.048f * Armor);
         health -= damage * damageReduction;
         if (knockBackDirection == 2)
             playerMovement.KnockbackUp(damage);
@@ -249,9 +249,9 @@ public class Player : MonoBehaviour
             gamemanager.SaveGame(false);
         }
 
-        if(other.gameObject.CompareTag("Rune"))
+        if (other.gameObject.CompareTag("Rune"))
         {
-            if(other.gameObject.name.StartsWith("DuobleJumpRune") || other.gameObject.name.StartsWith("TripleJumpRune"))
+            if (other.gameObject.name.StartsWith("DuobleJumpRune") || other.gameObject.name.StartsWith("TripleJumpRune"))
             {
                 UpgradeAirJumpCount(playerMovement.maxJumpCount);
             }
@@ -348,6 +348,7 @@ public class Player : MonoBehaviour
         playerMovement.invincibilityFrameTime = profile.invincibilityFrameTime;
 
         hubSaveState = profile.hubSaveState;
+        SetItemStats();
         CalculateLevelUpPrice();
         statusGUI.UpdateEssenceText();
         statusGUI.UpdateHealthbar();
@@ -447,5 +448,30 @@ public class Player : MonoBehaviour
                 jumpParticles.Play();
 
         }
+    }
+
+    public void UsePotionStart()
+    {
+        if (!playerMovement.isKnockedBack && !playerMovement.isDisabled && playerMovement.isGrounded && !playerMovement.isStuckToWall_L && 
+            !playerMovement.isStuckToWall_R && !playerMovement.isDownwardAttacking && !playerMovement.isAttacking && !playerMovement.isDashing &&
+            Health < activeMaxHealth)
+        {
+            playerMovement.SetEnabled(false);
+            playerMovement.animator.SetTrigger("UseItem");
+        }
+    }
+
+    public void UsePotionActivation()
+    {
+        Item potion = equipment.GetPotion();
+        if (potion != null)
+        {
+            float heal = potion.healPercent;
+            equipment.RemoveItem(potion);
+            AddHealth(heal);
+            soundController.PlayPotionUseSound();
+            gamemanager.SaveGame(true);
+        }
+        playerMovement.SetEnabled(true);
     }
 }

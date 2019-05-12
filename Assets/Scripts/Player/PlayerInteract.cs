@@ -62,17 +62,7 @@ public class PlayerInteract : MonoBehaviour
 
         if (Input.GetButtonDown("UseHealthPotion"))
         {
-            if (player.Health != player.base_maxhealth)
-            {
-                Item potion = equipment.GetPotion();
-                if (potion != null)
-                {
-                    float heal = potion.healPercent;
-                    equipment.RemoveItem(potion);
-                    player.AddHealth(heal);
-                    
-                }
-            }
+            player.UsePotionStart();
         }
         if(Input.GetButtonDown("SortInventory") && hubChest.inventoryEnabled)
         {

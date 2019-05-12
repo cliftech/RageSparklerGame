@@ -12,6 +12,7 @@ public class PlayerSoundController : MonoBehaviour
     public AudioClip footstepSound, jumpGroundedSound, jumpInAirSound, landSound, getHitSound, dashGroundedSound, dashInAirSound;
     public AudioClip attack1Sound, attack2Sound, attack3Sound, airAttack1Sound, airAttack2Sound, downwardAttackStartSound, downwardAttackCommenceSound
         ;
+    public AudioClip usePotionSound, useEmptyItemSound;
 
     private void Awake()
     {
@@ -54,6 +55,15 @@ public class PlayerSoundController : MonoBehaviour
     public void PlayDownwardAttackCommence()
     {
         audioSource.PlayOneShot(downwardAttackCommenceSound);
+    }
+    public void PlayPotionUseSound()
+    {
+        audioSource.PlayOneShot(usePotionSound);
+    }
+    public void PlayUseEmptyItemSound()
+    {
+        if(useEmptyItemSound != null)
+            audioSource.PlayOneShot(useEmptyItemSound);
     }
     public void Update()
     {

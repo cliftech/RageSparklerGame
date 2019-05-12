@@ -48,12 +48,12 @@ public class PlayerMovement : MonoBehaviour {
     public float invincibilityFrameTime = 0.5f;
     [Header("states (for debuging)")]
     [SerializeField] public bool isGrounded;
-    [SerializeField] private bool isDashing;
-    [SerializeField] private bool isAttacking;
+    [SerializeField] public bool isDashing;
+    [SerializeField] public bool isAttacking;
     [SerializeField] public bool isDownwardAttacking;
     [SerializeField] public bool isStuckToWall_L;
     [SerializeField] public bool isStuckToWall_R;
-    [SerializeField] private bool isKnockedBack;
+    [SerializeField] public bool isKnockedBack;
     [SerializeField] public bool isInvulnerable;
     [SerializeField] public bool isDisabled;
     private bool hasSlowedDownFromSticking;
@@ -546,6 +546,18 @@ public class PlayerMovement : MonoBehaviour {
         isDisabled = !enabled;
         horizontalInput = 0;
         verticalInput = 0;
+    }
+
+    public void SetDisabledFor(float time)
+    {
+        StartCoroutine(DisableFor(time));
+    }
+
+    private IEnumerator DisableFor(float time)
+    {
+        SetEnabled(false);
+        yield return new WaitForSecondsRealtime(time);
+        SetEnabled(true);
     }
 
     void SetDirFacing(bool isRight)
