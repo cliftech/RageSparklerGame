@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class AI_FemaleNagaEnraged : AI_Base
 {
     private Naga_Manager nagaManager;
     private AI_Soundmanager sound;
+    private BossArenaPlatforms platforms;
     private LayerMask terrainMask;
     private LayerMask playerMask;
 
@@ -17,6 +19,8 @@ public class AI_FemaleNagaEnraged : AI_Base
     public AudioClip moveSound;
     public AudioClip shoutLoopSound;
 
+    private Transform[] tpPositions;
+
     public float staffAttackDamage;
     public float rangedAttackDamage;
     public float pierceAttackDamage;
@@ -25,21 +29,25 @@ public class AI_FemaleNagaEnraged : AI_Base
     private float timeBetweenRanged;
     private float staggerCounter;
     private float staggerFalloff;
-    private float maxRunningDistance;
     private int maxStaggerCount;
     private bool canRangedAttack = true;
     public string displayName = "Queen Naga";
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
+
+    private GameObject tilesToEnable;
+
+    private int currTpIndex;
     void Awake()
     {
         nagaManager = transform.parent.GetComponent<Naga_Manager>();
+        platforms = Resources.FindObjectsOfTypeAll<BossArenaPlatforms>()[0];
         sound = GetComponent<AI_Soundmanager>();
+
         Initialize();
     }
     void Start()
     {
-        movVelocity = 5;
         aggroRange = 5;
         rangedAttackRange = 50;
         pierceAttackRange = 3;
@@ -48,7 +56,6 @@ public class AI_FemaleNagaEnraged : AI_Base
         staggerCounter = 0;
         staggerFalloff = 1;
         maxStaggerCount = 2;
-        maxRunningDistance = 6;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
         playerMask = 1 << LayerMask.NameToLayer("Player");
 
@@ -58,6 +65,20 @@ public class AI_FemaleNagaEnraged : AI_Base
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
+
+        tpPositions = platforms.platforms;
+
+        Debug.LogWarning("delete this");
+        Tilemap[] t = Resources.FindObjectsOfTypeAll<Tilemap>();
+        Tilemap ttt = null;
+        foreach (var tt in t)
+            if (tt.gameObject.name.CompareTo("TerrainTilemap temp") == 0) {
+                ttt = tt;
+                break;
+            }
+        if(ttt != null)
+            tilesToEnable = ttt.gameObject;
+        tilesToEnable.SetActive(true);
     }
 
     void Update()
@@ -65,16 +86,6 @@ public class AI_FemaleNagaEnraged : AI_Base
         float dist = Vector2.Distance(transform.position, target.position);
         switch (state)
         {
-            case State.Running:
-                if (dist > maxRunningDistance)
-                {
-                    SetAggro();
-                }
-                else if (RaycastSideways_OR(!isDirRight, 3, xRayLength, terrainMask))
-                {
-                    Teleport();
-                }
-                break;
             case State.Aggro:
                 bool inLineWithPlayer = RaycastToPlayer(isDirRight, aggroRange, playerTag, playerMask, terrainMask) ||
                                         RaycastToPlayer(!isDirRight, aggroRange, playerTag, playerMask, terrainMask);
@@ -116,21 +127,21 @@ public class AI_FemaleNagaEnraged : AI_Base
     void EndAttackPierce()
     {
         damageContainer.SetDamageCall(() => touchDamage);
-        SetRunning();
+        SetAggro();
     }
     void Teleport()
     {
         animator.SetTrigger("Teleport");
         SetImmobilized();
     }
-    void TeleportToMiddle()
+    void TeleportEvent()
     {
-        Vector2 leftHitPoint = Physics2D.Raycast(coll.bounds.center, Vector2.left, 1000, terrainMask).point;
-        Vector2 rightHitPoint = Physics2D.Raycast(coll.bounds.center, Vector2.right, 1000, terrainMask).point;
-        Vector2 midPoint = (leftHitPoint + rightHitPoint) / 2;
-        Vector2 position = Physics2D.Raycast(midPoint, Vector2.down, 1000, terrainMask).point;
+        int index = 0;
+        do { index = Random.Range(0, tpPositions.Length); } while (index == currTpIndex);
+        Vector2 position = Physics2D.Raycast(tpPositions[index].position, Vector2.down, 1000, terrainMask).point;
         Vector2 offset = (Vector3.up * coll.bounds.extents.y) + transform.position - coll.bounds.center;
         transform.position = position + offset;
+        currTpIndex = index;
     }
     void EndTeleport()
     {
@@ -140,7 +151,7 @@ public class AI_FemaleNagaEnraged : AI_Base
     {
         switch (state)
         {
-            case State.Running:
+            case State.Aggro:
                 if (target.position.x < coll.bounds.center.x)
                 {
                     if (isDirRight)
@@ -155,18 +166,6 @@ public class AI_FemaleNagaEnraged : AI_Base
                         ChangeDirection(true);
                     }
                 }
-                Vector2 direction;
-                if (isDirRight)
-                {
-                    direction = Vector2.left;
-                }
-                else
-                {
-                    direction = Vector2.right;
-                }
-                rb.velocity = new Vector2(direction.x * movVelocity, rb.velocity.y);
-                break;
-            case State.Aggro:
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case State.Attacking:
@@ -208,6 +207,7 @@ public class AI_FemaleNagaEnraged : AI_Base
                 SetStaggered(isRight);
             }
         }
+        Teleport();
         nagaManager.UpdateHealthbar(true, health, maxHealth);
         sound.PlayOneShot(getHitSound);
         cameraController.Shake(damage);

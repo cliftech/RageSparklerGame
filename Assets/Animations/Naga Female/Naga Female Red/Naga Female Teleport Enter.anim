@@ -73,7 +73,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.3
-    functionName: TeleportToMiddle
+    functionName: TeleportEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
