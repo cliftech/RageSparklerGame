@@ -13,6 +13,7 @@ public class Naga_Manager : MonoBehaviour
     private EnemyBossHealthbar[] healthbars;
     private AreaNotificationText notificationText;
     private SoundManager soundManager;
+    private BossArenaPlatforms platforms;
 
     private bool isNagaQueenDead;
     private bool isNagaKingDead;
@@ -22,6 +23,7 @@ public class Naga_Manager : MonoBehaviour
         soundManager = FindObjectOfType<SoundManager>();
         notificationText = Resources.FindObjectsOfTypeAll<AreaNotificationText>()[0];
         healthbars = Resources.FindObjectsOfTypeAll<EnemyBossHealthbar>();
+        platforms = FindObjectOfType<BossArenaPlatforms>();
     }
     private void Start()
     {
@@ -42,6 +44,7 @@ public class Naga_Manager : MonoBehaviour
     {
         soundManager.PlayBossMusic(enragedBossMusic);
         femaleNaga.Enrage();
+        platforms.StartEvent();
     }
     public void StopPlayingBossMusic()
     {

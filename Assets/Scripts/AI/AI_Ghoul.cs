@@ -170,7 +170,7 @@ public class AI_Ghoul : AI_Base
 
     void EndAttack()    // ovverides AI_Base.EndAttack() on animation events
     {
-        StartCoroutine(SetImmobilizeFor(landImmobalizedTime));
+        StartCoroutine(SetImmobilizeFor(attackImmobalizeTime));
     }
     IEnumerator SetImmobilizeFor(float time)
     {

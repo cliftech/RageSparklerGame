@@ -587,8 +587,8 @@ public class PlayerMovement : MonoBehaviour {
         // add enemy layer from undashable
         unDashableMask = unDashableMask | (1 << enemyLayer);
         isInvulnerable = false;
-        capsColl.enabled = false;
-        capsColl.enabled = true;
+        //capsColl.enabled = false;
+        //capsColl.enabled = true;
     }
 
     bool IsGrounded()

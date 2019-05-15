@@ -22,7 +22,6 @@ public class AI_Imp : AI_Base
     private float projectileSpeed;
     private float maxDistanceFromGround;
 
-    private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
     private string trapTag = "Trap";
 

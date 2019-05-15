@@ -97,7 +97,7 @@ public class AI_MaleNagaEnraged : AI_Base
                     if (Mathf.Abs(yDistToTarget) > maxYDistToFollow)
                         SetRunning();
 
-                    if (dist <= simpleAttackRange)
+                    if (dist <= simpleAttackRange && canAttackSimple)
                     {
                         AttackSimple();
                     }

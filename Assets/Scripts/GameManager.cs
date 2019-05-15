@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private ScreenCover screenCover;
     private SoundManager soundManager;
     private HubManager hubManager;
+    private Transform playerParent;
 
     public GameObject zerothArea;
     public GameObject hubArea;
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
             player.LoadFromProfile(p);
             SaveGame(true);
         }
+        playerParent = player.transform.parent;
 
         LoadGame(profileToLoad);
 
@@ -117,15 +119,15 @@ public class GameManager : MonoBehaviour
     #region loading levels
     // loading levels in 3 steps --- cover screen -> load level -> uncover screen
 
-    public void LoadLevel(GameObject level, int potalId = -1)
+    public void LoadLevel(GameObject level, int portalId = -1)
     {
         currentLevelPrefab = level;
         player.playerMovement.StopDashing();
         player.playerMovement.SetExternalVelocity(Vector2.zero);
         if (currentLevel != null)
-            screenCover.CoverScreen(.1f, () => LoadLevel(potalId));
+            screenCover.CoverScreen(.1f, () => LoadLevel(portalId));
         else
-            LoadLevel(potalId);
+            LoadLevel(portalId);
     }
 
     private void LoadLevel(int portalID)
@@ -143,6 +145,7 @@ public class GameManager : MonoBehaviour
         {
             pos = currentLevel.checkPoints.First(p => p.portalId == portalID).transform.position;
         }
+        player.transform.SetParent(playerParent);
         player.transform.position = pos;
         if (currentLevel.isHub)
         {

@@ -27,15 +27,15 @@ public class AI_FemaleNagaEnraged : AI_Base
     private float rangedAttackRange;
     private float pierceAttackRange;
     private float timeBetweenRanged;
+    private float immobilizeTime;
     private float staggerCounter;
     private float staggerFalloff;
     private int maxStaggerCount;
     private bool canRangedAttack = true;
+    private bool canTakeDamage = true;
     public string displayName = "Queen Naga";
     private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
-
-    private GameObject tilesToEnable;
 
     private int currTpIndex;
     void Awake()
@@ -52,6 +52,7 @@ public class AI_FemaleNagaEnraged : AI_Base
         rangedAttackRange = 50;
         pierceAttackRange = 3;
         timeBetweenRanged = 0.5f;
+        immobilizeTime = 100f;
         staggerVelocity = 0.5f;
         staggerCounter = 0;
         staggerFalloff = 1;
@@ -61,24 +62,12 @@ public class AI_FemaleNagaEnraged : AI_Base
 
         damageContainer.SetDamageCall(() => touchDamage);
         health = maxHealth;
-        SetAggro();
 
         stateAfterAttackCall = () => SetAggro();
         stateAfterStaggeredCall = () => SetAggro();
 
-        tpPositions = platforms.platforms;
-
-        Debug.LogWarning("delete this");
-        Tilemap[] t = Resources.FindObjectsOfTypeAll<Tilemap>();
-        Tilemap ttt = null;
-        foreach (var tt in t)
-            if (tt.gameObject.name.CompareTo("TerrainTilemap temp") == 0) {
-                ttt = tt;
-                break;
-            }
-        if(ttt != null)
-            tilesToEnable = ttt.gameObject;
-        tilesToEnable.SetActive(true);
+        tpPositions = platforms.platformTpPossitions;
+        StartCoroutine(SetImmobilizedAtStart(immobilizeTime, () => SetAggro()));
     }
 
     void Update()
@@ -147,6 +136,14 @@ public class AI_FemaleNagaEnraged : AI_Base
     {
         SetAggro();
     }
+    private IEnumerator SetImmobilizedAtStart(float time, System.Action stateAfter)
+    {
+        SetImmobilized();
+        canTakeDamage = false;
+        yield return new WaitForSecondsRealtime(time);
+        stateAfter.Invoke();
+        canTakeDamage = true;
+    }
     private void FixedUpdate()
     {
         switch (state)
@@ -184,7 +181,7 @@ public class AI_FemaleNagaEnraged : AI_Base
     }
     protected void GetHit(bool isRight, float damage)
     {
-        if (state == State.Dead)
+        if (state == State.Dead || !canTakeDamage)
             return;
         health -= damage;
         if (health <= 0)
