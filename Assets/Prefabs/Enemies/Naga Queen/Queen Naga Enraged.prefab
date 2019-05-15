@@ -225,11 +225,11 @@ MonoBehaviour:
   touchDamage: 10
   explosionPrefab: {fileID: 5751695558078150377, guid: e638e7b3746de06438e141675641f6c4,
     type: 3}
-  rangedAttackHitSound: {fileID: 0}
-  pierceAttackHitSound: {fileID: 0}
-  getHitSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  shoutLoopSound: {fileID: 0}
+  rangedAttackHitSound: {fileID: 8300000, guid: c66e2d17fb9e59445a9dd4b78f631c14,
+    type: 3}
+  pierceAttackHitSound: {fileID: 8300000, guid: 2ddc6164bff558a4f88cfe5940b0fcf3,
+    type: 3}
+  getHitSound: {fileID: 8300000, guid: 366e7a1d09ba11d4b84b949ef222d4cd, type: 3}
   staffAttackDamage: 20
   rangedAttackDamage: 100
   pierceAttackDamage: 50

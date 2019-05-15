@@ -15,8 +15,6 @@ public class AI_FemaleNaga : AI_Base
     public AudioClip rangedAttackHitSound;
     public AudioClip pierceAttackHitSound;
     public AudioClip getHitSound;
-    public AudioClip moveSound;
-    public AudioClip shoutLoopSound;
 
     public bool startFacingLeft;
     public float staffAttackDamage;
@@ -267,10 +265,12 @@ public class AI_FemaleNaga : AI_Base
     void PlayRangedAttackEffect()
     {
         cameraController.Shake(3);
+        sound.PlayOneShot(rangedAttackHitSound);
     }
     void PlayPierceAttackEffect()
     {
         cameraController.Shake(3);
+        sound.PlayOneShot(pierceAttackHitSound);
     }
     void SpawnExplosion()
     {
