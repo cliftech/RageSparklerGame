@@ -28,6 +28,7 @@ public class AI_MaleNaga : AI_Base
     private float immobilizedTimeAfterWhirlwind;
     private float whirlwindCooldownTime;
     private bool canCastWirldwind = true;
+    private GameObject spawnedWhirlwindObject;
 
     private float staggerCounter;
     private float staggerFalloff;
@@ -169,7 +170,8 @@ public class AI_MaleNaga : AI_Base
         SetImmobilized();
         yield return new WaitForSecondsRealtime(windUpTime);
 
-        Instantiate(whirlwindEffectPrefab, transform.parent).GetComponent<NagaKingWhirlwindEffect>().Set(coll.bounds.center, castTime);
+        spawnedWhirlwindObject = Instantiate(whirlwindEffectPrefab, transform.parent);
+        spawnedWhirlwindObject.GetComponent<NagaKingWhirlwindEffect>().Set(coll.bounds.center, castTime);
         damageContainer.SetDamageCall(() => whirlwindAttackDamage);
         animator.SetBool("IsChannellingWhirlwind", true);
         animator.SetBool("IsWindingUpWhirlwind", false);
@@ -275,6 +277,8 @@ public class AI_MaleNaga : AI_Base
             animator.SetBool("IsWindingUpWhirlwind", false);
             this.enabled = false;
             nagaManager.HideHealthbar(false);
+            if(spawnedWhirlwindObject != null)
+                spawnedWhirlwindObject.GetComponent<NagaKingWhirlwindEffect>().Stop();
         }
         else
         {

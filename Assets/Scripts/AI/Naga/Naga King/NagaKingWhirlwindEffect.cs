@@ -58,13 +58,18 @@ public class NagaKingWhirlwindEffect : MonoBehaviour
         }
         if (timer <= 0)
         {
-            player.playerMovement.SetExternalVelocity(Vector2.zero);
-            loop.Stop();
-            burst.Stop();
-            audioSource.Stop();
-            StopAllCoroutines();
-            this.enabled = false;
-            Destroy(gameObject, 3f);
+            Stop();
         }
+    }
+
+    public void Stop()
+    {
+        player.playerMovement.SetExternalVelocity(Vector2.zero);
+        loop.Stop();
+        burst.Stop();
+        audioSource.Stop();
+        StopAllCoroutines();
+        this.enabled = false;
+        Destroy(gameObject, 3f);
     }
 }

@@ -37,6 +37,7 @@ public class Portal : MonoBehaviour
         guiOffset = new Vector2(0, 2f);
         interactAction = () => ActivatePortal();
         playerExitedBounds();
+        StartCoroutine(CheckCollisionAtTheEndOfFrame());
     }
 
     private void playerEnteredBounds()
@@ -122,5 +123,13 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
             playerExitedBounds();
+    }
+
+    private IEnumerator CheckCollisionAtTheEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        if (GetComponent<Collider2D>().bounds.Intersects(player.GetComponent<Collider2D>().bounds)) {
+            playerEnteredBounds();
+        }
     }
 }

@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public int numberOfDeaths;
     [HideInInspector] public bool hubUnloked;
 
+    private bool isDrinkingPotion = false;
+
     void Awake()
     {
         cameraController = FindObjectOfType<CameraController>();
@@ -234,14 +236,26 @@ public class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(enemyWeaponTag) && !isDead && !playerMovement.isInvulnerable)
+        {
             GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
+            if (isDrinkingPotion && playerMovement.isDisabled)
+            {
+                playerMovement.SetEnabled(true);
+                isDrinkingPotion = false;
+            }
+        }
 
         if (other.CompareTag("Projectile") && !isDead && !playerMovement.isInvulnerable)
         {
             Projectile p = other.transform.GetComponentInParent<Projectile>();
             GetHit(p.GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
+            if (isDrinkingPotion && playerMovement.isDisabled)
+            {
+                playerMovement.SetEnabled(true);
+                isDrinkingPotion = false;
+            }
         }
 
         if (other.gameObject.CompareTag("Pick Up"))
@@ -459,6 +473,7 @@ public class Player : MonoBehaviour
             !playerMovement.isStuckToWall_R && !playerMovement.isDownwardAttacking && !playerMovement.isAttacking && !playerMovement.isDashing &&
             Health < activeMaxHealth)
         {
+            isDrinkingPotion = true;
             playerMovement.SetEnabled(false);
             playerMovement.animator.SetTrigger("UseItem");
         }
@@ -478,6 +493,7 @@ public class Player : MonoBehaviour
             gamemanager.SaveGame(true);
         }
         playerMovement.SetEnabled(true);
+        isDrinkingPotion = false;
     }
 
     public void UpdatePotionSprite(Item potion)

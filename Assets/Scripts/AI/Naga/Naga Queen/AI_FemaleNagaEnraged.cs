@@ -52,7 +52,7 @@ public class AI_FemaleNagaEnraged : AI_Base
         rangedAttackRange = 50;
         pierceAttackRange = 3;
         timeBetweenRanged = 0.5f;
-        immobilizeTime = 100f;
+        immobilizeTime = 7.5f;
         staggerVelocity = 0.5f;
         staggerCounter = 0;
         staggerFalloff = 1;
