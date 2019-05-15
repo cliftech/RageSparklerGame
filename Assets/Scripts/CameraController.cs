@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!PlayerCharacter.isDead && !isDisabled)
+        if (!PlayerCharacter.isDead && !isDisabled && !InGameMenu.isMenuShowing())
         {
             if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
             {

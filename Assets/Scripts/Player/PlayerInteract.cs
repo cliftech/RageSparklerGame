@@ -19,6 +19,9 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
+        if (InGameMenu.isMenuShowing())
+            return;
+
         if (Input.GetButtonDown("Interact") && currentInterObj)
         {
             if(currentInterObjScript.talks)

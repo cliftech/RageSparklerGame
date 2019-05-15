@@ -52,6 +52,8 @@ public class Keera : MonoBehaviour
 
     void Update()
     {
+        if (InGameMenu.isMenuShowing())
+            return;
 
         if ((state == 0 || playerInRange) && Input.GetButtonDown("Interact"))
         {

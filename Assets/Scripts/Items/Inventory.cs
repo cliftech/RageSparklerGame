@@ -98,6 +98,9 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
+        if (InGameMenu.isMenuShowing())
+            return;
+
         if (Input.GetButtonDown("OpenInventory") && inventoryUI.name == "EquipmentUI" && !inventoryEnabled)
         {
             inventoryEnabled = true;

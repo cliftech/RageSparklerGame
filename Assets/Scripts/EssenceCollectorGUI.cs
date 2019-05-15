@@ -20,6 +20,9 @@ public class EssenceCollectorGUI : MonoBehaviour
     }
     private void Update()
     {
+        if (InGameMenu.isMenuShowing())
+            return;
+
         if (showing)
         {
             if (Input.GetButtonDown("Interact"))

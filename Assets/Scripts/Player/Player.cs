@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Interact"))
+        if (Input.GetButtonDown("Interact") && !InGameMenu.isMenuShowing())
         {
             if (interactAction != null)
                 interactAction.Invoke();

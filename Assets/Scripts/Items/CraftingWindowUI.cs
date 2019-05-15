@@ -23,6 +23,9 @@ public class CraftingWindowUI : MonoBehaviour
 
     void Update()
     {
+        if (InGameMenu.isMenuShowing())
+            return;
+
         if (Input.GetButtonDown("SortInventory") && craftWindow.gameObject.activeSelf)
         {
             Slot current = null;
