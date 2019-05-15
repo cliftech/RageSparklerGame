@@ -168,8 +168,11 @@ public class AI_Imp : AI_Base
             return;
         health -= damage;
         if (health <= 0)
+        {
             if (state != State.Dead)
                 SetDead(isRight, 5f);
+            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
+        }
         else
             SetStaggered(isRight);
         soundManager.PlayOneShot(getHitSound);

@@ -189,6 +189,7 @@ public class AI_FemaleNagaEnraged : AI_Base
             nagaManager.Died(true);
             nagaManager.StopPlayingBossMusic();
             nagaManager.HideHealthbar(true);
+            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
         }
         else
         {

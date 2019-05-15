@@ -93,6 +93,7 @@ public class SaveProfile
     public List<string> itemsInHubChest;
     public List<int> itemInHubChestAmounts;
     public List<int> checkpoints;
+    public Dictionary<string, int> enemyKillCount;
     public int lastHubPortalID;
     public bool hubUnloked;
 
@@ -110,7 +111,7 @@ public class SaveProfile
 
     public SaveProfile(int id, int lvl, int essence, int essenceStored, float timePlayed, int numberOfDeaths,
         List<string> itemsInInventory, List<int> itemInInventoryAmounts, List<string> itemsInHubChest, List<int> itemInHubChestAmounts,
-        List<int> checkpoints, int lastHubPortalID, bool hubUnloked,
+        Dictionary<string, int> enemyKillCount, List<int> checkpoints, int lastHubPortalID, bool hubUnloked,
         bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount,
         float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime, 
         HubSaveState hubSaveState)
@@ -125,6 +126,7 @@ public class SaveProfile
         this.itemInInventoryAmounts = itemInInventoryAmounts;
         this.itemsInHubChest = itemsInHubChest;
         this.itemInHubChestAmounts = itemInHubChestAmounts;
+        this.enemyKillCount = enemyKillCount;
         this.checkpoints = checkpoints;
         this.hubUnloked = hubUnloked;
         this.lastHubPortalID = lastHubPortalID;

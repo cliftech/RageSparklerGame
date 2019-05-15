@@ -29,7 +29,6 @@ public class AI_Executioner : AI_Base
     private EnemyBossHealthbar bossHealthbar;
     private LayerMask terrainMask;
     private LayerMask playerMask;
-    private string playerTag = "Player";
     private string playerWeaponTag = "PlayerWeapon";
 
     private float stronkAttackRange;
@@ -61,8 +60,6 @@ public class AI_Executioner : AI_Base
     private float staggerFalloff;
     private float staggerCounter;
     private int maxStaggerCount;
-
-    private bool hasBeenAggroed;
 
     void Awake()
     {
@@ -225,7 +222,6 @@ public class AI_Executioner : AI_Base
         ShoutAttack();
         bossHealthbar.Show(displayName);
         bossHealthbar.UpdateHealthbar(health, maxHealth);
-        hasBeenAggroed = true;
         SetAggro();
         aggroRange *= 5;
     }
@@ -336,6 +332,12 @@ public class AI_Executioner : AI_Base
         damageContainer.SetDamageCall(() => touchDamage);
         StartCoroutine(SetImmobilizeFor(attackImmobilizedTime));
     }
+    void EndStronkAttack()
+    {
+        damageContainer.SetDamageCall(() => touchDamage);
+        StartCoroutine(SetImmobilizeFor(stronkAttackImmobilizedTime));
+    }
+
     new void EndStagger() // ovverides AI_Base.EndStagger() on animation events
     {
         if (state != State.Stunned)
@@ -451,6 +453,7 @@ public class AI_Executioner : AI_Base
             p.hubSaveState.UnlockHubPortal(3);
             p.hubSaveState.UnlockHubSmithNpc();
             p.hubSaveState.UnlockEssenceCollector();
+            p.AddEnemyKilldedToCount(this.GetType());
             FindObjectOfType<GameManager>().SaveGame(true);
         }
         else

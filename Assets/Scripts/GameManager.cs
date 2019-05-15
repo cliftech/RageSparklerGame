@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
             List<int> hubChestAmounts;
             List<string> hubChestItems = player.hubChest.GetItemIds(out hubChestAmounts);
             SaveProfile p = new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
-                                                         player.checkpoints, -1, false,
+                                                         player.enemyKillCount, player.checkpoints, -1, false,
                                                          player.playerMovement.dashUnlocked, player.playerMovement.midAirDashUnlocked,
                                                          player.playerMovement.downwardAttackUnlocked, player.playerMovement.wallJumpingUnlocked,
                                                          player.playerMovement.maxJumpCount, player.playerMovement.dashDistance,

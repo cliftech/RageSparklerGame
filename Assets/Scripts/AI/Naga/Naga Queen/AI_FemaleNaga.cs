@@ -235,6 +235,7 @@ public class AI_FemaleNaga : AI_Base
             nagaManager.Died(true);
             nagaManager.HideHealthbar(true);
             this.enabled = false;
+            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
         }
         else
         {

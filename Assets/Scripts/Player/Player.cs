@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public List<int> checkpoints;
     [HideInInspector] public HubSaveState hubSaveState;
+    [HideInInspector] public Dictionary<string, int> enemyKillCount;
 
     public float attack1Dam = 5;
     public float attack2Dam = 7.5f;
@@ -71,6 +72,7 @@ public class Player : MonoBehaviour
         jumpParticles = transform.Find("JumpParticles").GetComponent<ParticleSystem>();
         wallJumpParticles_left = transform.Find("WallJumpParticlesLeft").GetComponent<ParticleSystem>();
         wallJumpParticles_right = transform.Find("WallJumpParticlesRight").GetComponent<ParticleSystem>();
+        enemyKillCount = new Dictionary<string, int>();
 
         Inventory[] equipments = GetComponents<Inventory>();
         for (int i = 0; i < equipments.Length; i++)
@@ -333,7 +335,7 @@ public class Player : MonoBehaviour
         List<int> hubChestAmounts;
         List<string> hubChestItems = hubChest.GetItemIds(out hubChestAmounts);
         SaveProfile p = new SaveProfile(currentProfileID, level, essence, storedEssence, timePlayed, numberOfDeaths, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
-                                        checkpoints, lastHubPortalID, hubUnloked,
+                                        enemyKillCount, checkpoints, lastHubPortalID, hubUnloked,
                                                          playerMovement.dashUnlocked, playerMovement.midAirDashUnlocked,
                                                          playerMovement.downwardAttackUnlocked, playerMovement.wallJumpingUnlocked,
                                                          playerMovement.maxJumpCount, playerMovement.dashDistance,
@@ -351,6 +353,7 @@ public class Player : MonoBehaviour
         numberOfDeaths = profile.numberOfDeaths;
         lastHubPortalID = profile.lastHubPortalID;
         hubUnloked = profile.hubUnloked;
+        enemyKillCount = profile.enemyKillCount;
         checkpoints = profile.checkpoints;
         numberOfDeaths = profile.numberOfDeaths;
 
@@ -371,6 +374,19 @@ public class Player : MonoBehaviour
         statusGUI.UpdateHealthbar();
         statusGUI.UpdateInventoryStats();
         statusGUI.UpdateLevelText();
+
+        // cia tik pavyzdys kaip gauti kill count, gali istrint ar uzkomentuoti
+        print("EnemyKillCounts: ");
+        print("Executioner: " + GetEnemyKillCount(typeof(AI_Executioner)));
+        print("male naga: " + GetEnemyKillCount(typeof(AI_MaleNaga)));
+        print("male naga enraged: " + GetEnemyKillCount(typeof(AI_MaleNagaEnraged)));
+        print("female naga: " + GetEnemyKillCount(typeof(AI_FemaleNaga)));
+        print("female naga enraged: " + GetEnemyKillCount(typeof(AI_FemaleNagaEnraged)));
+        print("fire golem: " + GetEnemyKillCount(typeof(AI_FireGolem)));
+        print("ghoul: " + GetEnemyKillCount(typeof(AI_Ghoul)));
+        print("imp: " + GetEnemyKillCount(typeof(AI_Imp)));
+        print("necromancer: " + GetEnemyKillCount(typeof(AI_Necromancer)));
+        print("slug: " + GetEnemyKillCount(typeof(AI_Slug)));
     }
 
     public int GetlastHubPortalID()
@@ -428,6 +444,26 @@ public class Player : MonoBehaviour
         playerMovement.invincibilityFrameTime = frameTime;
     }
     #endregion
+
+    public int GetEnemyKillCount(Type enemyType)
+    {
+        int count;
+        if (enemyKillCount.TryGetValue(enemyType.Name, out count))
+            return count;
+        return 0;
+    }
+    public void AddEnemyKilldedToCount(Type type)
+    {
+        if (enemyKillCount.ContainsKey(type.Name))
+        {
+            enemyKillCount[type.Name]++;
+        }
+        else
+        {
+            enemyKillCount.Add(type.Name, 1);
+        }
+        gamemanager.SaveGame();
+    }
 
     public void FootstepEffectEvent()
     {

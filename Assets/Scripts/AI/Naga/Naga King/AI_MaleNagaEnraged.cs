@@ -238,6 +238,7 @@ public class AI_MaleNagaEnraged : AI_Base
             nagaManager.HideHealthbar(false);
             if (spawnedWhirlwindObject != null)
                 spawnedWhirlwindObject.GetComponent<NagaKingWhirlwindEffect>().Stop();
+            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
         }
         else
         {
