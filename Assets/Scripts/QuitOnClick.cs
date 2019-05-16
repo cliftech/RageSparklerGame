@@ -11,5 +11,7 @@ public class QuitOnClick : MonoBehaviour
 #else
         Application.Quit ();
 #endif
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
