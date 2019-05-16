@@ -10,6 +10,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        SaveManager.ValidateSaves();
         if (SaveManager.profileCount <= 0)
             loadGameButton.interactable = false;
     }

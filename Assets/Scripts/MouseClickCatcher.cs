@@ -11,8 +11,11 @@ public class MouseClickCatcher : MonoBehaviour
     private void Start()
     {
         es = FindObjectOfType<EventSystem>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (!Debug.isDebugBuild)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     private void Update()

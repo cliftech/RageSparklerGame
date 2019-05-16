@@ -13,40 +13,61 @@ public class SaveManager
         Application.persistentDataPath)            // use this in built verion of the game
         + "/SaveData/";
 
-    public static int profileCount { get
+    public static int profileCount
+    {
+        get
         {
             if (!Directory.Exists(savePath))
                 return 0;
             return Directory.GetFiles(savePath, "*.sav").Length;
-        } }
+        }
+    }
+
+    public static void ValidateSaves()
+    {
+        int count = profileCount;
+        for (int i = 0; i < count; i++)
+        {
+            if (LoadProfile(i) == null)
+            {
+                DirectoryInfo dinfo = new DirectoryInfo(savePath);
+                foreach (FileInfo finfo in dinfo.GetFiles())
+                {
+                    finfo.Delete();
+                }
+                return;
+            }
+        }
+    }
 
     public static void SaveProfile(SaveProfile profile)
     {
         string path = savePath + profile.id.ToString() + ".sav";
 
+        if (!Directory.Exists(savePath))
+        {
+            Directory.CreateDirectory(savePath);
+        }
+        if (File.Exists(path))
+        {
+            Debug.Log("Overriding: \"" + path + "\"");
+            File.Delete(path);
+        }
+
+        IFormatter formatter = new BinaryFormatter();
+        Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+
         try
         {
-            if (!Directory.Exists(savePath))
-            {
-                Directory.CreateDirectory(savePath);
-            }
-            if (File.Exists(path))
-            {
-                Debug.Log("Overriding: \"" + path + "\"");
-                File.Delete(path);
-            }
-
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-
             formatter.Serialize(stream, profile);
             stream.Close();
 
             Debug.Log("Saved to: \"" + path + "\"");
         }
-        catch (IOException e)
+        catch (System.Exception e)
         {
             Debug.LogWarning("Saving Failed: \"" + path + "\"\n " + e.Message);
+            stream.Close();
         }
     }
 
@@ -59,20 +80,20 @@ public class SaveManager
 
         string path = savePath + id.ToString() + ".sav";
 
+        IFormatter formatter = new BinaryFormatter();
+        Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
         try
         {
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-
             SaveProfile profile = (SaveProfile)formatter.Deserialize(stream);
             stream.Close();
 
             Debug.Log("Loaded from: \"" + path + "\"");
             return profile;
         }
-        catch (IOException e)
+        catch (System.Exception e)
         {
             Debug.LogWarning("Loading Failed: \"" + path + "\"\n " + e.Message);
+            stream.Close();
         }
         return null;
     }
@@ -113,7 +134,7 @@ public class SaveProfile
         List<string> itemsInInventory, List<int> itemInInventoryAmounts, List<string> itemsInHubChest, List<int> itemInHubChestAmounts,
         Dictionary<string, int> enemyKillCount, List<int> checkpoints, int lastHubPortalID, bool hubUnloked,
         bool dashUnlocked, bool midAirDashUnlocked, bool downwardAttackUnlocked, bool wallJumpingUnlocked, int maxJumpCount,
-        float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime, 
+        float dashDistance, float minDelayBetweenDashes, int maxMidairDashesCount, float invincibilityFrameTime,
         HubSaveState hubSaveState)
     {
         this.id = id;

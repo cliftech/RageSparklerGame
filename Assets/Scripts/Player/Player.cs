@@ -353,7 +353,7 @@ public class Player : MonoBehaviour
         numberOfDeaths = profile.numberOfDeaths;
         lastHubPortalID = profile.lastHubPortalID;
         hubUnloked = profile.hubUnloked;
-        enemyKillCount = profile.enemyKillCount;
+        enemyKillCount = profile.enemyKillCount != null ? profile.enemyKillCount : new Dictionary<string, int>();
         checkpoints = profile.checkpoints;
         numberOfDeaths = profile.numberOfDeaths;
 
