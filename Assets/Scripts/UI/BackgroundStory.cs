@@ -6,19 +6,45 @@ using UnityEngine.SceneManagement;
 
 public class BackgroundStory : MonoBehaviour
 {
-    public Text text;
-    public List<string> storyLines;
-    public float intervalBetweenLines;
-    private float timer;
+    private TextManager textManager;
+    [TextArea(5, 50)]
+    public string story;
+    private string[] storyLines;
     private int lineIndex;
     private bool allLinesShown;
-    public float timeToShowAllLines;
-  
+
+    private float pauseBetweenLines = 0.5f;
+
+    private void Awake()
+    {
+        textManager = GetComponent<TextManager>();
+    }
+
     void Start()
     {
         lineIndex = 0;
-        timer = 0;
-        text.text = "";
+        storyLines = story.Split('\n');
+        textManager.SetActionOnceShown(() => PreviousLineShow());
+        textManager.ClearText();
+        StartCoroutine(ShowNextLineWithDelay(1f));
+    }
+
+    private IEnumerator ShowNextLineWithDelay(float delay) {
+        if (allLinesShown)
+        {
+            LoadSceneById(1);
+            this.enabled = false;
+            textManager.Disable();
+        }
+        else
+        {
+            yield return new WaitForSecondsRealtime(delay);
+            ShowNextLine();
+        }
+    }
+
+    private void PreviousLineShow() {
+        StartCoroutine(ShowNextLineWithDelay(pauseBetweenLines));
     }
 
     
@@ -29,34 +55,18 @@ public class BackgroundStory : MonoBehaviour
             LoadSceneById(1);
             this.enabled = false;
         }
-
-        timer += Time.deltaTime;
-        if (allLinesShown)
-        {
-            if(timer > timeToShowAllLines)
-            {
-                LoadSceneById(1);
-                this.enabled = false;
-            }
-            return;
-        }
-        if(timer >= intervalBetweenLines)
-        {
-            ShowNextLine();
-            timer = 0;
-        }
     }
 
     private void ShowNextLine()
     {
         if (storyLines[lineIndex] == "F")
         {
-            text.text = "";
+            textManager.ClearText();
             lineIndex++;
-        }       
-        text.text += storyLines[lineIndex] + "\n";
+        }
+        textManager.AddLineOfText(storyLines[lineIndex] + "\n");
         lineIndex++;
-        if(lineIndex >= storyLines.Count)
+        if(lineIndex >= storyLines.Length)
             allLinesShown = true;
     }
 

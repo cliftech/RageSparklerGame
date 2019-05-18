@@ -660,6 +660,8 @@ GameObject:
   - component: {fileID: 1732847638}
   - component: {fileID: 1732847637}
   - component: {fileID: 1732847636}
+  - component: {fileID: 1732847640}
+  - component: {fileID: 1732847641}
   m_Layer: 5
   m_Name: Story Text
   m_TagString: Untagged
@@ -681,10 +683,10 @@ RectTransform:
   m_Father: {fileID: 2041309880}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4, y: 120.7}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -24.33}
+  m_SizeDelta: {x: 0, y: -50.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1732847636
 MonoBehaviour:
@@ -698,57 +700,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952cdab8ab4eb1d4e9213489a1bfcdf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 1732847638}
-  storyLines:
-  - My name is Amarth. Many years
-  - ago, my grandfather, the
-  - greatest archeologist of his
-  - time, found this strange amulet.
-  - Though after many years, he
-  - couldn't figure out its
-  - origin.
-  - F
-  - About twenty years ago he
-  - passed away. His final words
-  - 'were: "Amarth, my time has come.'
-  - I couldn't make it. But I
-  - believe that one day you will
-  - find out the true purpose of
-  - this amulet..."
-  - F
-  - Many years of research later,
-  - I'm standing before the ancient
-  - city of Arthon, or what is left
-  - of it. There is very little
-  - information about Arthon.
-  - Some say it is nothing
-  - but a legend.
-  - F
-  - I have a feeling that this is
-  - the place. I hope so. Even
-  - my amulet feels different
-  - here. Can't really explain.
-  - This must be the place. It
-  - just must!
-  - F
-  - -Amarth carefully digs his
-  - way into Arthon trying not
-  - to damage the ancient
-  - buildings.-
-  - F
-  - I love you, grandfather...
-  - .
-  - .
-  - .
-  - -Amarth jumps into the
-  - burried city of Arthon-
-  - F
-  - ' '
-  - ' '
-  - Amarth's adventure
-  - begins
-  intervalBetweenLines: 2
-  timeToShowAllLines: 2
+  story: 'My name is Amarth.
+
+    Many years ago, my grandfather,
+
+    the greatest archeologist of his time,
+
+    found this strange amulet.
+
+
+    Though even after many years,
+
+    he couldn''t figure out its origin.
+
+    F
+
+    About twenty years ago
+
+    he passed away.
+
+    His final words were:
+
+    "Amarth, my time has come.
+
+    I couldn''t make it.
+
+    But I believe that one day
+
+    you will find out the true purpose
+
+    of this amulet..."
+
+    F
+
+    Many years of research later,
+
+    I''m standing before the ancient city
+
+    of Arthon, or what is left of it.
+
+    Little is known about Arthon.
+
+
+    Some say it is nothing
+
+    but a legend.
+
+    F
+
+    I have a feeling that this is the place.
+
+    I hope so.
+
+
+    Even my amulet feels different here.
+
+    Can''t really explain.
+
+
+    This must be the place.
+
+    It just must!
+
+    F
+
+    -Amarth carefully digs his way into Arthon
+
+    trying not to damage the ancient buildings.-
+
+    F
+
+    I love you, grandfather.
+
+    .
+
+    .
+
+    .
+
+    .
+
+    .
+
+    -Amarth jumps into
+
+    the burried city of Arthon-
+
+    F
+
+    Amarth''s adventure begins'
 --- !u!114 &1732847637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,15 +826,15 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e62a4938a6639104d82d5c2eeb048d40, type: 3}
-    m_FontSize: 30
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 60
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Area 0
@@ -806,6 +846,116 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732847634}
   m_CullTransparentMesh: 0
+--- !u!114 &1732847640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732847634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 578ca89fa3ffd6c4985255920b3c1dbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charAppearSound: {fileID: 8300000, guid: 201a1846bad90634d93ec91a076894f2, type: 3}
+--- !u!82 &1732847641
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732847634}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243647591947529784, guid: 3b92fdc85c7735846ab47de2d8fdd1a4,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 256
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2041309876
 GameObject:
   m_ObjectHideFlags: 0

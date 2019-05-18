@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DialogBox : MonoBehaviour
 {
-    public Text text;
+    public TextManager textManager;
     public Text speakerText;
     public RectTransform canvasRect;
     private RectTransform rect;
@@ -15,7 +15,7 @@ public class DialogBox : MonoBehaviour
     void Start()
     {
         rect = GetComponent<RectTransform>();
-        if(text.text == "")
+        if(textManager.isEmpty())
             HideText();
     }
 
@@ -23,8 +23,9 @@ public class DialogBox : MonoBehaviour
     {
         gameObject.SetActive(true);
         if (rect == null)
-            Start();
-        this.text.text = text;
+            rect = GetComponent<RectTransform>();
+        textManager.SetActionOnceShown(() => AllTextIsShown());
+        textManager.ShowAllText(text);
         speakerText.text = speakerName;
         keyIcon.enabled = showKeyIcon;
         if(timeToShow > 0)
@@ -36,7 +37,12 @@ public class DialogBox : MonoBehaviour
 
     public void HideText()
     {
+        textManager.ClearText();
         gameObject.SetActive(false);
+    }
+
+    private void AllTextIsShown() {
+
     }
 
     private IEnumerator HideAfter(float time)
