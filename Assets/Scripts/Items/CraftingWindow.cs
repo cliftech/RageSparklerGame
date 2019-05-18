@@ -30,7 +30,12 @@ public class CraftingWindow : MonoBehaviour
     {
         Init();
         for (int i = 0; i < craftingRecipes.Count; i++)
-            craftingRecipeUIs[i].slots[craftingRecipeUIs[i].slots.Length-1].craftRecipe = craftingRecipes[i];
+        {
+            for (int j = 0; j < craftingRecipeUIs[i].slots.Length; j++)
+            {
+                craftingRecipeUIs[i].slots[j].craftRecipe = craftingRecipes[i];
+            }
+        }
     }
 
     private void Init()

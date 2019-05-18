@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b74eb738ac46d548913ea2b8634f1c6, type: 3}
+  m_Name: IronRing
+  m_EditorClassIdentifier: 
+  Materials:
+  - item: {fileID: 11400000, guid: 207ac906f761d1d44909db1f7bb6b181, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: af2cacc56857e2d49aa2b3998ed79683, type: 2}
+    amount: 1
+  Results:
+  - item: {fileID: 11400000, guid: 87a2c4f8255a8b448b825a535fef1d3c, type: 2}
+    amount: 1

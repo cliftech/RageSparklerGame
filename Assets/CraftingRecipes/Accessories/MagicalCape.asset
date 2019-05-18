@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b74eb738ac46d548913ea2b8634f1c6, type: 3}
+  m_Name: MagicalCape
+  m_EditorClassIdentifier: 
+  Materials:
+  - item: {fileID: 11400000, guid: 36e8a4b77e01d4747aaf1f0b2e43b7c8, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: b184fb9e9dc7a994280cb93ada2918db, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 418c032a4e7c5c94e9c4f5da729c5f7c, type: 2}
+    amount: 3
+  Results:
+  - item: {fileID: 11400000, guid: 980889149b0b79848a80ffa42c5133f4, type: 2}
+    amount: 1

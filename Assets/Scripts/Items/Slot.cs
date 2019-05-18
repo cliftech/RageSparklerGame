@@ -86,9 +86,14 @@ public class Slot : MonoBehaviour
             inter.Unequip(itemas, this);
             plr.statusGUI.UpdatePotionCharges();
         }
-        if (Input.GetButtonDown("Swap") && selected && gameObject.name == "CraftButton" && once == null)
+        if (Input.GetButtonDown("Swap") && selected && (gameObject.name == "CraftButton" || gameObject.name == "Item Slot") && once == null)
         {
             once = craftRecipe.name;
+            if(gameObject.name == "Item Slot")
+            {
+                this.GetComponentInParent<Transform>().GetComponentInParent<CraftingUI>().OnCraftButtonClick(craftRecipe);
+            }
+            else
             this.GetComponentInParent<CraftingUI>().OnCraftButtonClick(craftRecipe);
         }
     }

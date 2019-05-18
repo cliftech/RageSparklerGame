@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CraftingUI : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class CraftingUI : MonoBehaviour
         {
             if (craftWindow.craftingRecipeUIs[i].gameObject.activeSelf)
             {
-                EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].transform.Find("CraftButton").gameObject);
+                EventSystem.current.SetSelectedGameObject(craftWindow.craftingRecipeUIs[i].slots[0].gameObject);
                 break;
             }
         }
@@ -60,6 +61,7 @@ public class CraftingUI : MonoBehaviour
 
     public void UpdateOneCraftingRecipe()
     {
+        int count = 0;
         if (!this.Recipe.CanCraft(Equipment, HubChest) && !craftWindow.showAll)
             gameObject.SetActive(false);
         else
@@ -69,9 +71,24 @@ public class CraftingUI : MonoBehaviour
             {
                 slots[i].amountText.text = recipe.Materials[i].amount.ToString()+"/"+ recipe.CountAmount(Equipment, HubChest, recipe.Materials[i]).ToString();
                 if (recipe.CountAmount(Equipment, HubChest, recipe.Materials[i]) < recipe.Materials[i].amount)
+                {
                     slots[i].amountText.color = Color.red;
+                    count++;
+                }
                 else
+                {
                     slots[i].amountText.color = Color.white;
+                }
+            }
+            if (count > 0)
+            {
+                slots[slots.Length - 1].GetComponentInChildren<Text>().color = Color.red;
+                slots[slots.Length - 1].GetComponent<Image>().color = Color.black;
+            }
+            else
+            {
+                slots[slots.Length - 1].GetComponentInChildren<Text>().color = Color.white;
+                slots[slots.Length - 1].GetComponent<Image>().color = Color.white;
             }
         }
     }

@@ -10,19 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc4b81e89a8f586439ab23ebaa16bdf6, type: 3}
-  m_Name: BasicRing
+  m_Name: ExecSkull
   m_EditorClassIdentifier: 
   Object2D: {fileID: 8899865901792235539, guid: 693c2c8857d5a91488540fbf462ed228,
     type: 3}
-  quality: 0
-  id: 207ac906f761d1d44909db1f7bb6b181
-  itemName: Basic Ring
-  description: 
-  icon: {fileID: 21300000, guid: c3cc53557c1b092489a6e2a05e1cae37, type: 3}
-  pickedUp: 0
-  equipable: 1
+  quality: 3
+  equipable: 0
+  icon: {fileID: 21300000, guid: a6a79a10b1fd6bb4ab5a9d521596b8f4, type: 3}
+  itemName: Executioner's skull
+  type: 11
+  MaximumStack: 99
   damage: 0
   armor: 0
-  health: 5
-  type: 9
+  health: 0
+  Empty: {fileID: 0}
+  TwoThirds: {fileID: 0}
+  OneThird: {fileID: 0}
+  Full: {fileID: 0}
   healPercent: 0
+  maxUses: 0
+  currentUses: 0
+  description: Craftable with ring
+  ID: 54

@@ -23,6 +23,12 @@ MonoBehaviour:
   damage: 0
   armor: 0
   health: 0
+  Empty: {fileID: 0}
+  TwoThirds: {fileID: 0}
+  OneThird: {fileID: 0}
+  Full: {fileID: 0}
   healPercent: 0
+  maxUses: 0
+  currentUses: 0
   description: Craftable with fire equipment
-  ID: 
+  ID: 38
