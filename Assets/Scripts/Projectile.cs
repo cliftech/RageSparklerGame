@@ -32,6 +32,8 @@ public class Projectile : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
         this.lookDirection = lookDirection;
+
+        GetComponent<DamageContainer>().SetDamageCall(() => damage);
     }
 
     void Update()
@@ -75,10 +77,6 @@ public class Projectile : MonoBehaviour
         collider.enabled = false;
     }
 
-    public float GetDamage()
-    {
-        return damage;
-    }
     void OnTriggerEnter2D(Collider2D other)
     {
         Explode();

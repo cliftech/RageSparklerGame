@@ -237,7 +237,7 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(enemyWeaponTag) && !isDead && !playerMovement.isInvulnerable)
+        if ((other.CompareTag(enemyWeaponTag) || other.CompareTag("Projectile")) && !isDead && !playerMovement.isInvulnerable)
         {
             GetHit(other.transform.GetComponentInParent<DamageContainer>().GetDamage(),
                 other.transform.position.x > transform.position.x ? 1 : -1);
@@ -248,17 +248,17 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (other.CompareTag("Projectile") && !isDead && !playerMovement.isInvulnerable)
-        {
-            Projectile p = other.transform.GetComponentInParent<Projectile>();
-            GetHit(p.GetDamage(),
-                other.transform.position.x > transform.position.x ? 1 : -1);
-            if (isDrinkingPotion && playerMovement.isDisabled)
-            {
-                playerMovement.SetEnabled(true);
-                isDrinkingPotion = false;
-            }
-        }
+        //if (other.CompareTag("Projectile") && !isDead && !playerMovement.isInvulnerable)
+        //{
+        //    Projectile p = other.transform.GetComponentInParent<Projectile>();
+        //    GetHit(p.GetDamage(),
+        //        other.transform.position.x > transform.position.x ? 1 : -1);
+        //    if (isDrinkingPotion && playerMovement.isDisabled)
+        //    {
+        //        playerMovement.SetEnabled(true);
+        //        isDrinkingPotion = false;
+        //    }
+        //}
 
         if (other.gameObject.CompareTag("Pick Up"))
         {
