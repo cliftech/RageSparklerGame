@@ -10,8 +10,8 @@ public class PlayerSoundController : MonoBehaviour
     public AudioSource footstepSource;
 
     public AudioClip footstepSound, jumpGroundedSound, jumpInAirSound, landSound, getHitSound, dashGroundedSound, dashInAirSound;
-    public AudioClip attack1Sound, attack2Sound, attack3Sound, airAttack1Sound, airAttack2Sound, downwardAttackStartSound, downwardAttackCommenceSound
-        ;
+    public AudioClip attack1Sound, attack2Sound, attack3Sound, airAttack1Sound, airAttack2Sound, downwardAttackStartSound, downwardAttackCommenceSound;
+    public AudioClip squishSound;
     public AudioClip usePotionSound, useEmptyItemSound;
 
     private void Awake()
@@ -64,6 +64,10 @@ public class PlayerSoundController : MonoBehaviour
     {
         if(useEmptyItemSound != null)
             audioSource.PlayOneShot(useEmptyItemSound);
+    }
+    public void PlaySquishPlayerSound()
+    {
+        audioSource.PlayOneShot(squishSound);
     }
     public void Update()
     {

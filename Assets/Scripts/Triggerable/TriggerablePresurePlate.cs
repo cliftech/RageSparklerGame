@@ -10,6 +10,9 @@ public class TriggerablePresurePlate : MonoBehaviour
 
     public AudioClip activateSound;
     private AudioSource audioSource;
+    public bool triggerOnCollision = false;
+
+    private bool isReadyToTrigger = true;
 
     private void Awake()
     {
@@ -20,9 +23,12 @@ public class TriggerablePresurePlate : MonoBehaviour
 
     public void TriggerEvent()
     {
+        if (!isReadyToTrigger)
+            return;
         foreach(TriggerableTrap t in traps)
             if(t.gameObject.activeSelf)
                 t.Trigger();
+        isReadyToTrigger = false;
     }
 
     public void HasResetEvent()
@@ -33,12 +39,15 @@ public class TriggerablePresurePlate : MonoBehaviour
     private IEnumerator Reset() {
         yield return new WaitForSecondsRealtime(resetTime);
         animator.SetTrigger("Reset");
+        isReadyToTrigger = true;
     }
 
     public void TriggerAnimation(Collider2D other)
     {
         if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
+            if (triggerOnCollision)
+                TriggerEvent();
             animator.SetTrigger("Trigger");
             audioSource.Play();
             StartCoroutine(Reset());

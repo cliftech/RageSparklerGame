@@ -333,6 +333,7 @@ MonoBehaviour:
     type: 3}
   downwardAttackCommenceSound: {fileID: 8300000, guid: ad29f7481fe36844181e97d2f6f3babf,
     type: 3}
+  squishSound: {fileID: 8300000, guid: 08e97a499fcd1f544ad31af44eb235bb, type: 3}
   usePotionSound: {fileID: 8300000, guid: ce38076f3480b3b489df9428defb067c, type: 3}
   useEmptyItemSound: {fileID: 0}
 --- !u!82 &1945360915

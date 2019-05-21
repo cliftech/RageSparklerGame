@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c592c94e5f9c86c44bbd208ea7d64a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trap: {fileID: 0}
+  traps: []
   resetTime: 5
-  activateSound: {fileID: 8300000, guid: 1d608ce22e228b0478104528e67b9492, type: 3}
+  activateSound: {fileID: 8300000, guid: 5fe5a22a3044b934f9a5351bf1e65cc6, type: 3}
 --- !u!95 &7626919059994298062
 Animator:
   serializedVersion: 3

@@ -32,8 +32,11 @@ public class ParticleEffectManager : MonoBehaviour
     private void Play(ParticleSystem particleSystem, Vector3 position, Vector3 direction)
     {
         particleSystem.transform.position = position;
+        if (direction == Vector3.zero)
+            direction = Vector3.back;
         particleSystem.transform.forward = direction;
         particleSystem.Play();
+
     }
 }
 

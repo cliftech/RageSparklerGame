@@ -115,10 +115,15 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <param name="damage">the amount of damage to deal</param>
     /// <param name="knockBackDirection">set to 1 if attack came from right of PC, -1 if from left, leave 0 if no knockback</param>
-    public void GetHit(float damage, int knockBackDirection = 0)
+    public void GetHit(float damage, int knockBackDirection = 0, bool dealRawDamage = false)
     {
-        float damageReduction = 1 - (0.052f * Armor) / (0.9f + 0.048f * Armor);
-        health -= damage * damageReduction;
+        if (!dealRawDamage)
+        {
+            float damageReduction = 1 - (0.052f * Armor) / (0.9f + 0.048f * Armor);
+            health -= damage * damageReduction;
+        }
+        else
+            health -= damage;
         if (knockBackDirection == 2)
             playerMovement.KnockbackUp(damage);
         else if (knockBackDirection != 0)
@@ -128,7 +133,7 @@ public class Player : MonoBehaviour
         statusGUI.UpdateHealthbar();
         soundController.PlayGetHitSound();
         cameraController.Shake(damage);
-        ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, playerMovement.capsColl.bounds.center, knockBackDirection == 1 ? Vector3.left : Vector3.right);
+        ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, playerMovement.capsColl.bounds.center, knockBackDirection == 1 ? Vector3.left : knockBackDirection == -1 ? Vector3.right : Vector3.zero);
     }
 
     public void SetItemStats()
@@ -171,6 +176,7 @@ public class Player : MonoBehaviour
         playerMovement.animator.SetBool("Dead", true);
         StartCoroutine(StopMovingAfterDelay(0.5f));
         essence /= 2;
+        gameObject.layer = LayerMask.NameToLayer("NonKinematicNonInteractable");
         statusGUI.UpdateEssenceText();
         gamemanager.SaveGame();
         gamemanager.StartCoroutine(gamemanager.ResetLevel(respawnPortalID, 2f));
@@ -184,6 +190,7 @@ public class Player : MonoBehaviour
     public void Revive()
     {
         isDead = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
         health = activeMaxHealth;
         playerMovement.animator.SetBool("Dead", false);
         statusGUI.UpdateHealthbar();
@@ -192,6 +199,13 @@ public class Player : MonoBehaviour
     public void SetRespawnPortal(int respawnPortalID)
     {
         this.respawnPortalID = respawnPortalID;
+    }
+    public void Squish()
+    {
+        if (isDead)
+            return;
+        GetHit(activeMaxHealth, 0, true);
+        soundController.PlaySquishPlayerSound();
     }
     public void LevelUp()
     {
@@ -376,17 +390,17 @@ public class Player : MonoBehaviour
         statusGUI.UpdateLevelText();
 
         // cia tik pavyzdys kaip gauti kill count, gali istrint ar uzkomentuoti
-        //print("EnemyKillCounts: ");
-        //print("Executioner: " + GetEnemyKillCount(typeof(AI_Executioner)));
-        //print("male naga: " + GetEnemyKillCount(typeof(AI_MaleNaga)));
-        //print("male naga enraged: " + GetEnemyKillCount(typeof(AI_MaleNagaEnraged)));
-        //print("female naga: " + GetEnemyKillCount(typeof(AI_FemaleNaga)));
-        //print("female naga enraged: " + GetEnemyKillCount(typeof(AI_FemaleNagaEnraged)));
-        //print("fire golem: " + GetEnemyKillCount(typeof(AI_FireGolem)));
-        //print("ghoul: " + GetEnemyKillCount(typeof(AI_Ghoul)));
-        //print("imp: " + GetEnemyKillCount(typeof(AI_Imp)));
-        //print("necromancer: " + GetEnemyKillCount(typeof(AI_Necromancer)));
-        //print("slug: " + GetEnemyKillCount(typeof(AI_Slug)));
+        print("EnemyKillCounts: ");
+        print("Executioner: " + GetEnemyKillCount(typeof(AI_Executioner)));
+        print("male naga: " + GetEnemyKillCount(typeof(AI_MaleNaga)));
+        print("male naga enraged: " + GetEnemyKillCount(typeof(AI_MaleNagaEnraged)));
+        print("female naga: " + GetEnemyKillCount(typeof(AI_FemaleNaga)));
+        print("female naga enraged: " + GetEnemyKillCount(typeof(AI_FemaleNagaEnraged)));
+        print("fire golem: " + GetEnemyKillCount(typeof(AI_FireGolem)));
+        print("ghoul: " + GetEnemyKillCount(typeof(AI_Ghoul)));
+        print("imp: " + GetEnemyKillCount(typeof(AI_Imp)));
+        print("necromancer: " + GetEnemyKillCount(typeof(AI_Necromancer)));
+        print("slug: " + GetEnemyKillCount(typeof(AI_Slug)));
     }
 
     public int GetlastHubPortalID()
