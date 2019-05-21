@@ -376,17 +376,17 @@ public class Player : MonoBehaviour
         statusGUI.UpdateLevelText();
 
         // cia tik pavyzdys kaip gauti kill count, gali istrint ar uzkomentuoti
-        print("EnemyKillCounts: ");
-        print("Executioner: " + GetEnemyKillCount(typeof(AI_Executioner)));
-        print("male naga: " + GetEnemyKillCount(typeof(AI_MaleNaga)));
-        print("male naga enraged: " + GetEnemyKillCount(typeof(AI_MaleNagaEnraged)));
-        print("female naga: " + GetEnemyKillCount(typeof(AI_FemaleNaga)));
-        print("female naga enraged: " + GetEnemyKillCount(typeof(AI_FemaleNagaEnraged)));
-        print("fire golem: " + GetEnemyKillCount(typeof(AI_FireGolem)));
-        print("ghoul: " + GetEnemyKillCount(typeof(AI_Ghoul)));
-        print("imp: " + GetEnemyKillCount(typeof(AI_Imp)));
-        print("necromancer: " + GetEnemyKillCount(typeof(AI_Necromancer)));
-        print("slug: " + GetEnemyKillCount(typeof(AI_Slug)));
+        //print("EnemyKillCounts: ");
+        //print("Executioner: " + GetEnemyKillCount(typeof(AI_Executioner)));
+        //print("male naga: " + GetEnemyKillCount(typeof(AI_MaleNaga)));
+        //print("male naga enraged: " + GetEnemyKillCount(typeof(AI_MaleNagaEnraged)));
+        //print("female naga: " + GetEnemyKillCount(typeof(AI_FemaleNaga)));
+        //print("female naga enraged: " + GetEnemyKillCount(typeof(AI_FemaleNagaEnraged)));
+        //print("fire golem: " + GetEnemyKillCount(typeof(AI_FireGolem)));
+        //print("ghoul: " + GetEnemyKillCount(typeof(AI_Ghoul)));
+        //print("imp: " + GetEnemyKillCount(typeof(AI_Imp)));
+        //print("necromancer: " + GetEnemyKillCount(typeof(AI_Necromancer)));
+        //print("slug: " + GetEnemyKillCount(typeof(AI_Slug)));
     }
 
     public int GetlastHubPortalID()

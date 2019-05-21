@@ -13,6 +13,14 @@ public class SaveManager
         Application.persistentDataPath)            // use this in built verion of the game
         + "/SaveData/";
 
+    public static string settingsDirPath = (Application.isEditor ?
+        Application.dataPath                       // use this only in editor mode
+                                        :
+        Application.persistentDataPath)            // use this in built verion of the game
+        + "/SaveData/";
+
+    public static string settingsPath = settingsDirPath + "/settings.ini";
+
     public static int profileCount
     {
         get
@@ -98,6 +106,59 @@ public class SaveManager
         return null;
     }
 
+    public static void SaveSettings(Settings settings)
+    {
+        if (!Directory.Exists(savePath))
+            Directory.CreateDirectory(savePath);
+        if (!Directory.Exists(settingsDirPath))
+            Directory.CreateDirectory(settingsDirPath);
+
+        if (File.Exists(settingsPath))
+        {
+            Debug.Log("Overriding: \"" + settingsPath + "\"");
+            File.Delete(settingsPath);
+        }
+
+        IFormatter formatter = new BinaryFormatter();
+        Stream stream = new FileStream(settingsPath, FileMode.Create, FileAccess.Write);
+
+        try
+        {
+            formatter.Serialize(stream, settings);
+            stream.Close();
+
+            Debug.Log("Saved to: \"" + settingsPath + "\"");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("Saving Failed: \"" + settingsPath + "\"\n " + e.Message);
+            stream.Close();
+        }
+    }
+
+    public static Settings LoadSettings()
+    {
+        if (!File.Exists(settingsPath))
+            return null;
+
+        IFormatter formatter = new BinaryFormatter();
+        Stream stream = new FileStream(settingsPath, FileMode.Open, FileAccess.Read);
+        try
+        {
+            Settings settings = (Settings)formatter.Deserialize(stream);
+            stream.Close();
+
+            Debug.Log("Loaded from: \"" + settingsPath + "\"");
+            return settings;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("Loading Failed: \"" + settingsPath + "\"\n " + e.Message);
+            stream.Close();
+        }
+        return null;
+    }
+
 }
 
 [System.Serializable]
@@ -174,5 +235,20 @@ public class SaveProfile
         foreach (var s in itemsInHubChest)
             res += s + ", ";
         return res;
+    }
+}
+
+[System.Serializable]
+public class Settings
+{
+    public int lastSavedProfile;
+    public int profileToLoad;
+    public bool firstTimeLoadingProfile;
+
+    public Settings(int lastSavedProfile, int profileToLoad, bool firstTimeLoadingProfile)
+    {
+        this.lastSavedProfile = lastSavedProfile;
+        this.profileToLoad = profileToLoad;
+        this.firstTimeLoadingProfile = firstTimeLoadingProfile;
     }
 }

@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     private Level currentLevel;
     public bool isCurrLevelHub { get { return currentLevel != null && currentLevel.isHub; } }
 
+    public Settings settings { get; private set; }
+
     private Coroutine gameSavingAfterIntervalRoutine;
 
     void Awake()
@@ -43,16 +45,21 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        int profileToLoad = PlayerPrefs.GetInt("SaveProfileToLoad", 0);
-        print("Loading profile: " + profileToLoad);
-        if (SaveManager.profileCount == 0 || profileToLoad >= SaveManager.profileCount)
+        settings = SaveManager.LoadSettings();
+        if (settings == null)
         {
+            settings = new Settings(0, 0, true);
+        }
+
+        if (settings.firstTimeLoadingProfile)
+        {
+            Debug.LogWarning("you sould launch the game from main menu");
             // creating a new game save profile
             List<int> inventoryAmounts;
             List<string> inventoryItems = player.equipment.GetItemIds(out inventoryAmounts);
             List<int> hubChestAmounts;
             List<string> hubChestItems = player.hubChest.GetItemIds(out hubChestAmounts);
-            SaveProfile p = new SaveProfile(profileToLoad, 1, 0, 0, 0, 0, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
+            SaveProfile p = new SaveProfile(settings.profileToLoad, 1, 0, 0, 0, 0, inventoryItems, inventoryAmounts, hubChestItems, hubChestAmounts,
                                                          player.enemyKillCount, player.checkpoints, -1, false,
                                                          player.playerMovement.dashUnlocked, player.playerMovement.midAirDashUnlocked,
                                                          player.playerMovement.downwardAttackUnlocked, player.playerMovement.wallJumpingUnlocked,
@@ -62,6 +69,7 @@ public class GameManager : MonoBehaviour
             player.LoadFromProfile(p);
             SaveGame(true);
         }
+        int profileToLoad = settings.profileToLoad;
         playerParent = player.transform.parent;
 
         LoadGame(profileToLoad);
@@ -97,7 +105,13 @@ public class GameManager : MonoBehaviour
                 gameSavingAfterIntervalRoutine = StartCoroutine(SaveGameAfterInterval(0.5f));
         }
         else
-            SaveManager.SaveProfile(player.GetCurrentProfile());
+        {
+            SaveProfile profile = player.GetCurrentProfile();
+            SaveManager.SaveProfile(profile);
+
+            settings.lastSavedProfile = profile.id;
+            SaveManager.SaveSettings(settings);
+        }
     }
 
     public void LoadGame(int profileID = -1)
@@ -113,6 +127,8 @@ public class GameManager : MonoBehaviour
         player.SetItemStats();
         player.statusGUI.UpdateInventoryStats();
         player.statusGUI.UpdatePotionCharges();
+
+        settings = SaveManager.LoadSettings();
     }
 
 
