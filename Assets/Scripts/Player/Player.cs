@@ -286,11 +286,11 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.CompareTag("Rune"))
         {
-            if (other.gameObject.name.StartsWith("DuobleJumpRune") || other.gameObject.name.StartsWith("TripleJumpRune"))
+            if (other.gameObject.name.StartsWith("DoubleJumpRune") || other.gameObject.name.StartsWith("TripleJumpRune"))
             {
                 UpgradeAirJumpCount(playerMovement.maxJumpCount);
                 if (playerMovement.maxJumpCount == 2)
-                    areaNotText.ShowNotification("Duoble Jump unlocked!");
+                    areaNotText.ShowNotification("Double Jump unlocked!");
                 if (playerMovement.maxJumpCount == 3)
                     areaNotText.ShowNotification("Triple Jump unlocked!");
             }
@@ -324,7 +324,7 @@ public class Player : MonoBehaviour
             {              
                 UpgradeMaxMidAirDashCount(++playerMovement.maxMidairDashesCount);
                 if(playerMovement.maxMidairDashesCount == 2)
-                    areaNotText.ShowNotification("Duoble Air Dash unlocked!");
+                    areaNotText.ShowNotification("Double Air Dash unlocked!");
                 if (playerMovement.maxMidairDashesCount == 3)
                     areaNotText.ShowNotification("Triple Air Dash unlocked!");
             }
@@ -484,7 +484,7 @@ public class Player : MonoBehaviour
             return count;
         return 0;
     }
-    public void AddEnemyKilldedToCount(Type type)
+    public void AddEnemyKilledToCount(Type type)
     {
         if (enemyKillCount.ContainsKey(type.Name))
         {

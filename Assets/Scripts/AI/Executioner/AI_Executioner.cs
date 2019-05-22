@@ -453,7 +453,7 @@ public class AI_Executioner : AI_Base
             p.hubSaveState.UnlockHubPortal(3);
             p.hubSaveState.UnlockHubSmithNpc();
             p.hubSaveState.UnlockEssenceCollector();
-            p.AddEnemyKilldedToCount(this.GetType());
+            p.AddEnemyKilledToCount(this.GetType());
             FindObjectOfType<GameManager>().SaveGame(true);
         }
         else

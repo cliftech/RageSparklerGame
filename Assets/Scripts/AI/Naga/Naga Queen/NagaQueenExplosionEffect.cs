@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class NagaQueenExplosionEffect : MonoBehaviour
 {
-    public float fadeInTime;
     public float activeTime;
-    public float fadeOutTime;
+    private Animator animator;
     private DamageContainer damageContainer;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
@@ -15,36 +14,24 @@ public class NagaQueenExplosionEffect : MonoBehaviour
         damageContainer = GetComponent<DamageContainer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         circleCollider = GetComponent<CircleCollider2D>();
+        animator = GetComponent<Animator>();
         circleCollider.enabled = false;
         damageContainer.SetDamageCall(() => damage);
-        StartCoroutine(FadeIn());
+        DisableCollider();
     }
-    private IEnumerator FadeIn()
+    public void EnableCollider()
     {
-        float speed = 1 / fadeInTime;
-        Color c = spriteRenderer.color;
-        c.a = 0;
-        spriteRenderer.color = c;
-        while (c.a < 0.99f)
-        {
-            c.a += Time.deltaTime * speed;
-            spriteRenderer.color = c;
-            yield return null;
-        }
-        c.a = 1;
-        spriteRenderer.color = c;
         circleCollider.enabled = true;
-        yield return new WaitForSecondsRealtime(activeTime);
+        StartCoroutine(EndExplosion(activeTime));
+    }
+    public void DisableCollider()
+    {
         circleCollider.enabled = false;
-        speed = 1 / fadeOutTime;
-        while (c.a > 0.01f)
-        {
-            c.a -= Time.deltaTime * speed;
-            spriteRenderer.color = c;
-            yield return null;
-        }
-        c.a = 0;
-        spriteRenderer.color = c;
-        Destroy(gameObject, 1);
+        Destroy(gameObject, 3);
+    }
+    IEnumerator EndExplosion(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        animator.SetTrigger("End");
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class InGameMenu : MonoBehaviour
 {
-    public GameObject Menu;
+    public GameObject menu;
     public GameObject audioPanel;
     public GameObject buttonToSelectOnOpen;
     private EventSystem eventSystem;
@@ -37,7 +37,7 @@ public class InGameMenu : MonoBehaviour
     {
         if (Input.GetButtonDown("Menu"))
         {
-            if (!Menu.activeSelf)
+            if (!menu.activeSelf)
             {
                 previouslySelected = eventSystem.currentSelectedGameObject;
                 previousPlayerEnabled = !player.playerMovement.isDisabled;
@@ -48,24 +48,24 @@ public class InGameMenu : MonoBehaviour
                 eventSystem.SetSelectedGameObject(previouslySelected);
                 player.playerMovement.SetEnabled(previousPlayerEnabled);
             }
-            isShowing = !Menu.activeSelf;
+            isShowing = !menu.activeSelf;
 
             if (!isAudioPanelShowing)
             {
-                if (Menu.activeSelf)
+                if (menu.activeSelf)
                 {
-                    Menu.SetActive(false);
+                    menu.SetActive(false);
                 }
                 else
                 {
-                    Menu.SetActive(true);
+                    menu.SetActive(true);
                     eventSystem.SetSelectedGameObject(buttonToSelectOnOpen);
                     isAudioPanelShowing = false;
                 }
             }
             else
             {
-                Menu.SetActive(true);
+                menu.SetActive(true);
                 audioPanel.SetActive(false);
                 eventSystem.SetSelectedGameObject(buttonToSelectOnOpen);
             }
@@ -75,5 +75,17 @@ public class InGameMenu : MonoBehaviour
     public void ShowAudioPanel(bool b)
     {
         isAudioPanelShowing = b;
+    }
+    public void HideMainMenu()
+    {
+        StartCoroutine(DisableAfterOneFrame());
+    }
+    IEnumerator DisableAfterOneFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        eventSystem.SetSelectedGameObject(previouslySelected);
+        player.playerMovement.SetEnabled(previousPlayerEnabled);
+        menu.SetActive(false);
+        isShowing = false;
     }
 }

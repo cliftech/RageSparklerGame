@@ -16,6 +16,8 @@ public class AI_FemaleNaga : AI_Base
     public AudioClip pierceAttackHitSound;
     public AudioClip getHitSound;
 
+    private Transform originalParent;
+
     public bool startFacingLeft;
     public float staffAttackDamage;
     public float rangedAttackDamage;
@@ -34,6 +36,7 @@ public class AI_FemaleNaga : AI_Base
     void Awake()
     {
         nagaManager = transform.parent.GetComponent<Naga_Manager>();
+        originalParent = transform.parent;
         sound = GetComponent<AI_Soundmanager>();
         Initialize();
     }
@@ -66,6 +69,9 @@ public class AI_FemaleNaga : AI_Base
 
     void Update()
     {
+        if (staggerCounter > 0)
+            staggerCounter -= Time.deltaTime * staggerFalloff;
+
         float dist = Vector2.Distance(transform.position, target.position);
         switch (state)
         {
@@ -235,7 +241,7 @@ public class AI_FemaleNaga : AI_Base
             nagaManager.Died(true);
             nagaManager.HideHealthbar(true);
             this.enabled = false;
-            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
+            target.GetComponent<Player>().AddEnemyKilledToCount(this.GetType());
         }
         else
         {
@@ -275,6 +281,6 @@ public class AI_FemaleNaga : AI_Base
     }
     void SpawnExplosion()
     {
-        Instantiate(explosionPrefab, target.position, Quaternion.identity, transform.parent).GetComponent<NagaQueenExplosionEffect>().Set(target.position, rangedAttackDamage);
+        Instantiate(explosionPrefab, target.position, Quaternion.identity, originalParent).GetComponent<NagaQueenExplosionEffect>().Set(target.position, rangedAttackDamage);
     }
 }

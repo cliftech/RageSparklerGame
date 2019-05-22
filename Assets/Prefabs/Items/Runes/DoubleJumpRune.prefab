@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6693089305408284384}
   - component: {fileID: 4531320995489465998}
   m_Layer: 13
-  m_Name: DuobleJumpRune
+  m_Name: DoubleJumpRune
   m_TagString: Rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,8 +145,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 1.017235
   m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1

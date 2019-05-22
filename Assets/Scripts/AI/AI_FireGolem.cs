@@ -272,7 +272,7 @@ public class AI_FireGolem : AI_Base
         {
             if (state != State.Dead)
                 SetDead(isRight, this.GetType());
-            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
+            target.GetComponent<Player>().AddEnemyKilledToCount(this.GetType());
         }
         else
         {

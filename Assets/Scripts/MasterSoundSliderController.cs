@@ -1,40 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class MasterSoundSliderController : MonoBehaviour
 {
+    public AudioMixer audioMixer;
+
     public UnityEngine.UI.Slider masterSlider;
     public UnityEngine.UI.Slider musicSlider;
     public UnityEngine.UI.Slider soundsSlider;
-    // Start is called before the first frame update
+
     void Start()
     {
-        masterSlider.value = PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : 1;
-        musicSlider.value = PlayerPrefs.HasKey("MusicVolume") ? PlayerPrefs.GetFloat("MusicVolume") : 1;
-        soundsSlider.value = PlayerPrefs.HasKey("SoundsVolume") ? PlayerPrefs.GetFloat("SoundsVolume") : 1;
+        SetMasterVolume(PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : 0);
+        SetSoundVolume(PlayerPrefs.HasKey("SoundsVolume") ? PlayerPrefs.GetFloat("SoundsVolume") : 0);
+        SetMusicVolume(PlayerPrefs.HasKey("MusicVolume") ? PlayerPrefs.GetFloat("MusicVolume") : 0);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void SetMasterVolume(float vol)
     {
         masterSlider.value = vol;
+        audioMixer.SetFloat("MasterVolume", vol * 5);
         PlayerPrefs.SetFloat("MasterVolume", vol);
-        SetSoundVolume(vol);
-        SetMusicVolume(vol);
     }
     public void SetSoundVolume(float vol)
     {
         soundsSlider.value = vol;
+        audioMixer.SetFloat("SoundsVolume", vol * 5);
         PlayerPrefs.SetFloat("SoundsVolume", vol);
     }
     public void SetMusicVolume(float vol)
     {
         musicSlider.value = vol;
+        audioMixer.SetFloat("MusicVolume", vol * 5);
         PlayerPrefs.SetFloat("MusicVolume", vol);
     }
 }

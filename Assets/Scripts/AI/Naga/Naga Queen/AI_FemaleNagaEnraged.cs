@@ -18,6 +18,7 @@ public class AI_FemaleNagaEnraged : AI_Base
     public AudioClip getHitSound;
 
     private Transform[] tpPositions;
+    private Transform originalParent;
 
     public float staffAttackDamage;
     public float rangedAttackDamage;
@@ -26,9 +27,6 @@ public class AI_FemaleNagaEnraged : AI_Base
     private float pierceAttackRange;
     private float timeBetweenRanged;
     private float immobilizeTime;
-    private float staggerCounter;
-    private float staggerFalloff;
-    private int maxStaggerCount;
     private bool canRangedAttack = true;
     private bool canTakeDamage = true;
     public string displayName = "Queen Naga";
@@ -38,7 +36,8 @@ public class AI_FemaleNagaEnraged : AI_Base
     private int currTpIndex;
     void Awake()
     {
-        nagaManager = transform.parent.GetComponent<Naga_Manager>();
+        nagaManager = FindObjectOfType<Naga_Manager>();
+        originalParent = transform.parent;
         platforms = Resources.FindObjectsOfTypeAll<BossArenaPlatforms>()[0];
         sound = GetComponent<AI_Soundmanager>();
 
@@ -51,10 +50,6 @@ public class AI_FemaleNagaEnraged : AI_Base
         pierceAttackRange = 3;
         timeBetweenRanged = 0.5f;
         immobilizeTime = 7.5f;
-        staggerVelocity = 0.5f;
-        staggerCounter = 0;
-        staggerFalloff = 1;
-        maxStaggerCount = 2;
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
         playerMask = 1 << LayerMask.NameToLayer("Player");
 
@@ -189,19 +184,7 @@ public class AI_FemaleNagaEnraged : AI_Base
             nagaManager.Died(true);
             nagaManager.StopPlayingBossMusic();
             nagaManager.HideHealthbar(true);
-            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
-        }
-        else
-        {
-            bool stagger = false;
-            if (staggerCounter + 1 <= maxStaggerCount)
-                stagger = true;
-
-            if (stagger)
-            {
-                staggerCounter += 1;
-                SetStaggered(isRight);
-            }
+            target.GetComponent<Player>().AddEnemyKilledToCount(this.GetType());
         }
         Teleport();
         nagaManager.UpdateHealthbar(true, health, maxHealth);
@@ -230,6 +213,6 @@ public class AI_FemaleNagaEnraged : AI_Base
     }
     void SpawnExplosion()
     {
-        Instantiate(explosionPrefab, target.position, Quaternion.identity, transform.parent).GetComponent<NagaQueenExplosionEffect>().Set(target.position, rangedAttackDamage);
+        Instantiate(explosionPrefab, target.position, Quaternion.identity, originalParent).GetComponent<NagaQueenExplosionEffect>().Set(target.position, rangedAttackDamage);
     }
 }
