@@ -11,29 +11,37 @@ public class MasterSoundSliderController : MonoBehaviour
     public UnityEngine.UI.Slider musicSlider;
     public UnityEngine.UI.Slider soundsSlider;
 
-    void Start()
+    void OnEnable()
     {
-        SetMasterVolume(PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : 0);
-        SetSoundVolume(PlayerPrefs.HasKey("SoundsVolume") ? PlayerPrefs.GetFloat("SoundsVolume") : 0);
-        SetMusicVolume(PlayerPrefs.HasKey("MusicVolume") ? PlayerPrefs.GetFloat("MusicVolume") : 0);
+        Settings settings = SaveManager.LoadSettings();
+
+        SetMasterVolume(settings.masterVolumeSliderValue);
+        SetSoundVolume(settings.soundfxVolumeSliderValue);
+        SetMusicVolume(settings.musicVolumeSliderValue);
     }
 
     public void SetMasterVolume(float vol)
     {
+        Settings settings = SaveManager.LoadSettings();
         masterSlider.value = vol;
         audioMixer.SetFloat("MasterVolume", vol * 5);
-        PlayerPrefs.SetFloat("MasterVolume", vol);
+        settings.masterVolumeSliderValue = vol;
+        SaveManager.SaveSettings(settings);
     }
     public void SetSoundVolume(float vol)
     {
+        Settings settings = SaveManager.LoadSettings();
         soundsSlider.value = vol;
         audioMixer.SetFloat("SoundsVolume", vol * 5);
-        PlayerPrefs.SetFloat("SoundsVolume", vol);
+        settings.soundfxVolumeSliderValue = vol;
+        SaveManager.SaveSettings(settings);
     }
     public void SetMusicVolume(float vol)
     {
+        Settings settings = SaveManager.LoadSettings();
         musicSlider.value = vol;
         audioMixer.SetFloat("MusicVolume", vol * 5);
-        PlayerPrefs.SetFloat("MusicVolume", vol);
+        settings.musicVolumeSliderValue = vol;
+        SaveManager.SaveSettings(settings);
     }
 }

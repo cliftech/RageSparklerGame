@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         settings = SaveManager.LoadSettings();
         if (settings == null)
         {
-            settings = new Settings(0, 0, true);
+            settings = new Settings(0, 0, true, 0, 0, 0);
         }
 
         if (settings.firstTimeLoadingProfile)

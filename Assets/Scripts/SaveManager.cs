@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
 public class SaveManager
 {
@@ -106,6 +107,54 @@ public class SaveManager
         return null;
     }
 
+    public static void DeleteProfile(int id)
+    {
+        string path = savePath + id.ToString() + ".sav";
+        Debug.Log("Deleting: " + path);
+
+        int pCount = profileCount;
+
+        File.Delete(path);
+        //Debug.LogWarning("deleting: " + path);
+
+        bool rewrittenSaves = false;
+
+        for (int i = id + 1; i < pCount; i++)
+        {
+            SaveProfile p = LoadProfile(i);
+            p.id -= 1;
+            //Debug.LogWarning("saving " + (p.id + 1) + " as " + p.id);
+            SaveProfile(p);
+            rewrittenSaves = true;
+        }
+
+        if (rewrittenSaves)
+        {
+            //Debug.LogWarning("deleting: " + savePath + (pCount - 1).ToString() + ".sav");
+            File.Delete(savePath + (pCount - 1).ToString() + ".sav");
+        }
+
+        Settings settings = LoadSettings();
+        settings.lastSavedProfile = -1;
+        SaveSettings(settings);
+    }
+
+    public static void ExhangeProfiles(int id1, int id2)
+    {
+        Debug.Log("Exchanging profiles: " + id1 + " and " + id2);
+        if (id1 == id2)
+            return;
+        SaveProfile p1 = LoadProfile(id1);
+        SaveProfile p2 = LoadProfile(id2);
+
+        int tmp = p1.id;
+        p1.id = p2.id;
+        p2.id = tmp;
+
+        SaveProfile(p1);
+        SaveProfile(p2);
+    }
+
     public static void SaveSettings(Settings settings)
     {
         if (!Directory.Exists(savePath))
@@ -158,7 +207,6 @@ public class SaveManager
         }
         return null;
     }
-
 }
 
 [System.Serializable]
@@ -244,11 +292,20 @@ public class Settings
     public int lastSavedProfile;
     public int profileToLoad;
     public bool firstTimeLoadingProfile;
+    public float masterVolumeSliderValue, soundfxVolumeSliderValue, musicVolumeSliderValue;
 
-    public Settings(int lastSavedProfile, int profileToLoad, bool firstTimeLoadingProfile)
+    public Settings(int lastSavedProfile, int profileToLoad, bool firstTimeLoadingProfile, float masterVolumeSliderValue, float soundfxVolumeSliderValue, float musicVolumeSliderValue)
     {
         this.lastSavedProfile = lastSavedProfile;
         this.profileToLoad = profileToLoad;
         this.firstTimeLoadingProfile = firstTimeLoadingProfile;
+        this.masterVolumeSliderValue = masterVolumeSliderValue;
+        this.soundfxVolumeSliderValue = soundfxVolumeSliderValue;
+        this.musicVolumeSliderValue = musicVolumeSliderValue;
+    }
+
+    public override string ToString()
+    {
+        return masterVolumeSliderValue + " " + soundfxVolumeSliderValue + " " + musicVolumeSliderValue;
     }
 }

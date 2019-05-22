@@ -6,15 +6,13 @@ public class SoundManager : MonoBehaviour
 {
     private AudioSource audioSource;
     private AudioClip bgmClip;
-    private float musicVolume = 1f;
-    public UnityEngine.UI.Slider slider;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
     void Start()
     {
-        musicVolume = PlayerPrefs.HasKey("MusicVolume") ? PlayerPrefs.GetFloat("MusicVolume") : 1;
         audioSource.loop = true;
         audioSource.Stop();
     }
@@ -48,19 +46,5 @@ public class SoundManager : MonoBehaviour
     public void ResumeMusic()
     {
         audioSource.UnPause();
-    }
-    
-    void Update()
-    {
-        audioSource.volume = musicVolume;
-    }
-
-    // Method that is called by slider game object
-    // This method takes vol value passed by slider
-    // and sets it as musicValue
-    public void SetVolume(float vol)
-    {
-        musicVolume = vol;
-        PlayerPrefs.SetFloat("MusicVolume", vol);
     }
 }

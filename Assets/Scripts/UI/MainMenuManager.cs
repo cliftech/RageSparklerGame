@@ -18,10 +18,17 @@ public class MainMenuManager : MonoBehaviour
     {
         eventSystem = FindObjectOfType<EventSystem>();
 
+        ValidateButtons();
+
+        SetFirstButtonActive();
+    }
+
+    public void ValidateButtons()
+    {
         settings = SaveManager.LoadSettings();
-        if (settings == null)
+        if (settings == null || settings.lastSavedProfile == -1)
         {
-            settings = new Settings(-1, 0, true);
+            settings = new Settings(-1, 0, true, 0, 0, 0);
             SaveManager.SaveSettings(settings);
             continueButton.interactable = false;
         }
@@ -29,12 +36,11 @@ public class MainMenuManager : MonoBehaviour
         SaveManager.ValidateSaves();
         if (SaveManager.profileCount <= 0)
             loadGameButton.interactable = false;
-
-        SetFirstButtonActive();
     }
 
     private void SetProfileToLoad(int profileID)
     {
+        settings = SaveManager.LoadSettings();
         settings.profileToLoad = profileID;
         SaveManager.SaveSettings(settings);
     }

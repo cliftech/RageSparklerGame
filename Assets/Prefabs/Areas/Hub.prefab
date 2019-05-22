@@ -8258,6 +8258,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4833971093930179215}
     m_Modifications:
+    - target: {fileID: 2938279793214235361, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
+        type: 3}
+      propertyPath: m_Name
+      value: HubChest
+      objectReference: {fileID: 0}
     - target: {fileID: 759698702757371723, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8322,11 +8327,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2938279793214235361, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
-        type: 3}
-      propertyPath: m_Name
-      value: HubChest
       objectReference: {fileID: 0}
     - target: {fileID: 1761699043930965168, guid: 9c9ff3f4ac699b94387c3546f8f66c8d,
         type: 3}
@@ -8671,21 +8671,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6314355891498409944}
     m_Modifications:
-    - target: {fileID: 4610688780460681576, guid: 083d6b5a0d5e6d443a6edae071122000,
-        type: 3}
-      propertyPath: isTriggeredByPressurePlate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4610688780460681576, guid: 083d6b5a0d5e6d443a6edae071122000,
-        type: 3}
-      propertyPath: startDelay
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4610688780460681576, guid: 083d6b5a0d5e6d443a6edae071122000,
-        type: 3}
-      propertyPath: extendDistance
-      value: -5
-      objectReference: {fileID: 0}
     - target: {fileID: 3805236590470577782, guid: 083d6b5a0d5e6d443a6edae071122000,
         type: 3}
       propertyPath: m_Name
@@ -8745,6 +8730,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610688780460681576, guid: 083d6b5a0d5e6d443a6edae071122000,
+        type: 3}
+      propertyPath: isTriggeredByPressurePlate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610688780460681576, guid: 083d6b5a0d5e6d443a6edae071122000,
+        type: 3}
+      propertyPath: startDelay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610688780460681576, guid: 083d6b5a0d5e6d443a6edae071122000,
+        type: 3}
+      propertyPath: extendDistance
+      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 083d6b5a0d5e6d443a6edae071122000, type: 3}
@@ -8976,6 +8976,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5725535069882746990}
     m_Modifications:
+    - target: {fileID: 5219157234283327021, guid: 4b66cb3acf0e8824dbdcfa3304197ce9,
+        type: 3}
+      propertyPath: m_Name
+      value: AncientTempleDartTrap_Left
+      objectReference: {fileID: 0}
     - target: {fileID: 1624216551961815041, guid: 4b66cb3acf0e8824dbdcfa3304197ce9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9031,11 +9036,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5219157234283327021, guid: 4b66cb3acf0e8824dbdcfa3304197ce9,
-        type: 3}
-      propertyPath: m_Name
-      value: AncientTempleDartTrap_Left
-      objectReference: {fileID: 0}
     - target: {fileID: 8261928827537888256, guid: 4b66cb3acf0e8824dbdcfa3304197ce9,
         type: 3}
       propertyPath: dartShootCount
@@ -9078,6 +9078,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7280401373980428976, guid: cbcdb56273c13244f97309c255716b45,
+        type: 3}
+      propertyPath: lootTable.Array.data[1].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e,
+        type: 2}
     - target: {fileID: 7542770926214921574, guid: 5d1679108d4967047a8cf167d7b75677,
         type: 3}
       propertyPath: m_RootOrder
@@ -9771,12 +9777,6 @@ PrefabInstance:
       propertyPath: lootTable.Array.data[37].dropChance
       value: 100
       objectReference: {fileID: 0}
-    - target: {fileID: 7280401373980428976, guid: cbcdb56273c13244f97309c255716b45,
-        type: 3}
-      propertyPath: lootTable.Array.data[1].item
-      value: 
-      objectReference: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d1679108d4967047a8cf167d7b75677, type: 3}
 --- !u!4 &5931298771839740167 stripped
@@ -9879,6 +9879,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5725535069882746990}
     m_Modifications:
+    - target: {fileID: 5219157234283327021, guid: 424ccc07222d37046a6bad071122c206,
+        type: 3}
+      propertyPath: m_Name
+      value: AncientTempleDartTrap_Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 5219157234283327021, guid: 424ccc07222d37046a6bad071122c206,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1624216551961815041, guid: 424ccc07222d37046a6bad071122c206,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9932,16 +9942,6 @@ PrefabInstance:
     - target: {fileID: 1624216551961815041, guid: 424ccc07222d37046a6bad071122c206,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5219157234283327021, guid: 424ccc07222d37046a6bad071122c206,
-        type: 3}
-      propertyPath: m_Name
-      value: AncientTempleDartTrap_Right
-      objectReference: {fileID: 0}
-    - target: {fileID: 5219157234283327021, guid: 424ccc07222d37046a6bad071122c206,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -10031,26 +10031,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7576629894483909006, guid: d9c77c855175c7e48842bb41612210a3,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3784262246363858084, guid: d9c77c855175c7e48842bb41612210a3,
-        type: 3}
-      propertyPath: traps.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3784262246363858084, guid: d9c77c855175c7e48842bb41612210a3,
         type: 3}
       propertyPath: traps.Array.data[0]
       value: 
       objectReference: {fileID: 181586204455818250}
-    - target: {fileID: 3784262246363858084, guid: d9c77c855175c7e48842bb41612210a3,
-        type: 3}
-      propertyPath: triggerOnCollision
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9c77c855175c7e48842bb41612210a3, type: 3}
 --- !u!4 &3647577333011592999 stripped
@@ -10291,6 +10276,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5725535069882746990}
     m_Modifications:
+    - target: {fileID: 5219157234283327021, guid: 2739259a72cbbda49bb95672e375cc56,
+        type: 3}
+      propertyPath: m_Name
+      value: AncientTempleDartTrap_Down
+      objectReference: {fileID: 0}
+    - target: {fileID: 5219157234283327021, guid: 2739259a72cbbda49bb95672e375cc56,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1624216551961815041, guid: 2739259a72cbbda49bb95672e375cc56,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10344,16 +10339,6 @@ PrefabInstance:
     - target: {fileID: 1624216551961815041, guid: 2739259a72cbbda49bb95672e375cc56,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5219157234283327021, guid: 2739259a72cbbda49bb95672e375cc56,
-        type: 3}
-      propertyPath: m_Name
-      value: AncientTempleDartTrap_Down
-      objectReference: {fileID: 0}
-    - target: {fileID: 5219157234283327021, guid: 2739259a72cbbda49bb95672e375cc56,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
