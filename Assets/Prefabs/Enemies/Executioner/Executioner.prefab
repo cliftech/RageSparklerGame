@@ -4751,7 +4751,7 @@ ParticleSystem:
 --- !u!199 &1991065562553523526
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -9561,7 +9561,7 @@ ParticleSystem:
 --- !u!199 &5184637844326443450
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -9846,64 +9846,10 @@ MonoBehaviour:
     dropChance: 100
   - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
     dropChance: 100
-  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 732f5e5e8289f434e9ba47405f2b3b3e, type: 2}
-    dropChance: 100
   - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 156b682d334578546bddfd887887a858, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
-  - item: {fileID: 11400000, guid: 47c7481cf3c210a48959b64884911549, type: 2}
-    dropChance: 100
+    dropChance: 50
+  - item: {fileID: 11400000, guid: 49a63fee21e59684da6a73e4d2c82c90, type: 2}
+    dropChance: 20
   essence:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
@@ -9926,17 +9872,8 @@ MonoBehaviour:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   rune:
-  - {fileID: 8899865901792235539, guid: b71de17cca1131e4daa314080915bb82, type: 3}
-  - {fileID: 8899865901792235539, guid: 98f00450d3ab6cc4ba67ead562731b00, type: 3}
-  - {fileID: 8899865901792235539, guid: c79ffb561ef9e3346b6dda3dcd8d4618, type: 3}
-  - {fileID: 8899865901792235539, guid: e667c1bc4f2b3de4fac4398177ae540d, type: 3}
-  - {fileID: 8899865901792235539, guid: db51429f6be14b64e9cd7cf8aa50244f, type: 3}
-  - {fileID: 8899865901792235539, guid: e1d62b6071ffc8b4c94455fd6133c551, type: 3}
   - {fileID: 8899865901792235539, guid: 47afbf76972347c40a83fda1aa9a9058, type: 3}
-  - {fileID: 8899865901792235539, guid: b76c02f092390264e987d2467b537ae7, type: 3}
-  - {fileID: 8899865901792235539, guid: e4ee22f6d53e1d845b09acdf02710525, type: 3}
-  - {fileID: 8899865901792235539, guid: 33c336c5cc0a28f4893205d4fff7cea5, type: 3}
-  - {fileID: 8899865901792235539, guid: f4ca67c8eb0e396468bd0f4c58272f6f, type: 3}
+  dropRune: 1
 --- !u!114 &7327202071835972233
 MonoBehaviour:
   m_ObjectHideFlags: 0

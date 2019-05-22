@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     private CameraController cameraController;
     private GameManager gamemanager;
+    private AreaNotificationText areaNotText;
     [HideInInspector] public Inventory equipment;
     [HideInInspector] public Inventory hubChest;
     [HideInInspector] public PlayerSoundController soundController;
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        areaNotText = FindObjectOfType<AreaNotificationText>();
         cameraController = FindObjectOfType<CameraController>();
         plrInter = FindObjectOfType<PlayerInteract>();
         gamemanager = FindObjectOfType<GameManager>();
@@ -287,45 +289,61 @@ public class Player : MonoBehaviour
             if (other.gameObject.name.StartsWith("DuobleJumpRune") || other.gameObject.name.StartsWith("TripleJumpRune"))
             {
                 UpgradeAirJumpCount(playerMovement.maxJumpCount);
+                if (playerMovement.maxJumpCount == 2)
+                    areaNotText.ShowNotification("Duoble Jump unlocked!");
+                if (playerMovement.maxJumpCount == 3)
+                    areaNotText.ShowNotification("Triple Jump unlocked!");
             }
+        
 
             if (other.gameObject.name.StartsWith("DashRune"))
             {
+                areaNotText.ShowNotification("Dash unlocked!");
                 UnlockDash();
             }
 
             if (other.gameObject.name.StartsWith("WallClimbingRune"))
             {
+                areaNotText.ShowNotification("Wall Climbing unlocked!");
                 UnlockWallClimbing();
             }
 
             if (other.gameObject.name.StartsWith("AirDashRune"))
             {
+                areaNotText.ShowNotification("Air Dash unlocked!");
                 UnlockMidAirDash();
             }
 
             if (other.gameObject.name.StartsWith("DownwardAttackRune"))
             {
+                areaNotText.ShowNotification("Downward Attack unlocked!");
                 UnlockDownwardAttack();
             }
 
             if (other.gameObject.name.StartsWith("DoubleAirDashRune") || other.gameObject.name.StartsWith("TripleAirDashRune"))
-            {
+            {              
                 UpgradeMaxMidAirDashCount(++playerMovement.maxMidairDashesCount);
+                if(playerMovement.maxMidairDashesCount == 2)
+                    areaNotText.ShowNotification("Duoble Air Dash unlocked!");
+                if (playerMovement.maxMidairDashesCount == 3)
+                    areaNotText.ShowNotification("Triple Air Dash unlocked!");
             }
 
             if (other.gameObject.name.StartsWith("DashDistanceRune"))
             {
+                areaNotText.ShowNotification("Dash distance increased!");
                 UpgradeDashDistance(++playerMovement.dashDistance);
             }
 
             if (other.gameObject.name.StartsWith("NoDashDelayRune"))
             {
+                areaNotText.ShowNotification("No Dash Delay unlocked!");
                 UpgradeDelayBetweenDashed(0);
             }
 
             if (other.gameObject.name.StartsWith("InvincibilityRune"))
             {
+                areaNotText.ShowNotification("Invincibility frame time increased!");
                 UpgradeInvincibilityFrame(playerMovement.invincibilityFrameTime + 0.2f);
             }
 

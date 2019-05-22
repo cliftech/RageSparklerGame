@@ -241,10 +241,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3007d48211f99564b9056bf39c4c001a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lootTable: []
+  lootTable:
+  - item: {fileID: 11400000, guid: ded0592f627f6be4099d103cb0bc98a2, type: 2}
+    dropChance: 20
   essence:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
-  rune: []
+  rune:
+  - {fileID: 8899865901792235539, guid: db51429f6be14b64e9cd7cf8aa50244f, type: 3}
+  dropRune: 1
 --- !u!114 &7367194103149800133
 MonoBehaviour:
   m_ObjectHideFlags: 0

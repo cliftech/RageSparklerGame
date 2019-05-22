@@ -231,7 +231,7 @@ public class AI_FemaleNaga : AI_Base
         {
             StopAllCoroutines();
             nagaManager.EnrageMaleNaga();
-            SetDead(isRight, 0);
+            SetDead(isRight, this.GetType(), 0);
             nagaManager.Died(true);
             nagaManager.HideHealthbar(true);
             this.enabled = false;

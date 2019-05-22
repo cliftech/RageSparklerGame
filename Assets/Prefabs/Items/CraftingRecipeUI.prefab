@@ -356,7 +356,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 2880031726210859842}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -385,7 +385,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 2880031726210859842}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -801,7 +801,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 9122215071565405308}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -830,7 +830,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 9122215071565405308}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -1637,7 +1637,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 3776012278149124455}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -1666,7 +1666,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 3776012278149124455}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -2083,7 +2083,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1981986129066943667}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -2112,7 +2112,7 @@ MonoBehaviour:
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1981986129066943667}
-            m_ObjectArgumentAssemblyTypeName: Slot, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: Slot, ScriptsAssembly
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 

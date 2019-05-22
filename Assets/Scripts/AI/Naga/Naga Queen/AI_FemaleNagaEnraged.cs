@@ -185,7 +185,7 @@ public class AI_FemaleNagaEnraged : AI_Base
         if (health <= 0)
         {
             StopAllCoroutines();
-            SetDead(isRight);
+            SetDead(isRight,this.GetType());
             nagaManager.Died(true);
             nagaManager.StopPlayingBossMusic();
             nagaManager.HideHealthbar(true);

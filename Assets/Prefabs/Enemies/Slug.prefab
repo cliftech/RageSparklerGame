@@ -321,7 +321,9 @@ MonoBehaviour:
     dropChance: 50
   essence:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
-  rune: []
+  rune:
+  - {fileID: 8899865901792235539, guid: c79ffb561ef9e3346b6dda3dcd8d4618, type: 3}
+  dropRune: 1
 --- !u!114 &2352248070430213604
 MonoBehaviour:
   m_ObjectHideFlags: 0

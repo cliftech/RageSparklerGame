@@ -230,7 +230,7 @@ public class AI_MaleNagaEnraged : AI_Base
         if (health <= 0)
         {
             StopAllCoroutines();
-            SetDead(isRight);
+            SetDead(isRight, this.GetType());
             nagaManager.Died(false);
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);

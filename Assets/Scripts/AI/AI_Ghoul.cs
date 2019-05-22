@@ -246,7 +246,7 @@ public class AI_Ghoul : AI_Base
         if (health <= 0)
         {
             if (state != State.Dead)
-                SetDead(isRight);
+                SetDead(isRight, this.GetType());
             target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
         }
         else

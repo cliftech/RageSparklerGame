@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,23 +7,28 @@ public class ItemSpawner : MonoBehaviour
 {
     [SerializeField]
     private LootTable allDrops;
+    private Player plr;
 
     public Item itm;
 
     private GameObject spawnObject;
 
-    public void Spawn(bool directionLeft)
+    public void Awake()
+    {
+        plr = FindObjectOfType<Player>();
+    }
+
+    public void Spawn(bool directionLeft, Type type)
     {
         int chance;
-        float dropDirection;
-        
+        float dropDirection;     
 
         for (int i = 0; i < allDrops.GetComponent<LootTable>().lootTable.Length; ++i)
         {  
             if(directionLeft)
-             dropDirection = Random.Range(-3.0f, -1.0f);
-            else dropDirection = Random.Range(1.0f, 3.0f);
-            chance = Random.Range(0, 100);
+             dropDirection = UnityEngine.Random.Range(-3.0f, -1.0f);
+            else dropDirection = UnityEngine.Random.Range(1.0f, 3.0f);
+            chance = UnityEngine.Random.Range(0, 100);
             if (chance < allDrops.GetComponent<LootTable>().lootTable[i].DropChance)
             {
                 spawnObject = Instantiate(allDrops.GetComponent<LootTable>().lootTable[i].Item.Object2D, this.transform.position, Quaternion.identity, transform.parent);
@@ -34,21 +40,24 @@ public class ItemSpawner : MonoBehaviour
         for (int i = 0; i < allDrops.GetComponent<LootTable>().essence.Length; ++i)
         {
             if (directionLeft)
-                dropDirection = Random.Range(-3.0f, -1.0f);
-            else dropDirection = Random.Range(1.0f, 3.0f);
+                dropDirection = UnityEngine.Random.Range(-3.0f, -1.0f);
+            else dropDirection = UnityEngine.Random.Range(1.0f, 3.0f);
 
             spawnObject = Instantiate(allDrops.GetComponent<LootTable>().essence[i], this.transform.position, Quaternion.identity, transform.parent);
             spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
         }
 
-        for (int i = 0; i < allDrops.GetComponent<LootTable>().rune.Length; i++)
+        if (plr.GetEnemyKillCount(type) == 0)
         {
-            if (directionLeft)
-                dropDirection = Random.Range(-3.0f, -1.0f);
-            else dropDirection = Random.Range(1.0f, 3.0f);
+            for (int i = 0; i < allDrops.GetComponent<LootTable>().rune.Length; i++)
+            {
+                if (directionLeft)
+                    dropDirection = UnityEngine.Random.Range(-3.0f, -1.0f);
+                else dropDirection = UnityEngine.Random.Range(1.0f, 3.0f);
 
-            spawnObject = Instantiate(allDrops.GetComponent<LootTable>().rune[i], this.transform.position, Quaternion.identity, transform.parent);
-            spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
+                spawnObject = Instantiate(allDrops.GetComponent<LootTable>().rune[i], this.transform.position, Quaternion.identity, transform.parent);
+                spawnObject.GetComponent<Rigidbody2D>().velocity = new Vector2(dropDirection, 2.0f);
+            }
         }
     }
 }

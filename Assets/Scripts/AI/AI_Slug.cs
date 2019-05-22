@@ -200,8 +200,8 @@ public class AI_Slug : AI_Base
         if (health <= 0)
         {
             if (state != State.Dead)
-                SetDead(isRight);
-            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
+                SetDead(isRight, this.GetType());
+            target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());           
         }
         else
         {
@@ -214,6 +214,7 @@ public class AI_Slug : AI_Base
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(playerWeaponTag) && state != State.KnockedBack && state != State.Dead)

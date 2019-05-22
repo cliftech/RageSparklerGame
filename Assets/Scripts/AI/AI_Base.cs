@@ -128,7 +128,7 @@ public class AI_Base : MonoBehaviour
     {
         stateAfterStaggeredCall();
     }
-    protected void SetDead(bool dropItemDirRight, float colliderDisableDelay = 0.5f)
+    protected void SetDead(bool dropItemDirRight, Type type, float colliderDisableDelay = 0.5f)
     {
         state = State.Dead;
         health = 0;
@@ -138,7 +138,7 @@ public class AI_Base : MonoBehaviour
         rb.gravityScale = 1;
         StartCoroutine(DeathRoutine(colliderDisableDelay));
         animator.SetBool("Dead", true);
-        itemSpawner.Spawn(dropItemDirRight);
+        itemSpawner.Spawn(dropItemDirRight, type);
         if (plr.equipment.slots[8].itemas != null && plr.equipment.slots[8].itemas.currentUses < plr.equipment.slots[8].itemas.maxUses)
         {
             plr.equipment.slots[8].itemas.currentUses++;

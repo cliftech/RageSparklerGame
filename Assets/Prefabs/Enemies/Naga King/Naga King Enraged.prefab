@@ -474,6 +474,8 @@ MonoBehaviour:
   lootTable:
   - item: {fileID: 11400000, guid: b184fb9e9dc7a994280cb93ada2918db, type: 2}
     dropChance: 40
+  - item: {fileID: 11400000, guid: 0a4de3b7f870bd54c8906e69d2214455, type: 2}
+    dropChance: 100
   essence:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
@@ -485,7 +487,9 @@ MonoBehaviour:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
-  rune: []
+  rune:
+  - {fileID: 8899865901792235539, guid: 33c336c5cc0a28f4893205d4fff7cea5, type: 3}
+  dropRune: 1
 --- !u!1 &8130790078095056638
 GameObject:
   m_ObjectHideFlags: 0

@@ -438,7 +438,7 @@ public class AI_Executioner : AI_Base
         health -= damage;
         if (health <= 0)
         {
-            SetDead(isRight);
+            SetDead(isRight, this.GetType());
             StopAllCoroutines();
             animator.SetBool("Shout", false);
             animator.SetBool("Charging", false);

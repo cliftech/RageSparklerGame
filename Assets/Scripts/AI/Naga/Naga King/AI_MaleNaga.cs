@@ -271,7 +271,7 @@ public class AI_MaleNaga : AI_Base
         {
             StopAllCoroutines();
             nagaManager.EnrageFemaleNaga();
-            SetDead(isRight, 0);
+            SetDead(isRight, this.GetType(), 0);
             nagaManager.Died(false);
             animator.SetBool("IsChannellingWhirlwind", false);
             animator.SetBool("IsWindingUpWhirlwind", false);
@@ -298,6 +298,15 @@ public class AI_MaleNaga : AI_Base
         cameraController.Shake(damage);
         ParticleEffectManager.PlayEffect(ParticleEffect.Type.blood, coll.bounds.center, isRight ? Vector3.left : Vector3.right);
     }
+
+    protected void updateRune()
+    {
+        if(target.GetComponent<Player>().GetEnemyKillCount(this.GetType()) > 0)
+        {
+            GetComponent<LootTable>().rune = null;
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(playerWeaponTag) && state != State.Dead)

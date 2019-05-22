@@ -170,7 +170,7 @@ public class AI_Imp : AI_Base
         if (health <= 0)
         {
             if (state != State.Dead)
-                SetDead(isRight, 5f);
+                SetDead(isRight, this.GetType(), 5f);
             target.GetComponent<Player>().AddEnemyKilldedToCount(this.GetType());
         }
         else

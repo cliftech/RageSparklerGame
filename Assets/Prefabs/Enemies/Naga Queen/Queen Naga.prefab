@@ -529,7 +529,9 @@ MonoBehaviour:
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
   - {fileID: 8899865901792235539, guid: 3e15b086990e40b4eb795598c9e45df3, type: 3}
-  rune: []
+  rune:
+  - {fileID: 8899865901792235539, guid: e667c1bc4f2b3de4fac4398177ae540d, type: 3}
+  dropRune: 1
 --- !u!1 &2866659673561513915
 GameObject:
   m_ObjectHideFlags: 0
